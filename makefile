@@ -24,5 +24,8 @@ run:
 clean:
 	rm -r $(OBJDIR)/*.o
 
+doc:
+	doxygen Doxyfile
+
 init:
 	mkdir -p obj
