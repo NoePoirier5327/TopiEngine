@@ -1,8 +1,8 @@
 CXX = g++
 AR = ar
 ARFLAGS = rcs
-LDDIR = 
-LDFLAGS =
+LDDIR = -Llib
+LDFLAGS = -lglfw -lgl
 TESTFLAGS = -lgtest -lgtest_main -lpthread
 INCLDDIR = -Iinclude
 DEBUGFLAGS = -g
