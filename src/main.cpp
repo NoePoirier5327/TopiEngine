@@ -28,11 +28,18 @@ int main() {
 
   glViewport(0, 0, 640, 480);
 
-  // Position du triangle à afficher.
+  // Position des triangles à afficher pour former un rectangle.
   float vertices[] = {
-    0.0f, 0.5f,
-    0.5f, -0.5f,
-    -0.5f, -0.5f
+    0.5f, 0.5f, 0.0f,
+    0.5f, -0.5f, 0.0f,
+    -0.5f, -0.5f, 0.0f,
+    -0.5f, 0.5f, 0.0f
+  };
+
+  // Ordre de dessin des rectangles.
+  GLuint indices[] = {
+    0, 1, 3,  // Triangle 1
+    1, 2, 3   // Triangle 2
   };
 
   // On compile le shader de vertex (il est responsable pour la liaison des vertices).
@@ -100,21 +107,33 @@ int main() {
   glLinkProgram(shader_program);
   glUseProgram(shader_program);
 
+  // On libère les shaders associés à shader_program
+  glDeleteShader(vertex_shader_id);
+  glDeleteShader(fragment_shader_id);
+
   // On créer un vao pour modifier les vertices du triangle de manière dynamique.
   GLuint vao;
   glGenVertexArrays(1, &vao);
   glBindVertexArray(vao);
 
-  // Ajout des vertices du triangle dans le bugger de la carte graphique.
+  // Copie des vertices à afficher dans le buffer de la carte graphique.
   GLuint vbo;
   glGenBuffers(1, &vbo);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+  // Ajout de l'ordre des vertices à afficher dans le buffer de la carte graphique.
+  GLuint ebo;
+  glGenBuffers(1, &ebo);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
   // On lie les vertices et les attribues des shaders.
   GLint pos_attribute = glGetAttribLocation(shader_program, "position");
-  glVertexAttribPointer(pos_attribute, 2, GL_FLOAT, GL_FALSE, 0, 0);
+  glVertexAttribPointer(pos_attribute, 3, GL_FLOAT, GL_FALSE, 0, 0);
   glEnableVertexAttribArray(pos_attribute);
+
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
@@ -122,7 +141,7 @@ int main() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     glfwSwapBuffers(window);
   }
