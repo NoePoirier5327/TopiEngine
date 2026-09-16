@@ -6,6 +6,7 @@
 #include <string>
 #include "topi.hpp"
 
+// Instance de référence pour la classe TopiEngine.
 static TopiEngine* INSTANCE = nullptr;
 
 TopiEngine& TopiEngine::init(const char *name, int width, int height) {
