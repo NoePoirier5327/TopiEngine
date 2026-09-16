@@ -29,6 +29,15 @@ class TopiEngine {
     static TopiEngine& init(const char* name, size_t width, size_t height);
 
     /**
+     * @brief Lance la logique de jeu représentée l'instance interne.
+     * 
+     * S'occupe de la boucle d'affichages, d'événements et de mise à jour de la logique.
+     *
+     * @throw std::runtime_error si l'instance interne n'est pas instanciée.
+     */
+    static void run();
+
+    /**
      * @brief Accesseur de l'instance courante de TopiEngine.
      *
      * @throw std::runtime_error si l'instance sous-jacente n'est pas initialisée.

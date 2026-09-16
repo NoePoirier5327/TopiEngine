@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_error.h>
+#include <SDL2/SDL_events.h>
 #include <SDL2/SDL_video.h>
 #include <stdexcept>
 #include <string>
@@ -46,9 +47,27 @@ TopiEngine& TopiEngine::init(const char *name, size_t width, size_t height) {
   return *INSTANCE;
 }
 
+void TopiEngine::run() {
+  if (INSTANCE == nullptr) {
+    throw std::runtime_error("You should instanciate the topi engine before trying to run the game.");
+  }
+
+  bool run = true;
+  SDL_Event event;
+
+  while (run) {
+    // Gestion des évenements liés à la SDL.
+    while (SDL_PollEvent(&event)) {
+      if (event.type == SDL_QUIT) {
+        run = false;
+      }
+    }
+  }
+}
+
 TopiEngine& TopiEngine::on_instance() {
   if (INSTANCE == nullptr) {
-    throw std::runtime_error("You should instance the topi engine before trying to access it.");
+    throw std::runtime_error("You should instanciate the topi engine before trying to access it.");
   }
 
   return *INSTANCE;
