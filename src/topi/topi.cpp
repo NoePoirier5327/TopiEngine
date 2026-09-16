@@ -8,7 +8,7 @@
 
 static TopiEngine* INSTANCE = nullptr;
 
-TopiEngine& TopiEngine::init(const char *name, size_t width, size_t height) {
+TopiEngine& TopiEngine::init(const char *name, int width, int height) {
   // Si ce n'est pas déjà le cas, on alloue l'instance sous-jacente.
   if (INSTANCE == nullptr) {
     // On initialise la sdl2

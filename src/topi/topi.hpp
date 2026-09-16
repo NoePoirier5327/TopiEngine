@@ -1,7 +1,6 @@
 #ifndef TOPI_HEADER
 #define TOPI_HEADER
 
-#include <cstdlib>
 #include <SDL2/SDL.h>
 
 /**
@@ -26,7 +25,7 @@ class TopiEngine {
      *
      * @throw std::runtime_error si erreur dans le chargement de la sdl2 et la création de sa fenêtre et ses composantes.
      */
-    static TopiEngine& init(const char* name, size_t width, size_t height);
+    static TopiEngine& init(const char* name, int width, int height);
 
     /**
      * @brief Lance la logique de jeu représentée l'instance interne.
