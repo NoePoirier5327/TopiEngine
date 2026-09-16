@@ -14,6 +14,7 @@ class TopiEngine {
      *
      * Créer une fenêtre sdl2 dont l'écriture est régie par la classe renderer.
      * La taille, la position et le nom de la fenêtre sont en paramètre.
+     * Créer aussi l'instance du renderer du moteur.
      *
      * Si une instance existe déjà, on la renvoie simplement.
      *
@@ -24,6 +25,7 @@ class TopiEngine {
      * @return Référence vers l'instance interne initialisée.
      *
      * @throw std::runtime_error si erreur dans le chargement de la sdl2 et la création de sa fenêtre et ses composantes.
+     * @throw std::runtime_error si erreur dans la création de l'instance du renderer.
      */
     static TopiEngine& init(const char* name, int width, int height);
 
@@ -45,6 +47,8 @@ class TopiEngine {
 
     /**
      * @brief Désalloue, si besoin, l'instance interne de TopiEngine ainsi que la sdl2.
+     *
+     * Désalloue aussi le renderer du moteur.
      */
     static void destroy();
 

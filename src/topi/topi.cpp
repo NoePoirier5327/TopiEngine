@@ -4,6 +4,7 @@
 #include <SDL2/SDL_video.h>
 #include <stdexcept>
 #include <string>
+#include "renderer/renderer.hpp"
 #include "topi.hpp"
 
 // Instance de référence pour la classe TopiEngine.
@@ -32,9 +33,27 @@ TopiEngine& TopiEngine::init(const char *name, int width, int height) {
 
     // On vérifie sa bonne initialisation.
     if (!window) {
+      // On quitte la sdl.
+      SDL_Quit();
+
       std::string error = "Failed to open new SDL2 window.\n";
       error += SDL_GetError();
       throw std::runtime_error(error);
+    }
+
+    // On instancie le renderer du moteur.
+    try {
+      Renderer::init(window);
+    } 
+    catch (std::runtime_error &e) {
+      // On désalloue la fenêtre.
+      SDL_DestroyWindow(window);
+
+      // On quitte la sdl.
+      SDL_Quit();
+
+      // On resignal l'erreur.
+      throw std::runtime_error(e);
     }
 
     // On instancie le singleton.
@@ -76,8 +95,13 @@ TopiEngine& TopiEngine::on_instance() {
 
 void TopiEngine::destroy() {
   if (INSTANCE != nullptr) {
-    // On désalloue la sdl.
+    // On désalloue la fenêtre.
     SDL_DestroyWindow(INSTANCE->window);
+
+    // le renderer.
+    Renderer::destroy();
+
+    // et enfin la sdl.
     SDL_Quit();
 
     // Puis l'instance interne.
