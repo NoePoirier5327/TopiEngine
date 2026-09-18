@@ -82,6 +82,9 @@ void TopiEngine::run() {
         run = false;
       }
     }
+
+    // On refraichi l'affichage.
+    Renderer::on_instance().display();
   }
 }
 

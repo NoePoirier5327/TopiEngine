@@ -35,3 +35,16 @@ void Renderer::destroy() {
     INSTANCE = nullptr;
   }
 }
+
+Renderer& Renderer::on_instance() {
+  if (INSTANCE == nullptr)
+    throw std::runtime_error("You should instanciate the renderer in order to access it.");
+  return *INSTANCE;
+}
+
+void Renderer::display() {
+  SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 255);
+  SDL_RenderClear(this->renderer);
+
+  SDL_RenderPresent(this->renderer);
+}

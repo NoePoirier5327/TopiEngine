@@ -36,6 +36,21 @@ class Renderer {
      */
     static void destroy();
 
+    /**
+     * @brief Accesseur de l'instance interne du renderer.
+     *
+     * @throw std::runtime_error si aucune instance accessible (cad instancié).
+     */
+    static Renderer& on_instance();
+
+    /**
+     * @brief Se charge de rafraichir le buffer d'affichage sdl2 interne.
+     *
+     * Pour ça, néttoie l'écran, vide sa queue d'objets affichable en mettant à jour
+     * le buffer de rendu sdl2 et les affiches.
+     */
+    void display();
+
   private:
     SDL_Renderer *renderer;
 };
