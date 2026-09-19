@@ -2,44 +2,37 @@
 #include <stdexcept>
 #include "renderer.hpp"
 
-// Instance de référence pour la classe Renderer.
-static Renderer* INSTANCE = nullptr;
+// Nombre d'instance du moteur de rendu tournant en mémoire.
+static bool AN_INSTANCE_IS_ALREADY_RUNNING = false;
 
-Renderer& Renderer::init(SDL_Window *window) {
+Renderer::Renderer(SDL_Window *window) {
   if (window == nullptr) {
     throw std::invalid_argument("The given window should be instanciated to create renderer.");
   }
 
-  if (INSTANCE == nullptr) {
-    SDL_Renderer* renderer = nullptr;
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-    if (!renderer) {
-      std::string error = "Failed to create renderer.\n";
-      error += SDL_GetError();
-
-      throw std::runtime_error(error);
-    }
-
-    INSTANCE = new Renderer;
-    INSTANCE->renderer = renderer;
+  if (AN_INSTANCE_IS_ALREADY_RUNNING) {
+    throw std::runtime_error("There sould be only one instance of the renderer running.");
   }
 
-  return *INSTANCE;
-}
+  this->renderer = nullptr;
+  this->renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-void Renderer::destroy() {
-  if (INSTANCE != nullptr) {
-    SDL_DestroyRenderer(INSTANCE->renderer);
-    delete INSTANCE;
-    INSTANCE = nullptr;
+  if (!this->renderer) {
+    std::string error = "Failed to create renderer.\n";
+    error += SDL_GetError();
+
+    throw std::runtime_error(error);
   }
+
+  AN_INSTANCE_IS_ALREADY_RUNNING = true;
 }
 
-Renderer& Renderer::on_instance() {
-  if (INSTANCE == nullptr)
-    throw std::runtime_error("You should instanciate the renderer in order to access it.");
-  return *INSTANCE;
+Renderer::~Renderer() {
+  if (this->renderer != nullptr) {
+    SDL_DestroyRenderer(this->renderer);
+  }
+
+  AN_INSTANCE_IS_ALREADY_RUNNING = false;
 }
 
 void Renderer::display() {

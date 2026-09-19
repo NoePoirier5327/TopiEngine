@@ -1,10 +1,8 @@
 #include "topi/topi.hpp"
 
 int main() {
-  TopiEngine::init("Test", 480, 300);
+  TopiEngine topi = TopiEngine("Test", 480, 300);
+  topi.run();
 
-  TopiEngine::run();
-
-  TopiEngine::destroy();
   return 0;
 }

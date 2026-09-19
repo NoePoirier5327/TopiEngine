@@ -4,74 +4,65 @@
 #include <SDL2/SDL_video.h>
 #include <stdexcept>
 #include <string>
-#include "renderer/renderer.hpp"
 #include "topi.hpp"
 
-// Instance de référence pour la classe TopiEngine.
-static TopiEngine* INSTANCE = nullptr;
+// Vérifie si une instance existe déjà en mémoire.
+static bool AN_INSTANCE_IS_ALREADY_RUNNING = false;
 
-TopiEngine& TopiEngine::init(const char *name, int width, int height) {
-  // Si ce n'est pas déjà le cas, on alloue l'instance sous-jacente.
-  if (INSTANCE == nullptr) {
-    // On initialise la sdl2
-    if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-      std::string error = "Failed to init SDL2.\n";
-      error += SDL_GetError();
-      throw std::runtime_error(error);
-    }
+TopiEngine::TopiEngine(const char *name, int width, int height) {
+  if (AN_INSTANCE_IS_ALREADY_RUNNING) {
+    throw std::runtime_error("There should be only as single instance of the engine running in memory.");
+  }
 
-    // On initialise la fenêtre.
-    SDL_Window *window = nullptr;
-    window = SDL_CreateWindow(
+  // On initialise la sdl2
+  if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+    std::string error = "Failed to init SDL2.\n";
+    error += SDL_GetError();
+    throw std::runtime_error(error);
+  }
+
+  // On initialise la fenêtre.
+  this->window = nullptr;
+  this->window = SDL_CreateWindow(
       name,
       SDL_WINDOWPOS_UNDEFINED,
       SDL_WINDOWPOS_UNDEFINED,
       width,
       height,
       SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
-    );
+  );
 
-    // On vérifie sa bonne initialisation.
-    if (!window) {
-      // On quitte la sdl.
-      SDL_Quit();
+  // On vérifie sa bonne initialisation.
+  if (!this->window) {
+    // On quitte la sdl.
+    SDL_Quit();
 
-      std::string error = "Failed to open new SDL2 window.\n";
-      error += SDL_GetError();
-      throw std::runtime_error(error);
-    }
-
-    // On instancie le renderer du moteur.
-    try {
-      Renderer::init(window);
-    } 
-    catch (std::runtime_error &e) {
-      // On désalloue la fenêtre.
-      SDL_DestroyWindow(window);
-
-      // On quitte la sdl.
-      SDL_Quit();
-
-      // On resignal l'erreur.
-      throw std::runtime_error(e);
-    }
-
-    // On instancie le singleton.
-    INSTANCE = new TopiEngine;
-
-    // On renvoie la propriétée de la fenêtre à l'instance sous-jacente.
-    INSTANCE->window = window;
+    std::string error = "Failed to open new SDL2 window.\n";
+    error += SDL_GetError();
+    throw std::runtime_error(error);
   }
 
-  // On renvoie l'instance
-  return *INSTANCE;
+  this->renderer = nullptr;
+
+  // On instancie le renderer du moteur.
+  try {
+    this->renderer = new Renderer(this->window);
+  } 
+  catch (std::runtime_error &e) {
+    // On désalloue la fenêtre.
+    SDL_DestroyWindow(window);
+
+    // On quitte la sdl.
+    SDL_Quit();
+
+    // On resignal l'erreur.
+    throw std::runtime_error(e);
+  }
+
+  AN_INSTANCE_IS_ALREADY_RUNNING = true;
 }
 
 void TopiEngine::run() {
-  if (INSTANCE == nullptr) {
-    throw std::runtime_error("You should instanciate the topi engine before trying to run the game.");
-  }
-
   bool run = true;
   SDL_Event event;
 
@@ -84,31 +75,19 @@ void TopiEngine::run() {
     }
 
     // On refraichi l'affichage.
-    Renderer::on_instance().display();
+    this->renderer->display();
   }
 }
 
-TopiEngine& TopiEngine::on_instance() {
-  if (INSTANCE == nullptr) {
-    throw std::runtime_error("You should instanciate the topi engine before trying to access it.");
+TopiEngine::~TopiEngine() {
+  if (this->renderer != nullptr) {
+    delete this->renderer;
   }
 
-  return *INSTANCE;
-}
-
-void TopiEngine::destroy() {
-  if (INSTANCE != nullptr) {
-    // On désalloue la fenêtre.
-    SDL_DestroyWindow(INSTANCE->window);
-
-    // le renderer.
-    Renderer::destroy();
-
-    // et enfin la sdl.
-    SDL_Quit();
-
-    // Puis l'instance interne.
-    delete INSTANCE;
-    INSTANCE = nullptr;
+  if (this->window != nullptr) {
+    SDL_DestroyWindow(this->window);
   }
+
+  SDL_Quit();
+  AN_INSTANCE_IS_ALREADY_RUNNING = false;
 }

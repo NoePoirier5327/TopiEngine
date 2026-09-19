@@ -6,42 +6,30 @@
 
 /**
  * @class Renderer
- * @brief Instance static du gestionnaire d'affichage du moteur sous forme de singleton.
+ * @brief Gestionnaire de rendu pour le moteur de jeu.
+ * Une seule instance peut tourner à la fois.
  */
 class Renderer {
   public:
     /**
-     * @brief Instancie, si possible, le singleton interne.
+     * @brief Instancie un gestionnaire de rendu pour le moteur topi.
      *
      * Instancie le renderer sdl2 sous-jacent à partir de la fenêtre en paramètre.
-     * Si une instance existe déjà, on la renvoie sans rien faire de plus.
      * 
      * @param window, fenêtre à partir de laquelle créer le renderer sdl2.
      *
-     * @return Renvoie l'instance de renderer.
-     *
      * @throw sdt::invalid_argument si window == nullptr.
-     * @throw sdt::runtime_error si impossible de créer le renderer sdl2.
+     * @throw std::runtime_error si erreur lors de la création du renderer.
+     * @throw std::runtime_error si une autre instance tourne.
      */
-    static Renderer& init(SDL_Window* window);
+    Renderer(SDL_Window* window);
 
     /**
-     * @brief Désalloue l'instance static global si elle existe.
+     * @brief Désalloue l'instance courante.
      *
-     * Désinstancie le renderer sdl2 sous jacent ainsi que toutes les
-     * composantes internes qui ont besoin de l'être explicitement avant
-     * de désallouer l'instance static interne.
-     *
-     * Si aucune instance à laquelle se rattacher, on ne fait rien.
+     * Repasse le nombre d'instance courante à 0 et désalloue le renderer SDL2 interne.
      */
-    static void destroy();
-
-    /**
-     * @brief Accesseur de l'instance interne du renderer.
-     *
-     * @throw std::runtime_error si aucune instance accessible (cad instancié).
-     */
-    static Renderer& on_instance();
+    ~Renderer();
 
     /**
      * @brief Se charge de rafraichir le buffer d'affichage sdl2 interne.

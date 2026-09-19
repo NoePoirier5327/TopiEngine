@@ -2,10 +2,12 @@
 #define TOPI_HEADER
 
 #include <SDL2/SDL.h>
+#include "renderer/renderer.hpp"
 
 /**
  * @class TopiEngine
- * @brief Instance static du jeu courant sous forme de singleton.
+ * @brief Instance du moteur de jeu.
+ * Une seule instance peut fonctionner en mémoire.
  */
 class TopiEngine {
   public:
@@ -16,44 +18,34 @@ class TopiEngine {
      * La taille, la position et le nom de la fenêtre sont en paramètre.
      * Créer aussi l'instance du renderer du moteur.
      *
-     * Si une instance existe déjà, on la renvoie simplement.
-     *
      * @param name, nom de la fenêtre sdl2 à afficher.
      * @param width, largeur de la fenêtre à instancier.
      * @param height, hauteur de la fenêtre à instancier.
      *
-     * @return Référence vers l'instance interne initialisée.
-     *
+     * @throw std::runtime_error si une instance déjà existante en mémoire.
      * @throw std::runtime_error si erreur dans le chargement de la sdl2 et la création de sa fenêtre et ses composantes.
      * @throw std::runtime_error si erreur dans la création de l'instance du renderer.
+     * @throw std::invalid_argument si erreur dans la création de l'instance du renderer.
      */
-    static TopiEngine& init(const char* name, int width, int height);
-
-    /**
-     * @brief Lance la logique de jeu représentée l'instance interne.
-     * 
-     * S'occupe de la boucle d'affichages, d'événements et de mise à jour de la logique.
-     *
-     * @throw std::runtime_error si l'instance interne n'est pas instanciée.
-     */
-    static void run();
-
-    /**
-     * @brief Accesseur de l'instance courante de TopiEngine.
-     *
-     * @throw std::runtime_error si l'instance sous-jacente n'est pas initialisée.
-     */
-    static TopiEngine& on_instance();
+    TopiEngine(const char* name, int width, int height);
 
     /**
      * @brief Désalloue, si besoin, l'instance interne de TopiEngine ainsi que la sdl2.
      *
      * Désalloue aussi le renderer du moteur.
      */
-    static void destroy();
+    ~TopiEngine();
+
+    /**
+     * @brief Lance la logique de jeu représentée l'instance interne.
+     * 
+     * S'occupe de la boucle d'affichages, d'événements et de mise à jour de la logique.
+     */
+    void run();
 
   private:
     SDL_Window *window;
+    Renderer *renderer;
 };
 
 #endif // !TOPI_HEADER
