@@ -74,6 +74,9 @@ void TopiEngine::run() {
       }
     }
 
+    // Teste du moteur de rendu.
+    this->renderer->new_colored_filled_rectangle(0, 0, 50, 70, 255, 0, 0, 255);
+
     // On refraichi l'affichage.
     this->renderer->display();
   }

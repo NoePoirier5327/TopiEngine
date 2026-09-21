@@ -3,6 +3,10 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_render.h>
+#include <cstdint>
+#include <memory>
+#include <vector>
+#include "renderable_items/renderable_item.hpp"
 
 /**
  * @class Renderer
@@ -39,8 +43,37 @@ class Renderer {
      */
     void display();
 
+    /**
+     * @brief Créer un nouveau rectangle plein coloré.
+     *
+     * Créer une nouvelle instance de ColoredFilledRectangle et l'ajoute à la file
+     * d'objets à afficher.
+     *
+     * @param x, coordonnée en abcisse du haut gauche du rectangle à afficher.
+     * @param y, coordonnée en ordonnée du haut gauche du rectangle à afficher.
+     * @param w, largeur du rectangle à afficher.
+     * @param h, hauteur du rectangle à afficher.
+     * @param r, taux de rouge de la couleur du rectangle.
+     * @param g, taux de vert de la couleur du rectangle.
+     * @param a, taux de transparence du rectangle.
+     */
+    void new_colored_filled_rectangle(
+        int x,
+        int y,
+        size_t w,
+        size_t h,
+        uint8_t r,
+        uint8_t g,
+        uint8_t b,
+        uint8_t a
+    );
+
   private:
     SDL_Renderer *renderer;
+
+    // On utilise unique_ptr pour des raisons de sécurité mémoire car désalloué automatiquement.
+    // Et copie le caractère enfant des RenderableItems dans la file.
+    std::vector<std::unique_ptr<RenderableItem>> rendering_queue;
 };
 
 #endif // !RENDERER_HEADER
