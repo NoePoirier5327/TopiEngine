@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include "renderer/renderer.hpp"
+#include "command/command.hpp"
 
 /**
  * @class TopiEngine
@@ -43,9 +44,15 @@ class TopiEngine {
      */
     void run();
 
+    /**
+     * @brief Accesseur de l'interface des commandes du moteur.
+     */
+    Command& on_command();
+
   private:
     SDL_Window *window;
     Renderer *renderer;
+    Command command;
 };
 
 #endif // !TOPI_HEADER

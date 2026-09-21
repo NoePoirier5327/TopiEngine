@@ -2,9 +2,13 @@
 #include <SDL2/SDL_error.h>
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_video.h>
+#include <algorithm>
 #include <stdexcept>
 #include <string>
+#include <chrono>
 #include "topi.hpp"
+
+using Clock = std::chrono::high_resolution_clock;
 
 // Vérifie si une instance existe déjà en mémoire.
 static bool AN_INSTANCE_IS_ALREADY_RUNNING = false;
@@ -29,7 +33,7 @@ TopiEngine::TopiEngine(const char *name, int width, int height) {
       SDL_WINDOWPOS_UNDEFINED,
       width,
       height,
-      SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
+      SDL_WINDOW_SHOWN
   );
 
   // On vérifie sa bonne initialisation.
@@ -66,6 +70,14 @@ void TopiEngine::run() {
   bool run = true;
   SDL_Event event;
 
+  // On exécute les commandes de mise en place du jeu.
+  this->command.process_setup();
+
+  // Mise en place de la gestion du delta time.
+  double max_dt = 1.0 / 60.0; // 60 fps
+  auto last_tick = Clock::now();
+
+  // Boucle de jeu
   while (run) {
     // Gestion des évenements liés à la SDL.
     while (SDL_PollEvent(&event)) {
@@ -74,8 +86,16 @@ void TopiEngine::run() {
       }
     }
 
-    // Teste du moteur de rendu.
-    this->renderer->new_colored_filled_rectangle(0, 0, 50, 70, 255, 0, 0, 255);
+    // On calcul le delta time
+    auto current_tick = Clock::now();
+    double dt = (static_cast<std::chrono::duration<double>>(current_tick - last_tick)).count();
+    last_tick = current_tick;
+
+    dt = std::min(dt, max_dt); // qu'on cape à 1/60
+
+    // On exécute les commandes du moteur.
+    this->command.process_update(dt);
+    this->command.process_display(this->renderer);
 
     // On refraichi l'affichage.
     this->renderer->display();
@@ -93,4 +113,8 @@ TopiEngine::~TopiEngine() {
 
   SDL_Quit();
   AN_INSTANCE_IS_ALREADY_RUNNING = false;
+}
+
+Command& TopiEngine::on_command() {
+  return this->command;
 }
