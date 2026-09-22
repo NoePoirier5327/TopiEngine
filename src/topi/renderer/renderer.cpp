@@ -2,7 +2,7 @@
 #include <memory>
 #include <stdexcept>
 #include "renderer.hpp"
-#include "renderable_items/rectangle.hpp"
+#include "renderable_items/rectangle/rectangle.hpp"
 #include "renderable_items/renderable_item.hpp"
 
 // Nombre d'instance du moteur de rendu tournant en mémoire.

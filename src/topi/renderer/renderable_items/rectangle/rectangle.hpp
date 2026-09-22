@@ -1,7 +1,7 @@
 #ifndef RECTANGLE_HEADER
 #define RECTANGLE_HEADER
 
-#include "renderable_item.hpp"
+#include "../renderable_item.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_render.h>
 #include <cstdint>
