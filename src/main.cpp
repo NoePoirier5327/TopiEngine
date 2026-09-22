@@ -1,3 +1,4 @@
+#include "topi/input_manager/input_manager.hpp"
 #include "topi/topi.hpp"
 #include <iostream>
 
@@ -7,6 +8,16 @@ void setup_function() {
 
 void update_function(double dt) {
   std::cout << "I'm called on update : " << dt << std::endl;
+}
+
+void input_function(const InputManager& input_manager, double dt) {
+  if (input_manager.is_key_down(KEY_A)) {
+    std::cout << "The A button is pressed." << std::endl;
+  }
+
+  if (input_manager.is_key_down(KEY_Z)) {
+    std::cout << "The Z button is pressed." << std::endl;
+  }
 }
 
 void drawing_function(Renderer* renderer) {
@@ -19,6 +30,7 @@ int main() {
   topi.on_command().on_setup(setup_function);
   topi.on_command().on_update(update_function);
   topi.on_command().on_display(drawing_function);
+  topi.on_command().on_input(input_function);
   topi.run();
 
   return 0;

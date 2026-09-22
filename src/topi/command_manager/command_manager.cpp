@@ -23,6 +23,10 @@ void CommandManager::on_update(void (*func)(double)) {
   this->update_queue.push_back(func);
 }
 
+void CommandManager::on_input(void (*func)(const InputManager &, double)) {
+  this->input_queue.push_back(func);
+}
+
 void CommandManager::on_display(void (*func)(Renderer*)) {
   this->rendering_queue.push_back(func);
 }
@@ -36,8 +40,14 @@ void CommandManager::process_setup() {
 }
 
 void CommandManager::process_update(double dt) const {
-  for (auto &func : this->update_queue) {
+  for (auto &func: this->update_queue) {
     func(dt);
+  }
+}
+
+void CommandManager::process_input(const InputManager& input_manager, double dt) const {
+  for (auto &func: this->input_queue) {
+    func(input_manager, dt);
   }
 }
 

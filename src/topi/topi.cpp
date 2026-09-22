@@ -92,16 +92,9 @@ void TopiEngine::run() {
     double dt = (static_cast<std::chrono::duration<double>>(current_tick - last_tick)).count();
     last_tick = current_tick;
     dt = std::min(dt, max_dt); // qu'on cape à 1/60
-    
-    if (this->input_manager.is_key_down(KEY_A)) {
-      std::cout << "Hello world!" << std::endl;
-    }
-
-    if (this->input_manager.is_key_down(KEY_B)) {
-      std::cout << "Bye world!" << std::endl;
-    }
 
     // On exécute les commandes du moteur.
+    this->command_manager.process_input(this->input_manager, dt);
     this->command_manager.process_update(dt);
     this->command_manager.process_display(this->renderer);
 

@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <vector>
 #include "../renderer/renderer.hpp"
+#include "../input_manager/input_manager.hpp"
 
 /**
  * @class CommandManager
@@ -40,6 +41,12 @@ class CommandManager {
     void on_update(void (*func)(double));
 
     /**
+     * @brief Ajoute à la file d'exécution une fonction gérant les entrées claviers vis-à-vis du moteur.
+     * La fonction en paramètre le delta time et le gestionnaire d'entrées.
+     */
+    void on_input(void (*func)(const InputManager&, double));
+
+    /**
      * @brief Ajoute à la file d'affichage
      */
     void on_display(void (*func)(Renderer*));
@@ -57,6 +64,14 @@ class CommandManager {
     void process_update(double dt) const;
 
     /**
+     * @brief Exécute périodiquement les fonctions dépendantes des entrées de l'utilisateur.
+     *
+     * @param input_manager, gestionnaire d'entrées utilisateur.
+     * @param dt, delta time du moteur.
+     */
+    void process_input(const InputManager& input_manager, double dt) const;
+
+    /**
      * @brief Exécute les fonctions d'affichage du moteur.
      *
      * @param renderer, instance du moteur de rendu.
@@ -66,6 +81,7 @@ class CommandManager {
   private:
     std::vector<void (*)()> setup_queue;
     std::vector<void (*)(double)> update_queue;
+    std::vector<void (*)(const InputManager&, double)> input_queue;
     std::vector<void (*)(Renderer*)> rendering_queue;
 };
 
