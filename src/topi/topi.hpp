@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include "renderer/renderer.hpp"
-#include "command/command.hpp"
+#include "command_manager/command_manager.hpp"
 #include "input_manager/input_manager.hpp"
 
 /**
@@ -48,12 +48,12 @@ class TopiEngine {
     /**
      * @brief Accesseur de l'interface des commandes du moteur.
      */
-    Command& on_command();
+    CommandManager& on_command();
 
   private:
     SDL_Window *window;
     Renderer *renderer;
-    Command command;
+    CommandManager command_manager;
     InputManager input_manager;
 };
 

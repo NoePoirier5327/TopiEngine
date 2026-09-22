@@ -6,11 +6,11 @@
 #include "../renderer/renderer.hpp"
 
 /**
- * @class Command
+ * @class CommandManager
  * @brief S'occupe de la communication entre le moteur et le programmeur.
  * Il ne peut exister qu'une seule instance de cette classe en mémoire.
  */
-class Command {
+class CommandManager {
   public:
     /**
      * @brief Instancie l'interface de commande avec l'utilisateur.
@@ -21,12 +21,12 @@ class Command {
      *
      * @throw std::runtime_error si une autre instance est détectée en mémoire.
      */
-    Command();
+    CommandManager();
 
     /**
      * @brief Désalloue l'instance courante.
      */
-    ~Command();
+    ~CommandManager();
 
     /**
      * @brief Ajoute à la file d'exécution une fonction à exécuter au démarrage du moteur.

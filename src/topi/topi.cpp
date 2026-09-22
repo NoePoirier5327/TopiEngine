@@ -72,7 +72,7 @@ void TopiEngine::run() {
   SDL_Event event;
 
   // On exécute les commandes de mise en place du jeu.
-  this->command.process_setup();
+  this->command_manager.process_setup();
 
   // Mise en place de la gestion du delta time.
   double max_dt = 1.0 / 60.0; // 60 fps
@@ -102,8 +102,8 @@ void TopiEngine::run() {
     }
 
     // On exécute les commandes du moteur.
-    this->command.process_update(dt);
-    this->command.process_display(this->renderer);
+    this->command_manager.process_update(dt);
+    this->command_manager.process_display(this->renderer);
 
     // On refraichi l'affichage.
     this->renderer->display();
@@ -123,6 +123,6 @@ TopiEngine::~TopiEngine() {
   AN_INSTANCE_IS_ALREADY_RUNNING = false;
 }
 
-Command& TopiEngine::on_command() {
-  return this->command;
+CommandManager& TopiEngine::on_command() {
+  return this->command_manager;
 }
