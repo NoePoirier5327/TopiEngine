@@ -3,6 +3,7 @@
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_video.h>
 #include <algorithm>
+#include <iostream>
 #include <stdexcept>
 #include <string>
 #include <chrono>
@@ -90,8 +91,15 @@ void TopiEngine::run() {
     auto current_tick = Clock::now();
     double dt = (static_cast<std::chrono::duration<double>>(current_tick - last_tick)).count();
     last_tick = current_tick;
-
     dt = std::min(dt, max_dt); // qu'on cape à 1/60
+    
+    if (this->input_manager.is_key_down(KEY_A)) {
+      std::cout << "Hello world!" << std::endl;
+    }
+
+    if (this->input_manager.is_key_down(KEY_B)) {
+      std::cout << "Bye world!" << std::endl;
+    }
 
     // On exécute les commandes du moteur.
     this->command.process_update(dt);

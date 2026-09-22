@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include "renderer/renderer.hpp"
 #include "command/command.hpp"
+#include "input_manager/input_manager.hpp"
 
 /**
  * @class TopiEngine
@@ -53,6 +54,7 @@ class TopiEngine {
     SDL_Window *window;
     Renderer *renderer;
     Command command;
+    InputManager input_manager;
 };
 
 #endif // !TOPI_HEADER
