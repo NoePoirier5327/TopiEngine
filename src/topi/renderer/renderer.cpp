@@ -1,6 +1,7 @@
 #include <SDL2/SDL_render.h>
 #include <memory>
 #include <stdexcept>
+#include <iostream>
 #include "renderer.hpp"
 #include "renderable_items/rectangle/rectangle.hpp"
 #include "renderable_items/renderable_item.hpp"
@@ -47,6 +48,8 @@ void Renderer::display() {
   for (const std::unique_ptr<RenderableItem> &item : this->rendering_queue) {
     item->display(this->renderer);
   }
+
+  this->rendering_queue.clear();
 
   // On applique le buffer à l'écran.
   SDL_RenderPresent(this->renderer);
