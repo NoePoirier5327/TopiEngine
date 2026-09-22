@@ -31,6 +31,7 @@ int main() {
   topi.on_command().on_update(update_function);
   topi.on_command().on_display(drawing_function);
   topi.on_command().on_input(input_function);
+
   topi.run();
 
   return 0;
