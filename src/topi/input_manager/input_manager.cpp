@@ -16,7 +16,7 @@ InputManager::~InputManager() {
   AN_INSTANCE_IS_ALREADY_RUNNING = false;
 }
 
-bool InputManager::is_key_down(uint16_t key_code) {
+bool InputManager::is_key_down(uint16_t key_code) const {
   SDL_Scancode scancode = SDL_GetScancodeFromKey(key_code);
   return this->keyboard_state[scancode] != 0;
 }

@@ -77,7 +77,7 @@ class InputManager {
      *
      * @return true si touche pressée, false sinon.
      */
-    bool is_key_down(uint16_t key_code);
+    bool is_key_down(uint16_t key_code) const;
 
   private:
     const uint8_t *keyboard_state;
