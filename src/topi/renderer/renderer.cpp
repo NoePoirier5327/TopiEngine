@@ -56,5 +56,8 @@ void Renderer::display() {
 }
 
 void Renderer::new_colored_filled_rectangle(int x, int y, size_t w, size_t h, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-  this->rendering_queue.push_back(std::make_unique<ColoredFilledRectangle>(ColoredFilledRectangle(x, y, w, h, r, g, b, a)));
+  // On s'épargne de l'allocation si un objet est inaffichable car complétement transparent.
+  if (a != 0) {
+    this->rendering_queue.push_back(std::make_unique<ColoredFilledRectangle>(ColoredFilledRectangle(x, y, w, h, r, g, b, a)));
+  }
 }
