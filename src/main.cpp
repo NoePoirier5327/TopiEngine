@@ -5,7 +5,7 @@
 int main() {
   TopiEngine topi = TopiEngine("Test", 400, 800);
 
-  MultilayerColoredTilemap tilemap = MultilayerColoredTilemap(10, 20, 2, 32, 32);
+  MultilayerColoredTilemap tilemap = MultilayerColoredTilemap(10, 20, 2);
   tilemap.new_tile(0, 255, 100, 100, 255);
   tilemap.new_tile(1, 100, 255, 100, 255);
   tilemap.new_tile(2, 100, 100, 255, 255);
