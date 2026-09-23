@@ -2,6 +2,7 @@
 #define COMMAND_HEADER
 
 #include <cstdlib>
+#include <functional>
 #include <vector>
 #include "../renderer/renderer.hpp"
 #include "../input_manager/input_manager.hpp"
@@ -32,24 +33,24 @@ class CommandManager {
     /**
      * @brief Ajoute à la file d'exécution une fonction à exécuter au démarrage du moteur.
      */
-    void on_setup(void (*func)());
+    void on_setup(const std::function<void ()> &func);
 
     /**
      * @brief Ajoute à la file d'exécution une fonction à exécuter périodiquement.
      * La fonction en paramètre prend le delta time du moteur.
      */
-    void on_update(void (*func)(double));
+    void on_update(const std::function<void (double)> &func);
 
     /**
      * @brief Ajoute à la file d'exécution une fonction gérant les entrées claviers vis-à-vis du moteur.
      * La fonction en paramètre le delta time et le gestionnaire d'entrées.
      */
-    void on_input(void (*func)(const InputManager&, double));
+    void on_input(const std::function<void (const InputManager&, double)> &func);
 
     /**
      * @brief Ajoute à la file d'affichage
      */
-    void on_display(void (*func)(Renderer*));
+    void on_display(const std::function<void (Renderer*)> &func);
 
     /**
      * @brief Exécute les fonctions de démarrage au démarrage du moteur.
@@ -79,10 +80,10 @@ class CommandManager {
     void process_display(Renderer *renderer) const;
 
   private:
-    std::vector<void (*)()> setup_queue;
-    std::vector<void (*)(double)> update_queue;
-    std::vector<void (*)(const InputManager&, double)> input_queue;
-    std::vector<void (*)(Renderer*)> rendering_queue;
+    std::vector<std::function<void ()>> setup_queue;
+    std::vector<std::function<void (double)>> update_queue;
+    std::vector<std::function<void (const InputManager&, double)>> input_queue;
+    std::vector<std::function<void (Renderer*)>> rendering_queue;
 };
 
 #endif // !COMMAND_HEADER
