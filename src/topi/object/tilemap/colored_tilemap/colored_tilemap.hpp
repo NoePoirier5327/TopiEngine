@@ -22,8 +22,19 @@ class ColoredTilemap {
      * @param y_offset, position en y du tilemap à afficher, par défaut à 0.
      * @param tile_width, largeur des tuiles de la tilemap à instancier, par défaut à 32.
      * @param tile_height, hauteur des tuiles de la tilemap à instancier, par défaut à 32.
+     * @param is_x_flipped, détermine si on affiche la dernière tuile en x de la tilemap à gauche ou non, par défaut false donc non.
+     * @param is_y_flipped, détermine si on offiche la dernière tuile en y de la tilemap en haut ou non, par défaut false donc non.
      */
-    ColoredTilemap(size_t map_width, size_t map_height, int x_offset = 0, int y_offset = 0, size_t tile_width = 32, size_t tile_height = 32);
+    ColoredTilemap(
+        size_t map_width,
+        size_t map_height,
+        int x_offset = 0,
+        int y_offset = 0,
+        size_t tile_width = 32,
+        size_t tile_height = 32,
+        bool is_x_flipped = false,
+        bool is_y_flipped = false
+    );
 
     /**
      * @brief Désalloue le tilemap courante.
@@ -110,6 +121,16 @@ class ColoredTilemap {
     uint64_t& operator()(size_t x, size_t y);
 
     /**
+     * @brief Inverse l'ordre d'affichage des tuiles en x.
+     */
+    void flip_x();
+
+    /**
+     * @brief Inverse l'ordre d'affichage des tuiles en y.
+     */
+    void flip_y();
+
+    /**
      * @brief Affiche la tilemap interne via le moteur de rendue du moteur.
      *
      * @param renderer, instance du moteur de rendue.
@@ -127,6 +148,8 @@ class ColoredTilemap {
     size_t tile_height;
     int x_offset;
     int y_offset;
+    bool is_x_flipped;
+    bool is_y_flipped;
 };
 
 #endif // !COLORED_TILEMAP_HEADER
