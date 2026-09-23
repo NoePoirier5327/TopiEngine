@@ -19,12 +19,22 @@ class MultilayerColoredTilemap {
      * @param map_width, largeur de la tilemap à instancier.
      * @param map_height, hauteur de la tilemap à instancier.
      * @param nb_layer, nombre de couche du tilemap, au minimum 1.
-     * @param tile_width, largeur des tuiles de la tilemap à instancier.
-     * @param tile_height, hauteur des tuiles de la tilemap à instancier.
+     * @param x_offset, position en x de la tilemap à afficher, par défaut à 0.
+     * @param y_offset, position en y de la tilemap à afficher, par défaut à 0.
+     * @param tile_width, largeur des tuiles de la tilemap à instancier, par défaut à 32.
+     * @param tile_height, hauteur des tuiles de la tilemap à instancier, par défaut à 32.
      *
      * @throw std::invalid_argument si nb_layer < 1
      */
-    MultilayerColoredTilemap(size_t map_width, size_t map_height, size_t nb_layer, size_t tile_width, size_t tile_height);
+    MultilayerColoredTilemap(
+        size_t map_width,
+        size_t map_height,
+        size_t nb_layer,
+        int x_offset = 0,
+        int y_offset = 0,
+        size_t tile_width = 32,
+        size_t tile_height = 32
+    );
 
     /**
      * @brief Désalloue le tilemap courante.
@@ -138,6 +148,8 @@ class MultilayerColoredTilemap {
     size_t nb_layer;
     size_t tile_width;
     size_t tile_height;
+    int x_offset;
+    int y_offset;
 };
 
 #endif // !MULTILAYER_COLORED_TILEMAP_HEADER

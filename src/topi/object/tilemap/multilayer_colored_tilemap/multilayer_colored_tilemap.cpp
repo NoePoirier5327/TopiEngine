@@ -1,12 +1,14 @@
 #include "multilayer_colored_tilemap.hpp"
 #include <iostream>
 
-MultilayerColoredTilemap::MultilayerColoredTilemap(size_t _map_width, size_t _map_height, size_t _nb_layer, size_t _tile_width, size_t _tile_height) {
+MultilayerColoredTilemap::MultilayerColoredTilemap(size_t _map_width, size_t _map_height, size_t _nb_layer, int _x_offset, int _y_offset, size_t _tile_width, size_t _tile_height) {
   this->map_width = _map_width;
   this->map_height = _map_height;
   this->nb_layer = _nb_layer;
   this->tile_width = _tile_width;
   this->tile_height = _tile_height;
+  this->x_offset = _x_offset;
+  this->y_offset = _y_offset;
 
   this->tilemap = new uint64_t [this->map_width * this->map_height * this->nb_layer];
   for (size_t i = 0; i < this->map_width * this->map_height * this->nb_layer; ++i) {
@@ -101,8 +103,8 @@ void MultilayerColoredTilemap::display(Renderer *renderer, size_t layer) const {
 
       SDL_Color current_color = this->tileset.at(current_tile);
       renderer->new_colored_filled_rectangle(
-          static_cast<int>(x * this->tile_width),
-          static_cast<int>(y * this->tile_height),
+          static_cast<int>((x + this->x_offset) * this->tile_width),
+          static_cast<int>((y + this->y_offset) * this->tile_height),
           this->tile_width,
           this->tile_height,
           current_color.r,

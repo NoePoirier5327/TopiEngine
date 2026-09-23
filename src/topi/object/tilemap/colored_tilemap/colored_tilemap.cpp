@@ -1,11 +1,13 @@
 #include "colored_tilemap.hpp"
 #include <iostream>
 
-ColoredTilemap::ColoredTilemap(size_t _map_width, size_t _map_height, size_t _tile_width, size_t _tile_height) {
+ColoredTilemap::ColoredTilemap(size_t _map_width, size_t _map_height, int _x_offset, int _y_offset, size_t _tile_width, size_t _tile_height) {
   this->map_width = _map_width;
   this->map_height = _map_height;
   this->tile_width = _tile_width;
   this->tile_height = _tile_height;
+  this->x_offset = _x_offset;
+  this->y_offset = _y_offset;
 
   this->tilemap = new uint64_t [this->map_width * this->map_height];
   for (size_t i = 0; i < this->map_width * this->map_height; ++i) {
@@ -91,8 +93,8 @@ void ColoredTilemap::display(Renderer *renderer) const {
 
       SDL_Color current_color = this->tileset.at(current_tile);
       renderer->new_colored_filled_rectangle(
-          static_cast<int>(x * this->tile_width),
-          static_cast<int>(y * this->tile_height),
+          static_cast<int>((x + this->x_offset) * this->tile_width),
+          static_cast<int>((y + this->y_offset) * this->tile_height),
           this->tile_width,
           this->tile_height,
           current_color.r,
