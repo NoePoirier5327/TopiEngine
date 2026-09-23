@@ -103,8 +103,8 @@ void MultilayerColoredTilemap::display(Renderer *renderer, size_t layer) const {
 
       SDL_Color current_color = this->tileset.at(current_tile);
       renderer->new_colored_filled_rectangle(
-          static_cast<int>((x + this->x_offset) * this->tile_width),
-          static_cast<int>((y + this->y_offset) * this->tile_height),
+          static_cast<int>(x * this->tile_width + this->x_offset),
+          static_cast<int>(y * this->tile_height + this->y_offset),
           this->tile_width,
           this->tile_height,
           current_color.r,
