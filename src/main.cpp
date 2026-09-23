@@ -20,11 +20,22 @@ int main() {
     tilemap(x, 19, 1) = 0;
   }
 
-  tilemap.flip_y();
-  tilemap.flip_x();
+  size_t current_layer = 1;
 
-  topi.on_command().on_display([&tilemap](Renderer *renderer) {
-    tilemap.display(renderer, 1);
+  topi.on_command().on_input([&tilemap, &current_layer](const InputManager& input_manager, double dt) {
+    if (input_manager.is_just_key_pressed(KEY_A)) {
+      tilemap.flip_x();
+    }
+    if (input_manager.is_just_key_pressed(KEY_Z)) {
+      tilemap.flip_y();
+    }
+    if (input_manager.is_just_key_pressed(KEY_E)) {
+      current_layer = (current_layer + 1) % 2;
+    }
+  });
+
+  topi.on_command().on_display([&tilemap, &current_layer](Renderer *renderer) {
+    tilemap.display(renderer, current_layer);
   });
 
   topi.run();
