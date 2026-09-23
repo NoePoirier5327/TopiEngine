@@ -1,36 +1,24 @@
-#include "topi/input_manager/input_manager.hpp"
+#include "topi/object/tilemap/tilemap.hpp"
 #include "topi/topi.hpp"
-#include <iostream>
-
-void setup_function() {
-  std::cout << "I'm called on setup." << std::endl;
-}
-
-void update_function(double dt) {
-  std::cout << "I'm called on update : " << dt << std::endl;
-}
-
-void input_function(const InputManager& input_manager, double dt) {
-  if (input_manager.is_key_down(KEY_A)) {
-    std::cout << "The A button is pressed." << std::endl;
-  }
-
-  if (input_manager.is_key_down(KEY_Z)) {
-    std::cout << "The Z button is pressed." << std::endl;
-  }
-}
-
-void drawing_function(Renderer* renderer) {
-  renderer->new_colored_filled_rectangle(0, 0, 100, 300, 255, 100, 100, 255);
-}
+#include <cstdint>
 
 int main() {
-  TopiEngine topi = TopiEngine("Test", 480, 300);
+  TopiEngine topi = TopiEngine("Test", 400, 800);
 
-  topi.on_command().on_setup(setup_function);
-  topi.on_command().on_update(update_function);
-  topi.on_command().on_display(drawing_function);
-  topi.on_command().on_input(input_function);
+  ColoredTilemap tilemap = ColoredTilemap(10, 20, 32, 32);
+  tilemap.new_tile(0, 255, 100, 100, 255);
+  tilemap.new_tile(1, 100, 255, 100, 255);
+  tilemap.new_tile(2, 100, 100, 255, 255);
+
+  for (size_t x = 0; x < 10; ++x) {
+    for (size_t y = 0; y < 20; ++y) {
+      tilemap(x, y) = static_cast<uint64_t>((x + y) % 3);
+    }
+  }
+
+  topi.on_command().on_display([&tilemap](Renderer *renderer) {
+      tilemap.display(renderer);
+  });
 
   topi.run();
 
