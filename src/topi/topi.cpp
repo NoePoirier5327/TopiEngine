@@ -97,6 +97,9 @@ void TopiEngine::run() {
     this->command_manager.process_update(dt);
     this->command_manager.process_display(this->renderer);
 
+     // On met à jour les buffers d'entrées utilisateur.
+    this->input_manager.update();
+
     // On refraichi l'affichage.
     this->renderer->display();
   }

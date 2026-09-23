@@ -1,7 +1,6 @@
 #ifndef INPUT_MANAGER_HEADER
 #define INPUT_MANAGER_HEADER
 
-#include <SDL2/SDL_keycode.h>
 #include <cstdint>
 #include <SDL2/SDL.h>
 
@@ -71,6 +70,11 @@ class InputManager {
     ~InputManager();
 
     /**
+     * @brief Met à jour les buffers de scan des entrées utilisateur vers le programme.
+     */
+    void update();
+
+    /**
      * @brief Vérifie que la touche en paramètre est pressé par l'utilisateur.
      *
      * @param key_code, identifiant de la touche du clavier pressé dont on veut savoir si elle est pressée.
@@ -79,8 +83,18 @@ class InputManager {
      */
     bool is_key_down(uint16_t key_code) const;
 
+    /**
+     * @brief Détermine si la touche en paramètre est appuyé mais pas maintenu par l'utilisateur.
+     *
+     * @param key_code, identifiant de la touche dont on veut savoir si elle est pressée.
+     *
+     * @return true si touche pressé, false sinon.
+     */
+    bool is_just_key_pressed(uint16_t key_code) const;
+
   private:
     const uint8_t *keyboard_state;
+    uint8_t prev_keyboard_states[SDL_NUM_SCANCODES];
 };
 
 #endif // !INPUT_MANAGER_HEADER
