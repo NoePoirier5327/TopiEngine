@@ -1,7 +1,7 @@
 #include "multilayer_colored_tilemap.hpp"
 #include <iostream>
 
-MultilayerColoredTilemap::MultilayerColoredTilemap(size_t _map_width, size_t _map_height, size_t _nb_layer, int _x_offset, int _y_offset, size_t _tile_width, size_t _tile_height) {
+MultilayerColoredTilemap::MultilayerColoredTilemap(size_t _map_width, size_t _map_height, size_t _nb_layer, int _x_offset, int _y_offset, size_t _tile_width, size_t _tile_height, bool _is_x_flipped, bool _is_y_flipped) {
   this->map_width = _map_width;
   this->map_height = _map_height;
   this->nb_layer = _nb_layer;
@@ -9,6 +9,8 @@ MultilayerColoredTilemap::MultilayerColoredTilemap(size_t _map_width, size_t _ma
   this->tile_height = _tile_height;
   this->x_offset = _x_offset;
   this->y_offset = _y_offset;
+  this->is_x_flipped = _is_x_flipped;
+  this->is_y_flipped = _is_y_flipped;
 
   this->tilemap = new uint64_t [this->map_width * this->map_height * this->nb_layer];
   for (size_t i = 0; i < this->map_width * this->map_height * this->nb_layer; ++i) {
@@ -78,6 +80,14 @@ size_t& MultilayerColoredTilemap::operator()(size_t x, size_t y, size_t layer) {
   return this->tilemap[x + this->map_width * (y + this->map_height * layer)];
 }
 
+void MultilayerColoredTilemap::flip_x() {
+  this->is_x_flipped = !this->is_x_flipped;
+}
+
+void MultilayerColoredTilemap::flip_y() {
+  this->is_y_flipped = !this->is_y_flipped;
+}
+
 void MultilayerColoredTilemap::display(Renderer *renderer, size_t layer) const {
   if (this->tileset.empty()) {
     throw std::runtime_error("No tile to display.");
@@ -94,7 +104,7 @@ void MultilayerColoredTilemap::display(Renderer *renderer, size_t layer) const {
 
       // On vérifie qu'on a une couleur d'affichage pour la tuile courante.
       if (this->tileset.find(current_tile) == this->tileset.end()) {
-        std::string to_display = "Wether there is no color to display the `";
+        std::string to_display = "Whether there is no color to display the `";
         to_display += std::to_string(current_tile);
         to_display += "` or the tilemap is not correctly initialised.";
 
@@ -102,9 +112,12 @@ void MultilayerColoredTilemap::display(Renderer *renderer, size_t layer) const {
       }
 
       SDL_Color current_color = this->tileset.at(current_tile);
+      size_t dx = (this->is_x_flipped ? this->map_width - x - 1 : x);
+      size_t dy = (this->is_y_flipped ? this->map_height - y - 1 : y);
+
       renderer->new_colored_filled_rectangle(
-          static_cast<int>(x * this->tile_width + this->x_offset),
-          static_cast<int>(y * this->tile_height + this->y_offset),
+          static_cast<int>(dx * this->tile_width + this->x_offset),
+          static_cast<int>(dy * this->tile_height + this->y_offset),
           this->tile_width,
           this->tile_height,
           current_color.r,
