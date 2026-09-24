@@ -51,13 +51,13 @@ namespace topi {
       /**
       * @brief Accesseur de l'interface des commandes du moteur.
       */
-      CommandManager& on_command();
+      command::CommandManager& on_command();
 
     private:
       SDL_Window *window;
-      Renderer *renderer;
-      CommandManager command_manager;
-      InputManager input_manager;
+      render::Renderer *renderer;
+      command::CommandManager command_manager;
+      input::InputManager input_manager;
   };
 }
 

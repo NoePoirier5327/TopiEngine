@@ -50,7 +50,7 @@ namespace topi {
 
     // On instancie le renderer du moteur.
     try {
-      this->renderer = new Renderer(this->window);
+      this->renderer = new render::Renderer(this->window);
     } 
     catch (std::runtime_error &e) {
       // On désalloue la fenêtre.
@@ -118,7 +118,7 @@ namespace topi {
     AN_INSTANCE_IS_ALREADY_RUNNING = false;
   }
 
-  CommandManager& TopiEngine::on_command() {
+  command::CommandManager& TopiEngine::on_command() {
     return this->command_manager;
   }
 }
