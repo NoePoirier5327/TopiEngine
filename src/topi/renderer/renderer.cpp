@@ -1,7 +1,6 @@
 #include <SDL2/SDL_render.h>
 #include <memory>
 #include <stdexcept>
-#include <iostream>
 #include "renderer.hpp"
 #include "renderable_items/rectangle/rectangle.hpp"
 #include "renderable_items/renderable_item.hpp"
