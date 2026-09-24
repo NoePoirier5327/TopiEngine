@@ -5,6 +5,7 @@
 #include "renderer/renderer.hpp"
 #include "command_manager/command_manager.hpp"
 #include "input_manager/input_manager.hpp"
+#include "object/tilemap/tilemap.hpp"
 
 /**
  * @class TopiEngine
