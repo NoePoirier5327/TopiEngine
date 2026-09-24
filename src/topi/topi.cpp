@@ -14,6 +14,9 @@ using Clock = std::chrono::high_resolution_clock;
 static bool AN_INSTANCE_IS_ALREADY_RUNNING = false;
 
 TopiEngine::TopiEngine(const char *name, int width, int height) {
+  // Démarrage de l'aléatoire sur le système.
+  srand(static_cast<unsigned int>(time(nullptr)));
+
   if (AN_INSTANCE_IS_ALREADY_RUNNING) {
     throw std::runtime_error("There should be only as single instance of the engine running in memory.");
   }
