@@ -4,7 +4,7 @@
 #include <cstdint>
 
 int main() {
-  TopiEngine topi = TopiEngine("Test", 400, 800);
+  topi::TopiEngine topi = topi::TopiEngine("Test", 400, 800);
 
   ColoredTilemap tilemap = ColoredTilemap(10, 20, 2);
   tilemap.new_tile(0, 255, 100, 100, 255);
