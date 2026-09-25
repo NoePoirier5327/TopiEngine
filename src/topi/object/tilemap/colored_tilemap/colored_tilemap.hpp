@@ -20,8 +20,6 @@ namespace topi::object::tilemap {
        * @param map_width, largeur de la tilemap à instancier.
        * @param map_height, hauteur de la tilemap à instancier.
        * @param nb_layer, nombre de couche du tilemap, au minimum 1, par défaut à 1.
-       * @param x_offset, position en x de la tilemap à afficher, par défaut à 0.
-       * @param y_offset, position en y de la tilemap à afficher, par défaut à 0.
        * @param tile_width, largeur des tuiles de la tilemap à instancier, par défaut à 32.
        * @param tile_height, hauteur des tuiles de la tilemap à instancier, par défaut à 32.
        * @param is_x_flipped, détermine si on affiche la dernière tuile en x de la tilemap à gauche ou non, par défaut false donc non.
@@ -33,8 +31,6 @@ namespace topi::object::tilemap {
         size_t map_width,
         size_t map_height,
         size_t nb_layer = 1,
-        int x_offset = 0,
-        int y_offset = 0,
         size_t tile_width = 32,
         size_t tile_height = 32,
         bool is_x_flipped = false,
@@ -149,11 +145,15 @@ namespace topi::object::tilemap {
        *
        * @param renderer, instance du moteur de rendue.
        * @param layer, couche à afficher, par défaut à 0.
+       * @param x_offset, offset d'affichage en x de la tilemap courante, par défaut à 0.0.
+       * @param y_offset, offset d'affichage en y de la tilemap courante, par défaut à 0.0.
+       * @param zoom, taux d'agrandissement d'affichage de la tilemap courante, par défaut à 1.0.
        *
        * @throw std::runtime_error si tileset vide.
        * @throw std::invalid_argument si layer >= nb_layer.
+       * @throw std::invalid_argument si zoom <= 0
        */
-      void display(render::Renderer* renderer, size_t layer = 0) const;
+      void display(render::Renderer* renderer, size_t layer = 0, double x_offset = 0.0, double y_offset = 0.0, double zoom = 1.0) const;
 
     private:
       std::map<uint64_t, SDL_Color> tileset;
@@ -163,8 +163,6 @@ namespace topi::object::tilemap {
       size_t nb_layer;
       size_t tile_width;
       size_t tile_height;
-      int x_offset;
-      int y_offset;
       bool is_x_flipped;
       bool is_y_flipped;
   };

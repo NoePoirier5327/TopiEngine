@@ -3,7 +3,7 @@
 #include <iostream>
 
 int main() {
-  topi::TopiEngine topi = topi::TopiEngine("Test", 400, 800);
+  topi::TopiEngine topi = topi::TopiEngine("Test", 800, 1600);
 
   topi::object::tilemap::ColoredTilemap tilemap = topi::object::tilemap::ColoredTilemap(10, 20, 2);
   tilemap.new_tile(0, 255, 100, 100, 255);
@@ -39,7 +39,7 @@ int main() {
   });
 
   topi.on_command().on_display([&tilemap, &current_layer](topi::render::Renderer *renderer) {
-    tilemap.display(renderer, current_layer);
+    tilemap.display(renderer, current_layer, 80.0, 140.0, 2.0);
   });
 
   topi.run();

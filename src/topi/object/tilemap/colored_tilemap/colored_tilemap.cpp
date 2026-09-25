@@ -2,14 +2,12 @@
 #include <iostream>
 
 namespace topi::object::tilemap {
-  ColoredTilemap::ColoredTilemap(size_t _map_width, size_t _map_height, size_t _nb_layer, int _x_offset, int _y_offset, size_t _tile_width, size_t _tile_height, bool _is_x_flipped, bool _is_y_flipped) {
+  ColoredTilemap::ColoredTilemap(size_t _map_width, size_t _map_height, size_t _nb_layer, size_t _tile_width, size_t _tile_height, bool _is_x_flipped, bool _is_y_flipped) {
     this->map_width = _map_width;
     this->map_height = _map_height;
     this->nb_layer = _nb_layer;
     this->tile_width = _tile_width;
     this->tile_height = _tile_height;
-    this->x_offset = _x_offset;
-    this->y_offset = _y_offset;
     this->is_x_flipped = _is_x_flipped;
     this->is_y_flipped = _is_y_flipped;
 
@@ -89,7 +87,7 @@ namespace topi::object::tilemap {
     this->is_y_flipped = !this->is_y_flipped;
   }
 
-  void ColoredTilemap::display(render::Renderer *renderer, size_t layer) const {
+  void ColoredTilemap::display(render::Renderer *renderer, size_t layer, double x_offset, double y_offset, double zoom) const {
     if (this->tileset.empty()) {
       throw std::runtime_error("No tile to display.");
     }
@@ -97,6 +95,10 @@ namespace topi::object::tilemap {
     if (layer >= this->nb_layer) {
       std::string error = "The layer `" + std::to_string(layer) + "` is unaccessible.";
       throw std::invalid_argument(error);
+    }
+
+    if (zoom <= 0.0) {
+      throw std::invalid_argument("The zoom factor should be superior to 0.");
     }
 
     for (size_t x = 0; x < this->map_width; ++x) {
@@ -117,10 +119,10 @@ namespace topi::object::tilemap {
         size_t dy = (this->is_y_flipped ? this->map_height - y - 1 : y);
 
         renderer->new_colored_filled_rectangle(
-          static_cast<int>(dx * this->tile_width + this->x_offset),
-          static_cast<int>(dy * this->tile_height + this->y_offset),
-          this->tile_width,
-          this->tile_height,
+          static_cast<int>(static_cast<double>(dx) * static_cast<double>(this->tile_width) * zoom + x_offset),
+          static_cast<int>(static_cast<double>(dy) * static_cast<double>(this->tile_height) * zoom + y_offset),
+          static_cast<size_t>(static_cast<double>(this->tile_width) * zoom),
+          static_cast<size_t>(static_cast<double>(this->tile_height) * zoom),
           current_color.r,
           current_color.g,
           current_color.b,
