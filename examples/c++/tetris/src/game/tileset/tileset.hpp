@@ -7,7 +7,7 @@
 /**
  * @brief Initialise et renvoie une nouvelle carte vide pour le jeu.
  */
-ColoredTilemap* new_map();
+topi::object::tilemap::ColoredTilemap* new_map();
 
 /**
  * @brief Type de données réprésentant les tuiles de la tilemap du jeu.

@@ -1,8 +1,9 @@
 #include <topi/topi.hpp>
+#include <ctime>
 #include "game/game.hpp"
 
 int main() {
-  TopiEngine topi = TopiEngine("Tetris", 320, 640);
+  topi::TopiEngine topi = topi::TopiEngine("Tetris", 320, 640);
 
   Game game;
 
@@ -10,7 +11,7 @@ int main() {
     game.update();
   });
 
-  topi.on_command().on_display([&game](Renderer *renderer) {
+  topi.on_command().on_display([&game](topi::render::Renderer *renderer) {
     game.display(renderer);
   });
 

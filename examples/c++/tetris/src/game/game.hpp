@@ -27,10 +27,10 @@ class Game {
     /**
      * @brief Met à jour l'affichage du jeu.
      */
-    void display(Renderer *renderer) const;
+    void display(topi::render::Renderer *renderer) const;
 
   private:
-    ColoredTilemap *map;
+    topi::object::tilemap::ColoredTilemap *map;
 };
 
 #endif // !GAME_HEADER

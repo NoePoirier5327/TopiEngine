@@ -1,7 +1,7 @@
 #include "tileset.hpp"
 
-ColoredTilemap* new_map() {
-  ColoredTilemap* map = new ColoredTilemap(10, 20, 3, 0, 0, 32, 32, false, true);
+topi::object::tilemap::ColoredTilemap* new_map() {
+  topi::object::tilemap::ColoredTilemap* map = new topi::object::tilemap::ColoredTilemap(10, 20, 3, 32, 32, false, true);
 
   map->new_tile(empty_tile, 20, 52, 100, 255);
   map->new_tile(transparent_tile, 0, 0, 0, 0);
