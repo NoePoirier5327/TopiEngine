@@ -6,6 +6,7 @@
 #include "command_manager/command_manager.hpp"
 #include "input_manager/input_manager.hpp"
 #include "object/tilemap/tilemap.hpp"
+#include "tools/random/random.hpp"
 
 
 namespace topi {

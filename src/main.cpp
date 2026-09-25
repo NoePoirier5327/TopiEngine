@@ -1,7 +1,6 @@
-#include "topi/input_manager/input_manager.hpp"
-#include "topi/object/tilemap/tilemap.hpp"
 #include "topi/topi.hpp"
 #include <cstdint>
+#include <iostream>
 
 int main() {
   topi::TopiEngine topi = topi::TopiEngine("Test", 400, 800);
@@ -32,6 +31,11 @@ int main() {
     if (input_manager.is_just_key_pressed(topi::input::keycode::KEY_E)) {
       current_layer = (current_layer + 1) % 2;
     }
+  });
+
+  topi.on_command().on_update([](double dt) {
+    std::cout << topi::tools::random::randrange(-3, 8) << std::endl;
+    std::cout << topi::tools::random::randrange(-5.0, 8.0) << std::endl;
   });
 
   topi.on_command().on_display([&tilemap, &current_layer](topi::render::Renderer *renderer) {
