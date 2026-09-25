@@ -1,4 +1,6 @@
 bin
 obj
 docs
+include
+lib
 .clangd
