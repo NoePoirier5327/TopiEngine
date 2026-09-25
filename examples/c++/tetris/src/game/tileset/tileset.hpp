@@ -4,6 +4,9 @@
 #include <cstdint>
 #include <topi/topi.hpp>
 
+const size_t MAP_WIDTH = 10;
+const size_t MAP_HEIGHT = 20;
+
 /**
  * @brief Initialise et renvoie une nouvelle carte vide pour le jeu.
  */
