@@ -1,5 +1,4 @@
 #include "topi/topi.hpp"
-#include <iostream>
 
 using namespace topi::tools::vector;
 
@@ -8,9 +7,9 @@ int main() {
   Vector2i v = u * 2;
   Vector2i w = u + v;
 
-  u.cli_disp();
-  v.cli_disp();
-  w.cli_disp();
+  u.debug_disp();
+  v.debug_disp();
+  w.debug_disp();
 
   return 0;
 }

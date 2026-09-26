@@ -57,7 +57,7 @@ namespace topi::tools::vector {
     return *this;
   }
 
-  void Vector2i::cli_disp() const {
+  void Vector2i::debug_disp() const {
     std::cout << "( x: " << this->x << ", y: " << this->y << " )" << std::endl;
   }
 }

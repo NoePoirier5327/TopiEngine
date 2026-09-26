@@ -98,7 +98,7 @@ namespace topi::tools::vector {
       /**
        * @brief Affiche le contenu du vecteur courant sur la console.
        */
-      void cli_disp() const;
+      void debug_disp() const;
 
       int x;
       int y;
