@@ -84,13 +84,31 @@ bool Tetromino::insert_in_map(topi::object::tilemap::ColoredTilemap *map) const 
 bool Tetromino::can_fall(topi::object::tilemap::ColoredTilemap *map) const {
   bool can_fall = true;
 
-  // On vérifie sur le plan finale si le tetromino va en toucher un autre.
+  // On vérifie si on touche le sol.
   size_t x = 0;
   while (x < this->size && can_fall) {
     size_t y = 0;
     while (y < this->size && can_fall) {
       if (this->content[x + y * this->size] != transparent_tile) {
         can_fall = can_fall & (this->pos->y - static_cast<int>(y) > 0);
+      }
+      ++y;
+    }
+    ++x;
+  }
+
+  // Si on ne peut pas déjà continuer, on s'épargne le reste des calculs.
+  if (!can_fall) {
+    return can_fall;
+  }
+
+  // On vérifie que le tetromino ne va pas en toucher un autre.
+  x = 0;
+  while (x < this->size && can_fall) {
+    size_t y = 0;
+    while (y < this->size && can_fall) {
+      if (this->content[x + y * this->size] != transparent_tile) {
+        can_fall = can_fall & ((*map)(static_cast<size_t>(this->pos->x) + x, static_cast<size_t>(this->pos->y) - y - 1, 0) == transparent_tile);
       }
       ++y;
     }
