@@ -23,7 +23,6 @@ enum TileType : uint64_t {
   tetro_tile_L,
   tetro_tile_S,
   tetro_tile_Z,
-  empty_tile,
   transparent_tile
 };
 
