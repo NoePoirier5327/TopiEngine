@@ -6,8 +6,8 @@ topi::object::tilemap::ColoredTilemap* new_map() {
   map->new_tile(empty_tile, 20, 52, 100, 255);
   map->new_tile(transparent_tile, 0, 0, 0, 0);
   map->new_tile(tetro_tile_I, 32, 214, 199, 255);
-  map->new_tile(tetro_tile_T, 255, 252, 64, 255);
-  map->new_tile(tetro_tile_O, 188, 74, 155, 255);
+  map->new_tile(tetro_tile_O, 255, 252, 64, 255);
+  map->new_tile(tetro_tile_T, 188, 74, 155, 255);
   map->new_tile(tetro_tile_L, 250, 106, 10, 255);
   map->new_tile(tetro_tile_J, 40, 92, 196, 255);
   map->new_tile(tetro_tile_Z, 89, 193, 53, 255);
