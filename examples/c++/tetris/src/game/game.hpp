@@ -32,7 +32,7 @@ class Game {
 
   private:
     topi::object::tilemap::ColoredTilemap *map;
-    Tetromino tetromino;
+    Tetromino *tetromino;
 };
 
 #endif // !GAME_HEADER

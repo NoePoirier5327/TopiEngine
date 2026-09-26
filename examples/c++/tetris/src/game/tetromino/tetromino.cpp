@@ -1,4 +1,5 @@
 #include "tetromino.hpp"
+#include <iostream>
 
 const TileType TETROMINOS[65] = {
   // I
@@ -58,7 +59,6 @@ Tetromino::Tetromino() {
 
   // On détermine la position du tetromino courant sur la grille de jeu.
   this->pos = new topi::tools::vector::Vector2i((this->size % 2 == 0 ? static_cast<int>(static_cast<float>(MAP_WIDTH - this->size) / 2) : MAP_WIDTH / 2 - 1), MAP_HEIGHT - 1);
-  //this->pos->cli_disp();
 }
 
 Tetromino::~Tetromino() {
@@ -67,10 +67,39 @@ Tetromino::~Tetromino() {
   }
 }
 
-void Tetromino::insert_in_map(topi::object::tilemap::ColoredTilemap *map) const {
+bool Tetromino::insert_in_map(topi::object::tilemap::ColoredTilemap *map) const {
+  bool can_fall = this->can_fall(map);
+
   for (size_t x = 0; x < this->size; ++x) {
     for (size_t y = 0; y < this->size; ++y) {
-      (*map)(static_cast<size_t>(this->pos->x) + x, static_cast<size_t>(this->pos->y) - y, 2) = this->content[x + y * this->size];
+      if (this->content[x + y * this->size] != transparent_tile) {
+        (*map)(static_cast<size_t>(this->pos->x) + x, static_cast<size_t>(this->pos->y) - y, can_fall ? 1 : 0) = this->content[x + y * this->size];
+      }
     }
   }
+
+  return can_fall;
+}
+
+bool Tetromino::can_fall(topi::object::tilemap::ColoredTilemap *map) const {
+  bool can_fall = true;
+
+  // On vérifie sur le plan finale si le tetromino va en toucher un autre.
+  size_t x = 0;
+  while (x < this->size && can_fall) {
+    size_t y = 0;
+    while (y < this->size && can_fall) {
+      if (this->content[x + y * this->size] != transparent_tile) {
+        can_fall = can_fall & (this->pos->y - static_cast<int>(y) > 0);
+      }
+      ++y;
+    }
+    ++x;
+  }
+
+  return can_fall;
+}
+
+void Tetromino::fall() {
+  this->pos->y -= 1;
 }

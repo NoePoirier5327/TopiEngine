@@ -21,9 +21,24 @@ class Tetromino {
     ~Tetromino();
 
     /**
-     * @brief Positionne le tetromino courant dans la carte en paramètre à sa couche dédiée (couche 2).
+     * @brief Positionne le tetromino courant dans la carte en paramètre.
+     *
+     * Si il peut tomber, alors, on le met au premier plan.
+     * Sinon, ajoute la méthode ajoute le tetromino courant à la couche finale de la carte.
+     *
+     * @return false si le tetromino a été insérer dans le plan finale de la carte, true sinon.
      */
-    void insert_in_map(topi::object::tilemap::ColoredTilemap *map) const;
+    bool insert_in_map(topi::object::tilemap::ColoredTilemap *map) const;
+
+    /**
+     * @brief Vérifie dans la carte, que le tetromino peut continuer sa chute.
+     */
+    bool can_fall(topi::object::tilemap::ColoredTilemap *map) const;
+
+    /**
+     * @brief Fait descendre le tetromino courant vers le bas.
+     */
+    void fall();
 
   private:
     TileType content[16];
