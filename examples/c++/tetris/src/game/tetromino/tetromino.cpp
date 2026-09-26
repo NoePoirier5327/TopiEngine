@@ -1,5 +1,4 @@
 #include "tetromino.hpp"
-#include <iostream>
 
 const TileType TETROMINOS[65] = {
   // I
