@@ -131,4 +131,15 @@ namespace topi::object::tilemap {
       }
     }
   }
+
+  void ColoredTilemap::debug_disp(size_t layer) const {
+    std::cout << "Colored tilemap layer: " << layer << std::endl;
+
+    for (size_t x = 0; x < this->map_width; ++x) {
+      for (size_t y = 0; y < this->map_height; ++y) {
+        std::cout << (*this)(x, y, layer) << " ";
+      }
+      std::cout << std::endl;
+    }
+  }
 }
