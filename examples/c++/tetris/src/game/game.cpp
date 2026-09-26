@@ -11,7 +11,7 @@ Game::~Game() {
 }
 
 void Game::update() {
-
+  this->tetromino.insert_in_map(this->map);
 }
 
 void Game::display(topi::render::Renderer *renderer) const {

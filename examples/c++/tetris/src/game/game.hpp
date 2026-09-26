@@ -2,6 +2,7 @@
 #define GAME_HEADER
 
 #include <topi/topi.hpp>
+#include "tetromino/tetromino.hpp"
 
 /**
  * @class Game
@@ -31,6 +32,7 @@ class Game {
 
   private:
     topi::object::tilemap::ColoredTilemap *map;
+    Tetromino tetromino;
 };
 
 #endif // !GAME_HEADER
