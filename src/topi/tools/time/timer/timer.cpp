@@ -1,26 +1,35 @@
 #include "timer.hpp"
 #include <chrono>
+#include <stdexcept>
 
 namespace topi::tools::time {
   /**
    * @brief Renvoie le temps courant sous forme de secondes.
    */
-  uint64_t now_as_secondes() {
+  double now_as_secondes() {
     auto now = std::chrono::system_clock::now();
     auto secs = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
-    return static_cast<uint64_t>(secs);
+    return static_cast<double>(secs);
   }
 
-  Timer::Timer(uint64_t _secondes_to_wait) {
+  Timer::Timer(double _secondes_to_wait) {
+    if (_secondes_to_wait < 0) {
+      throw std::invalid_argument("You can't wait a negative time.");
+    }
+
     this->beginning = now_as_secondes();
     this->seconds_to_wait = _secondes_to_wait;
   }
 
-  void Timer::set_seconds_to_wait(uint64_t _seconds_to_wait) {
+  void Timer::set_seconds_to_wait(double _seconds_to_wait) {
+    if (_seconds_to_wait < 0) {
+      throw std::invalid_argument("You can't wait a negative time.");
+    }
+
     this->seconds_to_wait = _seconds_to_wait;
   }
 
-  uint64_t Timer::get_seconds_to_wait() {
+  double Timer::get_seconds_to_wait() {
     return this->seconds_to_wait;
   }
 
