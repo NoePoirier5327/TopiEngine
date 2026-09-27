@@ -6,7 +6,7 @@ namespace topi::tools::time {
   /**
    * @brief Renvoie le temps courant sous forme de secondes.
    */
-  double now_as_secondes() {
+  double now_as_seconds() {
     auto now = std::chrono::system_clock::now();
     auto secs = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
     return static_cast<double>(secs);
@@ -17,7 +17,7 @@ namespace topi::tools::time {
       throw std::invalid_argument("You can't wait a negative time.");
     }
 
-    this->beginning = now_as_secondes();
+    this->beginning = now_as_seconds();
     this->seconds_to_wait = _secondes_to_wait;
   }
 
@@ -34,11 +34,11 @@ namespace topi::tools::time {
   }
 
   bool Timer::finished_to_wait() const {
-    return (now_as_secondes() - this->beginning) >= this->seconds_to_wait;
+    return (now_as_seconds() - this->beginning) >= this->seconds_to_wait;
   }
 
   void Timer::restart() {
-    this->beginning = now_as_secondes();
+    this->beginning = now_as_seconds();
   }
 
   void Timer::wait_to_finish() const {
