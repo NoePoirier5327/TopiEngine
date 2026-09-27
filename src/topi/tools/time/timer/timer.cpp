@@ -29,15 +29,19 @@ namespace topi::tools::time {
     this->seconds_to_wait = _seconds_to_wait;
   }
 
-  double Timer::get_seconds_to_wait() {
+  double Timer::get_seconds_to_wait() const {
     return this->seconds_to_wait;
   }
 
-  bool Timer::finished_to_wait() {
+  bool Timer::finished_to_wait() const {
     return (now_as_secondes() - this->beginning) >= this->seconds_to_wait;
   }
 
   void Timer::restart() {
     this->beginning = now_as_secondes();
+  }
+
+  void Timer::wait_to_finish() const {
+    while (this->finished_to_wait()) {}
   }
 }

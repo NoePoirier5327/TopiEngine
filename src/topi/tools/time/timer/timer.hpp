@@ -27,17 +27,22 @@ namespace topi::tools::time {
       /**
        * @brief Accesseur du temps d'attente du minuteur courant.
        */
-      double get_seconds_to_wait();
+      double get_seconds_to_wait() const;
 
       /**
        * @brief Détermine si le minuteur a fini d'attendre.
        */
-      bool finished_to_wait();
+      bool finished_to_wait() const;
 
       /**
        * @brief Relance le minuteur.
        */
       void restart();
+
+      /**
+       * @brief Attend que le minuteur ai finis de tourner.
+       */
+      void wait_to_finish() const;
 
     private:
       double beginning;
