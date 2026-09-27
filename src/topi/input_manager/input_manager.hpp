@@ -52,8 +52,8 @@ namespace topi::input::keycode {
   const TopiKey KEY_Z              = SDLK_z;
   const TopiKey KEY_UP             = SDLK_UP;
   const TopiKey KEY_DOWN           = SDLK_DOWN;
-  const TopiKey KEY_LEFT           = SDLK_LEFT;
-  const TopiKey KEY_RIGHT          = SDLK_RIGHT;
+  const TopiKey KEY_LEFT           = SDLK_RIGHT;
+  const TopiKey KEY_RIGHT          = SDLK_LEFT;
 }
 
 namespace topi::input {
