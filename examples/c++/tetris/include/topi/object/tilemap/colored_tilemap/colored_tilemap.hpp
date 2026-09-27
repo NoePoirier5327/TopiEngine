@@ -155,6 +155,16 @@ namespace topi::object::tilemap {
        */
       void display(render::Renderer* renderer, size_t layer = 0, double x_offset = 0.0, double y_offset = 0.0, double zoom = 1.0) const;
 
+      /**
+       * @brief Affiche la couche en paramètre de la tilemap courante dans la console.
+       * 
+       * Pas de vérification sur la présence des tuiles durant l'affichage
+       * pour simplifier le débuggage.
+       *
+       * @throw std::invalid_argument si layer >= nb_layer
+       */
+      void debug_disp(size_t layer) const;
+
     private:
       std::map<uint64_t, SDL_Color> tileset;
       uint64_t *tilemap;
