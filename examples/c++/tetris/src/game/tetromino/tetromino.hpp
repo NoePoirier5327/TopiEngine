@@ -40,6 +40,12 @@ class Tetromino {
      */
     void fall();
 
+    /**
+     * @brief Transpose la matrice interne au tetromino courant.
+     * contentT(i, j) = content(j, i)
+     */
+    void rotate();
+
   private:
     /**
      * @brief Vérifie si le tetromino courant va toucher le sol ou non.

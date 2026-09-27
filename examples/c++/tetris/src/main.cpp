@@ -1,11 +1,14 @@
 #include <topi/topi.hpp>
-#include <ctime>
 #include "game/game.hpp"
 
 int main() {
   topi::TopiEngine topi = topi::TopiEngine("Tetris", 320, 640);
 
   Game game;
+
+  topi.on_command().on_input([&game](const topi::input::InputManager &input_manager, double dt) {
+    game.handle_inputs(input_manager);
+  });
 
   topi.on_command().on_update([&game](double dt) {
     game.update();

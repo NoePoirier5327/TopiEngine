@@ -14,6 +14,12 @@ Game::~Game() {
   if (this->falling_timer != nullptr) delete this->falling_timer;
 }
 
+void Game::handle_inputs(const topi::input::InputManager &input_manager) {
+  if (input_manager.is_just_key_pressed(topi::input::keycode::KEY_UP)) {
+    this->tetromino->rotate();
+  }
+}
+
 void Game::update() {
   for (size_t x = 0; x < MAP_WIDTH; ++x) {
     for (size_t y = 0; y < MAP_HEIGHT; ++y) {

@@ -1,4 +1,5 @@
 #include "tetromino.hpp"
+#include <iostream>
 
 const TileType TETROMINOS[65] = {
   // I
@@ -127,4 +128,20 @@ bool Tetromino::has_reached_another_tetromino(topi::object::tilemap::ColoredTile
   }
 
   return has_reached_another_tetromino;
+}
+
+void Tetromino::rotate() {
+  TileType temp[16];
+
+  for (size_t x = 0; x < this->size; ++x) {
+    for (size_t y = 0; y < this->size; ++y) {
+      temp[x + this->size * y] = this->content[y + this->size * (this->size - x - 1)];
+    }
+  }
+
+  for (size_t x = 0; x < this->size; ++x) {
+    for (size_t y = 0; y < this->size; ++y) {
+      this->content[x + this->size * y] = temp[x + this->size * y];
+    }
+  }
 }
