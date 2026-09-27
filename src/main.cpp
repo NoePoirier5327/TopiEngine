@@ -1,14 +1,12 @@
 #include "topi/topi.hpp"
-
-using namespace topi::object::tilemap;
+#include <iostream>
 
 int main() {
-  ColoredTilemap tilemap = ColoredTilemap(20, 20, 2);
+  topi::tools::time::Timer timer = topi::tools::time::Timer(90);
 
-  tilemap(0, 1) = 1;
+  while (!timer.finished_to_wait()) {}
 
-  tilemap.debug_disp(0);
-  tilemap.debug_disp(1);
+  std::cout << "Finished to wait !" << std::endl;
 
   return 0;
 }
