@@ -4,11 +4,14 @@
 Game::Game() {
   this->map = new_map();
   this->tetromino = new Tetromino();
+  this->time_to_fall = 1.0;
+  this->falling_timer = new topi::tools::time::Timer(this->time_to_fall);
 }
 
 Game::~Game() {
   if (this->map != nullptr) delete this->map;
   if (this->tetromino != nullptr) delete this->tetromino;
+  if (this->falling_timer != nullptr) delete this->falling_timer;
 }
 
 void Game::update() {
@@ -24,7 +27,10 @@ void Game::update() {
     delete tetromino;
     this->tetromino = new Tetromino();
   } else {
-    this->tetromino->fall();
+    if (this->falling_timer->finished_to_wait()) {
+      this->tetromino->fall();
+      this->falling_timer->restart();
+    }
   }
 }
 

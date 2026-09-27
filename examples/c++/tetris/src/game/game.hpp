@@ -33,6 +33,8 @@ class Game {
   private:
     topi::object::tilemap::ColoredTilemap *map;
     Tetromino *tetromino;
+    topi::tools::time::Timer *falling_timer;
+    double time_to_fall;
 };
 
 #endif // !GAME_HEADER
