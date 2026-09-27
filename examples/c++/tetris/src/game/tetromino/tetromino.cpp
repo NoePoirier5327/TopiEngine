@@ -81,42 +81,50 @@ bool Tetromino::insert_in_map(topi::object::tilemap::ColoredTilemap *map) const 
 }
 
 bool Tetromino::can_fall(topi::object::tilemap::ColoredTilemap *map) const {
-  bool can_fall = true;
-
-  // On vérifie si on touche le sol.
-  size_t x = 0;
-  while (x < this->size && can_fall) {
-    size_t y = 0;
-    while (y < this->size && can_fall) {
-      if (this->content[x + y * this->size] != transparent_tile) {
-        can_fall = can_fall & (this->pos->y - static_cast<int>(y) > 0);
-      }
-      ++y;
-    }
-    ++x;
+  // Si on a déjà atteint le sol, on s'épargne la suite des calculs.
+  if (this->has_reached_ground()) {
+    return false;
   }
 
-  // Si on ne peut pas déjà continuer, on s'épargne le reste des calculs.
-  if (!can_fall) {
-    return can_fall;
-  }
-
-  // On vérifie que le tetromino ne va pas en toucher un autre.
-  x = 0;
-  while (x < this->size && can_fall) {
-    size_t y = 0;
-    while (y < this->size && can_fall) {
-      if (this->content[x + y * this->size] != transparent_tile) {
-        can_fall = can_fall & ((*map)(static_cast<size_t>(this->pos->x) + x, static_cast<size_t>(this->pos->y) - y - 1, 0) == transparent_tile);
-      }
-      ++y;
-    }
-    ++x;
-  }
-
-  return can_fall;
+  return !this->has_reached_another_tetromino(map);
 }
 
 void Tetromino::fall() {
   this->pos->y -= 1;
+}
+
+bool Tetromino::has_reached_ground() const {
+  bool has_reached_ground = false;
+
+  size_t x = 0;
+  while (x < this->size && !has_reached_ground) {
+    size_t y = 0;
+    while (y < this->size && !has_reached_ground) {
+      if (this->content[x + y * this->size] != transparent_tile) {
+        has_reached_ground = has_reached_ground | (this->pos->y - static_cast<int>(y) <= 0);
+      }
+      ++y;
+    }
+    ++x;
+  }
+
+  return has_reached_ground;
+}
+
+bool Tetromino::has_reached_another_tetromino(topi::object::tilemap::ColoredTilemap *map) const {
+  bool has_reached_another_tetromino = false;
+
+  size_t x = 0;
+  while (x < this->size && !has_reached_another_tetromino) {
+    size_t y = 0;
+    while (y < this->size && !has_reached_another_tetromino) {
+      if (this->content[x + y * this->size] != transparent_tile) {
+        has_reached_another_tetromino = has_reached_another_tetromino | ((*map)(static_cast<size_t>(this->pos->x) + x, static_cast<size_t>(this->pos->y) - y - 1, 0) != transparent_tile);
+      }
+      ++y;
+    }
+    ++x;
+  }
+
+  return has_reached_another_tetromino;
 }

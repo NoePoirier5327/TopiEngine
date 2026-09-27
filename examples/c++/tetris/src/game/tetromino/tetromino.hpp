@@ -41,6 +41,17 @@ class Tetromino {
     void fall();
 
   private:
+    /**
+     * @brief Vérifie si le tetromino courant va toucher le sol ou non.
+     */
+    bool has_reached_ground() const;
+
+    /**
+     * @brief Vérifie la collision vers le bas entre le tétromino courant et ceux en bas de lui sur la carte.
+     * ATTENTION, il faut vérifier d'abord que le tetromino courant n'a pas atteint le sol avant d'appeler cette fonction.
+     */
+    bool has_reached_another_tetromino(topi::object::tilemap::ColoredTilemap *map) const;
+
     TileType content[16];
     size_t size;
     topi::tools::vector::Vector2i *pos;
