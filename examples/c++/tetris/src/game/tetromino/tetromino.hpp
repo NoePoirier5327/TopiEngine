@@ -31,11 +31,6 @@ class Tetromino {
     bool insert_in_map(topi::object::tilemap::ColoredTilemap *map) const;
 
     /**
-     * @brief Vérifie dans la carte, que le tetromino peut continuer sa chute.
-     */
-    bool can_fall(topi::object::tilemap::ColoredTilemap *map) const;
-
-    /**
      * @brief Fait descendre le tetromino courant vers le bas.
      */
     void fall();
@@ -47,6 +42,11 @@ class Tetromino {
     void rotate();
 
   private:
+    /**
+     * @brief Vérifie dans la carte, que le tetromino peut continuer sa chute.
+     */
+    bool can_fall(topi::object::tilemap::ColoredTilemap *map) const;
+
     /**
      * @brief Vérifie si le tetromino courant va toucher le sol ou non.
      */
