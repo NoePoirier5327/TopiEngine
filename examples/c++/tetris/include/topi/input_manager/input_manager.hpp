@@ -1,52 +1,59 @@
 #ifndef INPUT_MANAGER_HEADER
 #define INPUT_MANAGER_HEADER
 
+#include <SDL2/SDL_keycode.h>
 #include <cstdint>
 #include <SDL2/SDL.h>
 
 namespace topi::input::keycode {
+  using TopiKey = uint32_t;
+
   // Interface vers les touches clavier générique du moteur.
-  const uint16_t KEY_RETURN         = SDLK_RETURN;
-  const uint16_t KEY_ESCAPE         = SDLK_ESCAPE;
-  const uint16_t KEY_BACKSPACE      = SDLK_BACKSPACE;
-  const uint16_t KEY_TAB            = SDLK_TAB;
-  const uint16_t KEY_SPACE          = SDLK_SPACE;
-  const uint16_t KEY_0              = SDLK_0;
-  const uint16_t KEY_1              = SDLK_1;
-  const uint16_t KEY_2              = SDLK_2;
-  const uint16_t KEY_3              = SDLK_3;
-  const uint16_t KEY_4              = SDLK_4;
-  const uint16_t KEY_5              = SDLK_5;
-  const uint16_t KEY_6              = SDLK_6;
-  const uint16_t KEY_7              = SDLK_7;
-  const uint16_t KEY_8              = SDLK_8;
-  const uint16_t KEY_9              = SDLK_9;
-  const uint16_t KEY_A              = SDLK_a;
-  const uint16_t KEY_B              = SDLK_b;
-  const uint16_t KEY_C              = SDLK_c;
-  const uint16_t KEY_D              = SDLK_d;
-  const uint16_t KEY_E              = SDLK_e;
-  const uint16_t KEY_F              = SDLK_f;
-  const uint16_t KEY_G              = SDLK_g;
-  const uint16_t KEY_H              = SDLK_h;
-  const uint16_t KEY_I              = SDLK_i;
-  const uint16_t KEY_J              = SDLK_j;
-  const uint16_t KEY_K              = SDLK_k;
-  const uint16_t KEY_L              = SDLK_l;
-  const uint16_t KEY_M              = SDLK_m;
-  const uint16_t KEY_N              = SDLK_n;
-  const uint16_t KEY_O              = SDLK_o;
-  const uint16_t KEY_P              = SDLK_p;
-  const uint16_t KEY_Q              = SDLK_q;
-  const uint16_t KEY_R              = SDLK_r;
-  const uint16_t KEY_S              = SDLK_s;
-  const uint16_t KEY_T              = SDLK_t;
-  const uint16_t KEY_U              = SDLK_u;
-  const uint16_t KEY_V              = SDLK_v;
-  const uint16_t KEY_W              = SDLK_w;
-  const uint16_t KEY_X              = SDLK_x;
-  const uint16_t KEY_Y              = SDLK_y;
-  const uint16_t KEY_Z              = SDLK_z;
+  const TopiKey KEY_RETURN         = SDLK_RETURN;
+  const TopiKey KEY_ESCAPE         = SDLK_ESCAPE;
+  const TopiKey KEY_BACKSPACE      = SDLK_BACKSPACE;
+  const TopiKey KEY_TAB            = SDLK_TAB;
+  const TopiKey KEY_SPACE          = SDLK_SPACE;
+  const TopiKey KEY_0              = SDLK_0;
+  const TopiKey KEY_1              = SDLK_1;
+  const TopiKey KEY_2              = SDLK_2;
+  const TopiKey KEY_3              = SDLK_3;
+  const TopiKey KEY_4              = SDLK_4;
+  const TopiKey KEY_5              = SDLK_5;
+  const TopiKey KEY_6              = SDLK_6;
+  const TopiKey KEY_7              = SDLK_7;
+  const TopiKey KEY_8              = SDLK_8;
+  const TopiKey KEY_9              = SDLK_9;
+  const TopiKey KEY_A              = SDLK_a;
+  const TopiKey KEY_B              = SDLK_b;
+  const TopiKey KEY_C              = SDLK_c;
+  const TopiKey KEY_D              = SDLK_d;
+  const TopiKey KEY_E              = SDLK_e;
+  const TopiKey KEY_F              = SDLK_f;
+  const TopiKey KEY_G              = SDLK_g;
+  const TopiKey KEY_H              = SDLK_h;
+  const TopiKey KEY_I              = SDLK_i;
+  const TopiKey KEY_J              = SDLK_j;
+  const TopiKey KEY_K              = SDLK_k;
+  const TopiKey KEY_L              = SDLK_l;
+  const TopiKey KEY_M              = SDLK_m;
+  const TopiKey KEY_N              = SDLK_n;
+  const TopiKey KEY_O              = SDLK_o;
+  const TopiKey KEY_P              = SDLK_p;
+  const TopiKey KEY_Q              = SDLK_q;
+  const TopiKey KEY_R              = SDLK_r;
+  const TopiKey KEY_S              = SDLK_s;
+  const TopiKey KEY_T              = SDLK_t;
+  const TopiKey KEY_U              = SDLK_u;
+  const TopiKey KEY_V              = SDLK_v;
+  const TopiKey KEY_W              = SDLK_w;
+  const TopiKey KEY_X              = SDLK_x;
+  const TopiKey KEY_Y              = SDLK_y;
+  const TopiKey KEY_Z              = SDLK_z;
+  const TopiKey KEY_UP             = SDLK_UP;
+  const TopiKey KEY_DOWN           = SDLK_DOWN;
+  const TopiKey KEY_LEFT           = SDLK_LEFT;
+  const TopiKey KEY_RIGHT          = SDLK_RIGHT;
 }
 
 namespace topi::input {
@@ -84,7 +91,7 @@ namespace topi::input {
        *
        * @return true si touche pressée, false sinon.
        */
-      bool is_key_down(uint16_t key_code) const;
+      bool is_key_down(keycode::TopiKey key_code) const;
 
       /**
        * @brief Détermine si la touche en paramètre est appuyé mais pas maintenu par l'utilisateur.
@@ -93,7 +100,7 @@ namespace topi::input {
        *
        * @return true si touche pressé, false sinon.
        */
-      bool is_just_key_pressed(uint16_t key_code) const;
+      bool is_just_key_pressed(keycode::TopiKey key_code) const;
 
     private:
       const uint8_t *keyboard_state;
