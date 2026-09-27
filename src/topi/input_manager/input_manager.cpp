@@ -29,12 +29,12 @@ namespace topi::input {
     SDL_PumpEvents();
   }
 
-  bool InputManager::is_key_down(uint16_t key_code) const {
+  bool InputManager::is_key_down(keycode::TopiKey key_code) const {
     SDL_Scancode scancode = SDL_GetScancodeFromKey(key_code);
     return this->keyboard_state[scancode] != 0;
   }
 
-  bool InputManager::is_just_key_pressed(uint16_t key_code) const {
+  bool InputManager::is_just_key_pressed(keycode::TopiKey key_code) const {
     SDL_Scancode scancode = SDL_GetScancodeFromKey(key_code);
     return this->keyboard_state[scancode] && !this->prev_keyboard_states[scancode];
   }
