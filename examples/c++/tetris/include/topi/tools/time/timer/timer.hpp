@@ -1,8 +1,6 @@
 #ifndef TIMER_HEADER
 #define TIMER_HEADER
 
-#include <cstdint>
-
 namespace topi::tools::time {
   /**
    * @class Timer
@@ -14,18 +12,22 @@ namespace topi::tools::time {
        * @brief Construit le minuteur et stocke le temps qu'il doit attendre dans l'instance courante.
        *
        * @param seconds_to_wait, nombre de secondes que le minuteur doit attendre.
+       *
+       * @throw std::invalid_argument si seconds_to_wait < 0
        */
-      Timer(uint64_t seconds_to_wait);
+      Timer(double seconds_to_wait);
 
       /**
        * @brief Mutateur du temps d'attente du minuteur courant.
+       *
+       * @throw std::invalid_argument si seconds_to_wait < 0
        */
-      void set_seconds_to_wait(uint64_t seconds_to_wait);
+      void set_seconds_to_wait(double seconds_to_wait);
 
       /**
        * @brief Accesseur du temps d'attente du minuteur courant.
        */
-      uint64_t get_seconds_to_wait();
+      double get_seconds_to_wait();
 
       /**
        * @brief Détermine si le minuteur a fini d'attendre.
@@ -38,8 +40,8 @@ namespace topi::tools::time {
       void restart();
 
     private:
-      uint64_t beginning;
-      uint64_t seconds_to_wait;
+      double beginning;
+      double seconds_to_wait;
   };
 };
 
