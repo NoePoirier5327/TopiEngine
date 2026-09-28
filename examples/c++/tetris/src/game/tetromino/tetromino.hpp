@@ -41,6 +41,18 @@ class Tetromino {
      */
     void rotate();
 
+    /**
+     * @brief Bouge le tetromino courant vers la droite.
+     * Vérifie si on peut se déplacer avant de réaliser le déplacement.
+     */
+    void move_right(topi::object::tilemap::ColoredTilemap *map);
+
+    /**
+     * @brief Bouge le tetromino courant vers la gauche.
+     * Vérifie si on peut se déplacer avant le déplacement.
+     */
+    void move_left(topi::object::tilemap::ColoredTilemap *map);
+
   private:
     /**
      * @brief Vérifie dans la carte, que le tetromino peut continuer sa chute.
@@ -57,6 +69,38 @@ class Tetromino {
      * ATTENTION, il faut vérifier d'abord que le tetromino courant n'a pas atteint le sol avant d'appeler cette fonction.
      */
     bool has_reached_another_tetromino(topi::object::tilemap::ColoredTilemap *map) const;
+
+    /**
+     * @brief Détermine si le tetromino courant peut se déplacer vers la droite ou non.
+     */
+    bool can_move_right(topi::object::tilemap::ColoredTilemap *map) const;
+
+    /**
+     * @brief Vérifie qu'on n'entre pas en collision avec le mur de droite.
+     */
+    bool collides_with_right_wall() const;
+
+    /**
+     * @brief Vérifie qu'on entre pas en collision à droite avec un autre tetromino.
+     * ATTENTION, on doit d'abord vérifier qu'on n'entre pas en collision avec le mur droit avant (pour éviter les out of range).
+     */
+    bool collides_with_another_tetromino_on_the_right(topi::object::tilemap::ColoredTilemap *map) const;
+
+    /**
+     * @brief Vérifie qu'on peut se déplacer vers la gauche.
+     */
+    bool can_move_left(topi::object::tilemap::ColoredTilemap *map) const;
+
+    /**
+     * @brief Vérifie si on entre en collision ou non avec le mur de gauche.
+     */
+    bool collides_with_left_wall() const;
+
+    /**
+     * @brief Vérifie si on entre en collision avec un autre tetromino sur la gauche.
+     * ATTENTION, on doit d'abord vérifier qu'on n'entre pas en collision avec le mut gauche (pour éviter les out of range).
+     */
+    bool collides_with_another_tetromino_on_the_left(topi::object::tilemap::ColoredTilemap *map) const;
 
     TileType content[16];
     size_t size;

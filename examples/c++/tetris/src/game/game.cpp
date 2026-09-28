@@ -18,6 +18,14 @@ void Game::handle_inputs(const topi::input::InputManager &input_manager) {
   if (input_manager.is_just_key_pressed(topi::input::keycode::KEY_UP)) {
     this->tetromino->rotate();
   }
+
+  if (input_manager.is_just_key_pressed(topi::input::keycode::KEY_RIGHT)) {
+    this->tetromino->move_right(this->map);
+  }
+
+  if (input_manager.is_just_key_pressed(topi::input::keycode::KEY_LEFT)) {
+    this->tetromino->move_left(this->map);
+  }
 }
 
 void Game::update() {

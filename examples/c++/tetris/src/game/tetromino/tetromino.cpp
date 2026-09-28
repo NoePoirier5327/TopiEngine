@@ -1,5 +1,4 @@
 #include "tetromino.hpp"
-#include <iostream>
 
 const TileType TETROMINOS[65] = {
   // I
@@ -144,4 +143,110 @@ void Tetromino::rotate() {
       this->content[x + this->size * y] = temp[x + this->size * y];
     }
   }
+}
+
+void Tetromino::move_right(topi::object::tilemap::ColoredTilemap *map) {
+  if (!this->can_move_right(map)) {
+    return;
+  }
+
+  this->pos->x --;
+}
+
+void Tetromino::move_left(topi::object::tilemap::ColoredTilemap *map) {
+  if (!this->can_move_left(map)) {
+    return;
+  }
+
+  this->pos->x ++;
+}
+
+bool Tetromino::can_move_right(topi::object::tilemap::ColoredTilemap *map) const {
+  // Si on a déjà une collision avec le mur, on s'épargne le reste des calculs.
+  if (this->collides_with_right_wall()) {
+    return false;
+  }
+
+  return !this->collides_with_another_tetromino_on_the_right(map);
+}
+
+bool Tetromino::collides_with_another_tetromino_on_the_right(topi::object::tilemap::ColoredTilemap *map) const {
+  bool collides = false;
+
+  size_t x = 0;
+  while (x < this->size && !collides) {
+    size_t y = 0;
+    while (y < this->size && !collides) {
+      if (this->content[x + this->size * y] != transparent_tile) {
+        collides = collides | ((*map)(static_cast<size_t>(this->pos->x) + x - 1, static_cast<size_t>(this->pos->y) - y, 0) != transparent_tile);
+      }
+      ++y;
+    }
+    ++x;
+  }
+
+  return collides;
+}
+
+bool Tetromino::collides_with_right_wall() const {
+  bool collides = false;
+
+  size_t x = 0;
+  while (x < this->size && !collides) {
+    size_t y = 0;
+    while (y < this->size && !collides) {
+      if (this->content[x + y * this->size] != transparent_tile) {
+        collides = collides | (this->pos->x + static_cast<int>(x) <= 0);
+      }
+      ++y;
+    }
+    ++x;
+  }
+
+  return collides;
+}
+
+bool Tetromino::can_move_left(topi::object::tilemap::ColoredTilemap *map) const {
+  if (this->collides_with_left_wall()) {
+    return false;
+  }
+
+  return !this->collides_with_another_tetromino_on_the_left(map);
+}
+
+bool Tetromino::collides_with_left_wall() const {
+  bool collides = false;
+
+  size_t x = 0;
+  while (x < this->size && !collides) {
+    size_t y = 0;
+    while (y < this->size && !collides) {
+      if (this->content[x + y * this->size] != transparent_tile) {
+        collides = collides | (static_cast<size_t>(this->pos->x) + x >= MAP_WIDTH - 1);
+      }
+      ++y;
+    }
+    ++x;
+  }
+
+  return collides;
+}
+
+bool Tetromino::collides_with_another_tetromino_on_the_left(topi::object::tilemap::ColoredTilemap *map) const {
+  bool collides = false;
+
+  size_t x = 0;
+  while (x < this->size && !collides) {
+    size_t y = 0;
+    while (y < this->size && !collides) {
+      if (this->content[x + this->size * y] != transparent_tile) {
+        collides = collides | ((*map)(static_cast<size_t>(this->pos->x) + x + 1, static_cast<size_t>(this->pos->y) - y, 0) != transparent_tile);
+      }
+      ++y;
+    }
+    ++x;
+  }
+
+  return collides;
+
 }
