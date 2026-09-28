@@ -1,5 +1,6 @@
 #include "colored_tilemap.hpp"
 #include <iostream>
+#include <stdexcept>
 
 namespace topi::object::tilemap {
   ColoredTilemap::ColoredTilemap(size_t _map_width, size_t _map_height, size_t _nb_layer, size_t _tile_width, size_t _tile_height, bool _is_x_flipped, bool _is_y_flipped) {
@@ -33,7 +34,7 @@ namespace topi::object::tilemap {
 
   void ColoredTilemap::set(uint64_t tile, size_t x, size_t y, size_t layer) {
     if (x >= this->map_width || y >= this->map_height || layer >= this->nb_layer) {
-      throw std::invalid_argument("Tilemap indexes out of range.");
+      throw std::out_of_range("Tilemap indexes out of range.");
     }
 
     this->tilemap[x + this->map_width * (y + this->map_height * layer)] = tile;
@@ -41,7 +42,7 @@ namespace topi::object::tilemap {
 
   uint64_t ColoredTilemap::get(size_t x, size_t y, size_t layer) const {
     if (x >= this->map_width || y >= this->map_height || layer >= this->nb_layer) {
-      throw std::invalid_argument("Tilemap indexes out of range.");
+      throw std::out_of_range("Tilemap indexes out of range.");
     }
 
     return this->tilemap[x + this->map_width * (y + this->map_height * layer)];
@@ -73,7 +74,7 @@ namespace topi::object::tilemap {
 
   size_t& ColoredTilemap::operator()(size_t x, size_t y, size_t layer) {
     if (x >= this->map_width || y >= this->map_height || layer >= this->nb_layer) {
-      throw std::invalid_argument("Tilemap indexes out of range.");
+      throw std::out_of_range("Tilemap indexes out of range.");
     }
 
     return this->tilemap[x + this->map_width * (y + this->map_height * layer)];
@@ -94,7 +95,7 @@ namespace topi::object::tilemap {
 
     if (layer >= this->nb_layer) {
       std::string error = "The layer `" + std::to_string(layer) + "` is unaccessible.";
-      throw std::invalid_argument(error);
+      throw std::out_of_range(error);
     }
 
     if (zoom <= 0.0) {

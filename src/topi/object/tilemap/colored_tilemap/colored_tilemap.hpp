@@ -61,7 +61,7 @@ namespace topi::object::tilemap {
        * @param y, coordonnée en ordonnée à laquelle accéder.
        * @param layer, couche à laquelle accéder, par défaut à 0.
        * 
-       * @throw std::invalid_argument si x >= map_width || y >= map_height || layer >= nb_layer.
+       * @throw std::out_of_range si x >= map_width || y >= map_height || layer >= nb_layer.
        * @throw std::invalid_argument tile inconnus dans le tileset.
        */
       void set(uint64_t tile, size_t x, size_t y, size_t layer = 0);
@@ -75,7 +75,7 @@ namespace topi::object::tilemap {
        *
        * @return valeur de la tuile dans la tilemap.
        *
-       * @throw std::invalid_argument si x >= map_width || y >= map_height || layer >= nb_layer
+       * @throw std::out_of_range si x >= map_width || y >= map_height || layer >= nb_layer
        */
       uint64_t get(size_t x, size_t y, size_t layer = 0) const;
 
@@ -113,7 +113,7 @@ namespace topi::object::tilemap {
        *
        * @return valeur de la tuile dans la tilemap.
        *
-       * @throw std::invalid_argument si x >= map_width || y >= map_height || layer >= nb_layer
+       * @throw std::out_of_range si x >= map_width || y >= map_height || layer >= nb_layer
        */
       uint64_t operator()(size_t x, size_t y, size_t layer = 0) const;
 
@@ -126,7 +126,7 @@ namespace topi::object::tilemap {
        *
        * @return référence vers la tuile dans la tilemap.
        *
-       * @throw std::invalid_argument si x >= map_width || y >= map_height || layer >= nb_layer
+       * @throw std::out_of_range si x >= map_width || y >= map_height || layer >= nb_layer
        */
       uint64_t& operator()(size_t x, size_t y, size_t layer = 0);
 
@@ -150,7 +150,7 @@ namespace topi::object::tilemap {
        * @param zoom, taux d'agrandissement d'affichage de la tilemap courante, par défaut à 1.0.
        *
        * @throw std::runtime_error si tileset vide.
-       * @throw std::invalid_argument si layer >= nb_layer.
+       * @throw std::out_of_range si layer >= nb_layer.
        * @throw std::invalid_argument si zoom <= 0
        */
       void display(render::Renderer* renderer, size_t layer = 0, double x_offset = 0.0, double y_offset = 0.0, double zoom = 1.0) const;
