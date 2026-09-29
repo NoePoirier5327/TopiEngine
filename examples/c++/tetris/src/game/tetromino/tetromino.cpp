@@ -129,7 +129,9 @@ bool Tetromino::has_reached_another_tetromino(topi::object::tilemap::ColoredTile
   return has_reached_another_tetromino;
 }
 
-void Tetromino::rotate() {
+void Tetromino::rotate(topi::object::tilemap::ColoredTilemap *map) {
+  if (!this->can_rotate(map)) return;
+
   TileType temp[16];
 
   for (size_t x = 0; x < this->size; ++x) {
@@ -143,6 +145,31 @@ void Tetromino::rotate() {
       this->content[x + this->size * y] = temp[x + this->size * y];
     }
   }
+}
+
+bool Tetromino::can_rotate(topi::object::tilemap::ColoredTilemap *map) const {
+  bool can_rotate = true;
+
+  size_t x = 0;
+  while (x < this->size && can_rotate) {
+    size_t y = 0;
+    while (y < this->size && can_rotate) {
+      size_t px = this->size - x - 1;
+      size_t py = y;
+      if (this->content[py + this->size * px] != transparent_tile) {
+        // Collision avec les bords de la carte
+        topi::tools::vector::Vector2i final_pos = topi::tools::vector::Vector2i(this->pos->x + static_cast<int>(px), this->pos->y - static_cast<int>(y));
+        can_rotate = can_rotate & (final_pos.x >= 0); // bord droit
+        can_rotate = can_rotate & (final_pos.x <= static_cast<int>(MAP_WIDTH) - 1); // bord gauche
+        
+        // TODO Implémenter collision de rotation entre tetromino qui tombe et tetromino dans la grille.
+      }
+      ++y;
+    }
+    ++x;
+  }
+
+  return can_rotate;
 }
 
 void Tetromino::move_right(topi::object::tilemap::ColoredTilemap *map) {

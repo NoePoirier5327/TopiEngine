@@ -37,9 +37,9 @@ class Tetromino {
 
     /**
      * @brief Transpose la matrice interne au tetromino courant.
-     * contentT(i, j) = content(j, i)
+     * Vérifie qu'on peut effectuer une rotation avant de l'appliquer.
      */
-    void rotate();
+    void rotate(topi::object::tilemap::ColoredTilemap *map);
 
     /**
      * @brief Bouge le tetromino courant vers la droite.
@@ -101,6 +101,11 @@ class Tetromino {
      * ATTENTION, on doit d'abord vérifier qu'on n'entre pas en collision avec le mut gauche (pour éviter les out of range).
      */
     bool collides_with_another_tetromino_on_the_left(topi::object::tilemap::ColoredTilemap *map) const;
+
+    /**
+     * @brief Vérifie que l'on peut effectuer une rotation dans la carte courante.
+     */
+    bool can_rotate(topi::object::tilemap::ColoredTilemap *map) const;
 
     TileType content[16];
     size_t size;
