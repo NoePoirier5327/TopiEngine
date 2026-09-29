@@ -36,6 +36,11 @@ class Tetromino {
     void fall();
 
     /**
+     * @brief Fait descendre immédiatement le tetromino.
+     */
+    void hard_drop(topi::object::tilemap::ColoredTilemap *map);
+
+    /**
      * @brief Transpose la matrice interne au tetromino courant.
      * Vérifie qu'on peut effectuer une rotation avant de l'appliquer.
      */

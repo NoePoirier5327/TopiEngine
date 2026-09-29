@@ -93,6 +93,12 @@ void Tetromino::fall() {
   this->pos->y -= 1;
 }
 
+void Tetromino::hard_drop(topi::object::tilemap::ColoredTilemap *map) {
+  while (this->can_fall(map)) {
+    this->fall();
+  }
+}
+
 bool Tetromino::has_reached_ground() const {
   bool has_reached_ground = false;
 
