@@ -9,17 +9,17 @@ int main() {
   tilemap.new_tile(2, 100, 100, 255, 255);
 
   for (size_t i = 0; i < 5; ++i)
-    tilemap(0, i) = 1;
+    tilemap(0, i, 0) = 1;
 
   for (size_t i = 0; i < 10; ++i)
-    tilemap(i, 0) = 2;
+    tilemap(i, 0, 0) = 2;
 
   tilemap.exchange_columns(0, 3, 0);
   tilemap.exchange_lines(0, 3, 0);
   tilemap.exchange_layers(0, 1);
 
   app.on_command().on_display([&tilemap](topi::render::Renderer *renderer) {
-    tilemap.display(renderer, 0);
+    tilemap.display_layer(renderer, 0);
   });
 
   app.run();
