@@ -3,8 +3,8 @@ AR = ar
 ARFLAGS = rcs
 LDFLAGS = -lSDL2
 TESTFLAGS = -lgtest -lgtest_main -lpthread
-DEBUGFLAGS = -g
-CXXFLAGS = -std=c++17 -pedantic -Wfatal-errors -Wconversion -Wredundant-decls -Wshadow -Wall -Wextra
+CXXFLAGS = 
+CXXFLAGS_BASE = -std=c++17 -pedantic -Wfatal-errors -Wconversion -Wredundant-decls -Wshadow -Wall -Wextra
 BINFLAGS =
 
 LIB = lib/libtopi.a
@@ -23,16 +23,19 @@ TESTAPP = bin/run_tests
 # On exclut main.o lors de la liaison des tests
 OBJ_NO_MAIN = $(filter-out $(OBJDIR)/main.o, $(OBJ))
 
-.PHONY: all run clean debug doc init lib test
+.PHONY: all run clean debug doc init lib test release
 
 # Compilation du binaire simple
-all: $(OBJ)
+all: CXXFLAGS = $(CXXFLAGS_BASE)
+all: $(APP)
+
+$(APP): $(OBJ)
 	@mkdir -p bin
 	$(CXX) -o $(APP) $^ $(BINFLAGS) $(CXXFLAGS) $(LDFLAGS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	@mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS) $(DEBUGFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Compilation du binaire en tant que librairie.
 $(LIB): $(OBJ_NO_MAIN)
@@ -49,20 +52,27 @@ $(TESTAPP): $(OBJ_NO_MAIN) $(TESTOBJ)
 
 $(OBJDIR)/$(TESTDIR)/%.o: $(TESTDIR)/%.cpp
 	@mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS) $(DEBUGFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 run: 
 	$(APP)
 
-lib: $(LIB)
+# Compilation du binaire en tant que librairie prête à être distribuée.
+release: CXXFLAGS = $(CXXFLAGS_BASE) -DNDEBUG
+release: clean $(LIB)
 
-test: $(TESTAPP)
+lib: CXXFLAGS = $(CXXFLAGS_BASE)
+lib: clean $(LIB)
+
+test: CXXFLAGS = $(CXXFLAGS_BASE) -g
+test: clean $(TESTAPP)
 	$(TESTAPP)
 
 clean:
 	find $(OBJDIR) -type f -name "*.o" -delete
 
-debug:
+debug: CXXFLAGS = $(CXXFLAGS_BASE) -g -DDEBUG
+debug: clean $(APP)
 	gdb $(APP)
 
 doc:
