@@ -1,8 +1,6 @@
 #ifndef CHRONOMETER_HEADER
 #define CHRONOMETER_HEADER
 
-#include <cstdint>
-
 namespace topi::tools::time {
   /**
    * @class Chronometer
@@ -18,7 +16,7 @@ namespace topi::tools::time {
       /**
        * @brief Renvoie le temps écoulé depuis l'instanciation du chronomètre en secondes
        */
-      uint64_t get_elapsed_seconds() const;
+      double get_elapsed_seconds() const;
 
       /**
        * @brief Remets le chronomètre à zéro.
@@ -26,7 +24,7 @@ namespace topi::tools::time {
       void restart();
 
     private:
-      uint64_t start_time;
+      double start_time;
   };
 }
 

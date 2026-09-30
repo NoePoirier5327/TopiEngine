@@ -61,7 +61,7 @@ namespace topi::object::tilemap {
        * @param y, coordonnée en ordonnée à laquelle accéder.
        * @param layer, couche à laquelle accéder, par défaut à 0.
        * 
-       * @throw std::invalid_argument si x >= map_width || y >= map_height || layer >= nb_layer.
+       * @throw std::out_of_range si x >= map_width || y >= map_height || layer >= nb_layer.
        * @throw std::invalid_argument tile inconnus dans le tileset.
        */
       void set(uint64_t tile, size_t x, size_t y, size_t layer = 0);
@@ -75,7 +75,7 @@ namespace topi::object::tilemap {
        *
        * @return valeur de la tuile dans la tilemap.
        *
-       * @throw std::invalid_argument si x >= map_width || y >= map_height || layer >= nb_layer
+       * @throw std::out_of_range si x >= map_width || y >= map_height || layer >= nb_layer
        */
       uint64_t get(size_t x, size_t y, size_t layer = 0) const;
 
@@ -113,7 +113,7 @@ namespace topi::object::tilemap {
        *
        * @return valeur de la tuile dans la tilemap.
        *
-       * @throw std::invalid_argument si x >= map_width || y >= map_height || layer >= nb_layer
+       * @throw std::out_of_range si x >= map_width || y >= map_height || layer >= nb_layer
        */
       uint64_t operator()(size_t x, size_t y, size_t layer = 0) const;
 
@@ -126,9 +126,37 @@ namespace topi::object::tilemap {
        *
        * @return référence vers la tuile dans la tilemap.
        *
-       * @throw std::invalid_argument si x >= map_width || y >= map_height || layer >= nb_layer
+       * @throw std::out_of_range si x >= map_width || y >= map_height || layer >= nb_layer
        */
       uint64_t& operator()(size_t x, size_t y, size_t layer = 0);
+
+      /**
+       * @brief Echange deux tuiles dans la carte par leurs positions.
+       *
+       * @throw std::out_of_range si x1 >= map_width || x2 >= map_width || y1 >= map_height || y2 >= map_height || l1 >= nb_layer || l2 >= nb_layer.
+       */
+      void exchange_tiles(size_t x1, size_t x2, size_t y1, size_t y2, size_t l1, size_t l2);
+
+      /**
+       * @brief Permute la ligne 1 avec la ligne 2 de la couche en paramètre.
+       *
+       * @throw std::out_of_range si l1 >= map_height || l2 >= map_height.
+       */
+      void exchange_lines(size_t l1, size_t l2, size_t layer);
+
+      /**
+       * @brief Permute la colonne 1 avec la colonne 2 de la couche en paramètre.
+       *
+       * @throw std::out_of_range si c1 >= map_width || c2 >= map_width
+       */
+      void exchange_columns(size_t c1, size_t c2, size_t layer);
+
+      /**
+       * @brief Permute la couche 1 avec la couche 2.
+       *
+       * @throw std::out_of_range si l1 >= nb_layer || l2 >= nb_layer
+       */
+      void exchange_layers(size_t l1, size_t l2);
 
       /**
        * @brief Inverse l'ordre d'affichage de la tilemap en x.
@@ -150,7 +178,7 @@ namespace topi::object::tilemap {
        * @param zoom, taux d'agrandissement d'affichage de la tilemap courante, par défaut à 1.0.
        *
        * @throw std::runtime_error si tileset vide.
-       * @throw std::invalid_argument si layer >= nb_layer.
+       * @throw std::out_of_range si layer >= nb_layer.
        * @throw std::invalid_argument si zoom <= 0
        */
       void display(render::Renderer* renderer, size_t layer = 0, double x_offset = 0.0, double y_offset = 0.0, double zoom = 1.0) const;
