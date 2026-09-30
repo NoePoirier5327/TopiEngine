@@ -19,7 +19,7 @@ namespace topi::object::tilemap {
        *
        * @param map_width, largeur de la tilemap à instancier.
        * @param map_height, hauteur de la tilemap à instancier.
-       * @param nb_layer, nombre de couche du tilemap, au minimum 1, par défaut à 1.
+       * @param nb_layer, nombre de couche du tilemap, au minimum 1.
        * @param tile_width, largeur des tuiles de la tilemap à instancier, par défaut à 32.
        * @param tile_height, hauteur des tuiles de la tilemap à instancier, par défaut à 32.
        * @param is_x_flipped, détermine si on affiche la dernière tuile en x de la tilemap à gauche ou non, par défaut false donc non.
@@ -30,7 +30,7 @@ namespace topi::object::tilemap {
       ColoredTilemap(
         size_t map_width,
         size_t map_height,
-        size_t nb_layer = 1,
+        size_t nb_layer,
         size_t tile_width = 32,
         size_t tile_height = 32,
         bool is_x_flipped = false,
@@ -59,25 +59,25 @@ namespace topi::object::tilemap {
        * @param tile, tuile à écrire à la position en paramètre.
        * @param x, coordonnée en abssice à laquelle accéder.
        * @param y, coordonnée en ordonnée à laquelle accéder.
-       * @param layer, couche à laquelle accéder, par défaut à 0.
+       * @param layer, couche à laquelle accéder.
        * 
        * @throw std::out_of_range si x >= map_width || y >= map_height || layer >= nb_layer.
        * @throw std::invalid_argument tile inconnus dans le tileset.
        */
-      void set(uint64_t tile, size_t x, size_t y, size_t layer = 0);
+      void set(uint64_t tile, size_t x, size_t y, size_t layer);
 
       /**
        * @brief Accesseur de tuile à la position en paramètre.
        * 
        * @param x, coordonnée en abssice à laquelle accéder.
        * @param y, coordonnée en ordonnée à laquelle accéder.
-       * @param layer, couche à laquelle accéder, par défaut à 0.
+       * @param layer, couche à laquelle accéder.
        *
        * @return valeur de la tuile dans la tilemap.
        *
        * @throw std::out_of_range si x >= map_width || y >= map_height || layer >= nb_layer
        */
-      uint64_t get(size_t x, size_t y, size_t layer = 0) const;
+      uint64_t get(size_t x, size_t y, size_t layer) const;
 
       /**
        * @brief Accesseur de la largeur de la carte.
@@ -109,26 +109,26 @@ namespace topi::object::tilemap {
        *
        * @param x, coordonnée en abssice à laquelle accéder.
        * @param y, coordonnée en ordonnée à laquelle accéder.
-       * @param layer, couche à laquelle accéder, par défaut à 0.
+       * @param layer, couche à laquelle accéder.
        *
        * @return valeur de la tuile dans la tilemap.
        *
        * @throw std::out_of_range si x >= map_width || y >= map_height || layer >= nb_layer
        */
-      uint64_t operator()(size_t x, size_t y, size_t layer = 0) const;
+      uint64_t operator()(size_t x, size_t y, size_t layer) const;
 
       /**
        * @brief Surcharge des parenthèses pour l'accès en écriture à la tilemap courante.
        *
        * @param x, coordonnée en abssice à laquelle accéder.
        * @param y, coordonnée en ordonnée à laquelle accéder.
-       * @param layer, couche à laquelle accéder, par défaut à 0.
+       * @param layer, couche à laquelle accéder.
        *
        * @return référence vers la tuile dans la tilemap.
        *
        * @throw std::out_of_range si x >= map_width || y >= map_height || layer >= nb_layer
        */
-      uint64_t& operator()(size_t x, size_t y, size_t layer = 0);
+      uint64_t& operator()(size_t x, size_t y, size_t layer);
 
       /**
        * @brief Echange deux tuiles dans la carte par leurs positions.
@@ -172,7 +172,7 @@ namespace topi::object::tilemap {
        * @brief Affiche une couche de la tilemap interne via le moteur de rendue du moteur.
        *
        * @param renderer, instance du moteur de rendue.
-       * @param layer, couche à afficher, par défaut à 0.
+       * @param layer, couche à afficher
        * @param x_offset, offset d'affichage en x de la tilemap courante, par défaut à 0.0.
        * @param y_offset, offset d'affichage en y de la tilemap courante, par défaut à 0.0.
        * @param zoom, taux d'agrandissement d'affichage de la tilemap courante, par défaut à 1.0.
@@ -181,7 +181,20 @@ namespace topi::object::tilemap {
        * @throw std::out_of_range si layer >= nb_layer.
        * @throw std::invalid_argument si zoom <= 0
        */
-      void display(render::Renderer* renderer, size_t layer = 0, double x_offset = 0.0, double y_offset = 0.0, double zoom = 1.0) const;
+      void display_layer(render::Renderer* renderer, size_t layer, double x_offset = 0.0, double y_offset = 0.0, double zoom = 1.0) const;
+
+      /**
+       * @brief Affiche l'entièretée des couches de la tilemap courante.
+       *
+       * @param renderer, instance du moteur de rendue.
+       * @param x_offset, offset d'affichage en x, par défaut à 0.0.
+       * @param y_offset, offset d'affichage en y, par défaut à 0.0.
+       * @param zoom, taux d'agrandissement de l'affichage de la tilemap courante, par défaut à 1.0.
+       *
+       * @throw std::runtime_error si tileset vide.
+       * @throw std::invalid_argument si soom <= 0;
+       */
+      void display(render::Renderer *renderer, double x_offset = 0.0, double y_offset = 0.0, double zoom = 1.0) const;
 
       /**
        * @brief Affiche la couche en paramètre de la tilemap courante dans la console.
