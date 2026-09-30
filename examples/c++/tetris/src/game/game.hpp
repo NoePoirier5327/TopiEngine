@@ -36,6 +36,27 @@ class Game {
     void display(topi::render::Renderer *renderer) const;
 
   private:
+    /**
+     * @brief Détermine et renvoie le nombre de ligne pleine dans la carte du jeu.
+     */
+    size_t get_nb_full_line() const;
+
+    /**
+     * @brief Renvoie l'index de la première ligne pleine dans la carte du jeu.
+     * Renvoie -1 sinon.
+     */
+    int get_full_line_index() const;
+
+    /**
+     * @brief Détruis, dans la carte du jeu, la ligne dont l'index est en paramètre.
+     * 
+     * Pour effectuer la destruction, rempli la ligne concernée de tuiles transparentes
+     * et la remonte tout en haut de la carte.
+     *
+     * @param line_index, index de la ligne à détruire.
+     */
+    void destroy_line(size_t line_index);
+
     topi::object::tilemap::ColoredTilemap *map;
     Tetromino *tetromino;
     topi::tools::time::Timer *falling_timer;

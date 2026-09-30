@@ -50,10 +50,68 @@ void Game::update() {
       this->falling_timer->restart();
     }
   }
+
+  for (int index = this->get_full_line_index(); index != -1; index = this->get_full_line_index()) {
+    this->destroy_line(static_cast<size_t>(index));
+  }
 }
 
 void Game::display(topi::render::Renderer *renderer) const {
   renderer->new_colored_filled_rectangle(0, 0, 320, 640, 27, 36, 71, 255);
   this->map->display(renderer, 0);
   this->map->display(renderer, 1);
+}
+
+size_t Game::get_nb_full_line() const {
+  size_t nb_full_line = 0;
+
+  for (size_t line = 0; line < MAP_HEIGHT; ++line) {
+    bool line_is_full = true;
+    size_t column = 0;
+
+    while (column < MAP_WIDTH && line_is_full) {
+      line_is_full = line_is_full & ((*this->map)(column, line, 0) != transparent_tile);
+      ++column;
+    }
+
+    if (line_is_full) {
+      nb_full_line++;
+    }
+  }
+
+  return nb_full_line;
+}
+
+int Game::get_full_line_index() const {
+  int index = -1;
+
+  size_t line = 0;
+  while (line < MAP_HEIGHT && index == -1) {
+    bool line_is_full = true;
+    size_t column = 0;
+
+    while (column < MAP_WIDTH && line_is_full) {
+      line_is_full = line_is_full & ((*this->map)(column, line, 0) != transparent_tile);
+      ++column;
+    }
+
+    if (line_is_full) {
+      index = static_cast<int>(line);
+    }
+
+    ++line;
+  }
+
+  return index;
+}
+
+void Game::destroy_line(size_t line_index) {
+  for (size_t column = 0; column < MAP_WIDTH; ++column) {
+    (*this->map)(column, line_index, 0) = transparent_tile;
+  }
+
+  for (size_t line = line_index + 1; line < MAP_HEIGHT; ++line) {
+    this->map->exchange_lines(line_index, line, 0);
+    line_index ++;
+  }
 }
