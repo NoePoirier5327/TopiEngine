@@ -1,4 +1,5 @@
 #include "colored_tilemap.hpp"
+#include <cstdint>
 #include <iostream>
 #include <stdexcept>
 
@@ -86,6 +87,38 @@ namespace topi::object::tilemap {
 
   void ColoredTilemap::flip_y() {
     this->is_y_flipped = !this->is_y_flipped;
+  }
+
+  void ColoredTilemap::exchange_tiles(size_t x1, size_t x2, size_t y1, size_t y2, size_t l1, size_t l2) {
+    uint64_t temp = (*this)(x1, y1, l1);
+    (*this)(x1, y1, l1) = (*this)(x2, y2, l2);
+    (*this)(x2, y2, l2) = temp;
+  }
+
+  void ColoredTilemap::exchange_lines(size_t l1, size_t l2, size_t layer) {
+    if (l1 == l2) return;
+
+    for (size_t x = 0; x < this->map_width; ++x) {
+      this->exchange_tiles(x, x, l1, l2, layer, layer);
+    }
+  }
+
+  void ColoredTilemap::exchange_columns(size_t c1, size_t c2, size_t layer) {
+    if (c1 == c2) return;
+
+    for (size_t y = 0; y < this->map_height; ++y) {
+      this->exchange_tiles(c1, c2, y, y, layer, layer);
+    }
+  }
+
+  void ColoredTilemap::exchange_layers(size_t l1, size_t l2) {
+    if (l1 == l2) return;
+
+    for (size_t x = 0; x < this->map_width; ++x) {
+      for (size_t y = 0; y < this->map_height; ++y) {
+        this->exchange_tiles(x, x, y, y, l1, l2);
+      }
+    }
   }
 
   void ColoredTilemap::display(render::Renderer *renderer, size_t layer, double x_offset, double y_offset, double zoom) const {

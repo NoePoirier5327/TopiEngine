@@ -131,6 +131,34 @@ namespace topi::object::tilemap {
       uint64_t& operator()(size_t x, size_t y, size_t layer = 0);
 
       /**
+       * @brief Echange deux tuiles dans la carte par leurs positions.
+       *
+       * @throw std::out_of_range si x1 >= map_width || x2 >= map_width || y1 >= map_height || y2 >= map_height || l1 >= nb_layer || l2 >= nb_layer.
+       */
+      void exchange_tiles(size_t x1, size_t x2, size_t y1, size_t y2, size_t l1, size_t l2);
+
+      /**
+       * @brief Permute la ligne 1 avec la ligne 2 de la couche en paramètre.
+       *
+       * @throw std::out_of_range si l1 >= map_height || l2 >= map_height.
+       */
+      void exchange_lines(size_t l1, size_t l2, size_t layer);
+
+      /**
+       * @brief Permute la colonne 1 avec la colonne 2 de la couche en paramètre.
+       *
+       * @throw std::out_of_range si c1 >= map_width || c2 >= map_width
+       */
+      void exchange_columns(size_t c1, size_t c2, size_t layer);
+
+      /**
+       * @brief Permute la couche 1 avec la couche 2.
+       *
+       * @throw std::out_of_range si l1 >= nb_layer || l2 >= nb_layer
+       */
+      void exchange_layers(size_t l1, size_t l2);
+
+      /**
        * @brief Inverse l'ordre d'affichage de la tilemap en x.
        */
       void flip_x();
