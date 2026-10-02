@@ -149,6 +149,8 @@ void Game::tetromino_hard_drop() {
 }
 
 void Game::tetromino_fast_fall() const {
+  if (!this->tetromino_can_fall()) return;
+
   if (this->fast_fall_timer->finished_to_wait()) {
     this->tetromino->fall();
     this->fast_fall_timer->restart();
