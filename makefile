@@ -3,11 +3,12 @@ AR = ar
 ARFLAGS = rcs
 LDFLAGS = -lSDL2
 TESTFLAGS = -lgtest -lgtest_main -lpthread
-CXXFLAGS = 
-CXXFLAGS_BASE = -std=c++17 -pedantic -Wfatal-errors -Wconversion -Wredundant-decls -Wshadow -Wall -Wextra
+CXXFLAGS = -std=c++17 -pedantic -Wfatal-errors -Wconversion -Wredundant-decls -Wshadow -Wall -Wextra
+INCLUDE_DIR = 
 BINFLAGS =
 
-LIB = lib/libtopi.a
+CXXLIB = lib/libtopi.a
+LUALIB = lua/topi.so
 APP = bin/topi
 SRCDIR = src
 SRC = $(shell find $(SRCDIR) -name "*.cpp")
@@ -22,6 +23,8 @@ TESTAPP = bin/run_tests
 
 # On exclut main.o lors de la liaison des tests
 OBJ_NO_MAIN = $(filter-out $(OBJDIR)/main.o, $(OBJ))
+OBJ_LUA_LIB = $(filter-out $(OBJDIR)/main.o, $(OBJ))
+OBJ_CXX_LIB = $(filter-out $(OBJDIR)/main.o $(OBJDIR)/lua.o, $(OBJ))
 
 .PHONY: all run clean debug doc init lib test release
 
@@ -35,15 +38,19 @@ $(APP): $(OBJ)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	@mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $(INCLUDE_DIR) $< -o $@
 
 # Compilation du binaire en tant que librairie.
-$(LIB): $(OBJ_NO_MAIN)
+$(CXXLIB): $(OBJ_CXX_LIB)
 	@mkdir -p lib
 	@mkdir -p include
 	cp -rR $(SRCDIR)/topi/ include
 	find include -type f -name "*.cpp" -delete
 	$(AR) $(ARFLAGS) $@ $^
+
+$(LUALIB): $(OBJ_LUA_LIB)
+	@mkdir -p lua
+	$(CXX) -shared -o $@ $^ $(LDFLAGS)
 
 # Compilation du binaire de test avec GTest
 $(TESTAPP): $(OBJ_NO_MAIN) $(TESTOBJ)
@@ -57,21 +64,22 @@ $(OBJDIR)/$(TESTDIR)/%.o: $(TESTDIR)/%.cpp
 run: 
 	$(APP)
 
-# Compilation du binaire en tant que librairie prête à être distribuée.
-release: CXXFLAGS = $(CXXFLAGS_BASE) -DNDEBUG
-release: clean $(LIB)
+lib: CXXFLAGS += -DNDEBUG
+lib: clean $(CXXLIB)
 
-lib: CXXFLAGS = $(CXXFLAGS_BASE)
-lib: clean $(LIB)
+lua: INCLUDE_DIR += -I/usr/include/lua5.4
+lua: LDFLAGS += -llua5.4
+lua: CXXFLAGS += -DNDEBUG -fPIC
+lua: clean $(LUALIB)
 
-test: CXXFLAGS = $(CXXFLAGS_BASE) -g
+test: CXXFLAGS += -g
 test: clean $(TESTAPP)
 	$(TESTAPP)
 
 clean:
 	find $(OBJDIR) -type f -name "*.o" -delete
 
-debug: CXXFLAGS = $(CXXFLAGS_BASE) -g -DDEBUG
+debug: CXXFLAGS += -g -DDEBUG
 debug: clean $(APP)
 	gdb $(APP)
 
