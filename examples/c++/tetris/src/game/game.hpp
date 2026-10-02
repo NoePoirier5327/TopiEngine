@@ -1,6 +1,7 @@
 #ifndef GAME_HEADER
 #define GAME_HEADER
 
+#include <cstdint>
 #include <topi/topi.hpp>
 #include "tetromino/tetromino.hpp"
 
@@ -60,7 +61,8 @@ class Game {
     topi::object::tilemap::ColoredTilemap *map;
     Tetromino *tetromino;
     topi::tools::time::Timer *falling_timer;
-    double time_to_fall;
+    topi::tools::time::Timer *soft_drop_timer;
+    uint64_t time_to_fall;
 };
 
 #endif // !GAME_HEADER

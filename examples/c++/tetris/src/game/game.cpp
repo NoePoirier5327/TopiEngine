@@ -4,14 +4,16 @@
 Game::Game() {
   this->map = new_map();
   this->tetromino = new Tetromino();
-  this->time_to_fall = 1.0;
+  this->time_to_fall = 800;
   this->falling_timer = new topi::tools::time::Timer(this->time_to_fall);
+  this->soft_drop_timer = new topi::tools::time::Timer(100);
 }
 
 Game::~Game() {
   if (this->map != nullptr) delete this->map;
   if (this->tetromino != nullptr) delete this->tetromino;
   if (this->falling_timer != nullptr) delete this->falling_timer;
+  if (this->soft_drop_timer != nullptr) delete this->soft_drop_timer;
 }
 
 void Game::handle_inputs(const topi::input::InputManager &input_manager) {
@@ -19,7 +21,14 @@ void Game::handle_inputs(const topi::input::InputManager &input_manager) {
     this->tetromino->rotate(this->map);
   }
 
-  if (input_manager.is_just_key_pressed(topi::input::keycode::KEY_DOWN)) {
+  if (input_manager.is_key_down(topi::input::keycode::KEY_DOWN)) {
+    if (this->soft_drop_timer->finished_to_wait()) {
+      this->tetromino->fall();
+      this->soft_drop_timer->restart();
+    }
+  }
+
+  if (input_manager.is_just_key_pressed(topi::input::keycode::KEY_SPACE)) {
     this->tetromino->hard_drop(this->map);
   }
 
