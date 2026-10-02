@@ -45,17 +45,27 @@ void Game::update() {
   this->tetromino_insert_in_current_map_layer();
 
   if (!this->tetromino_can_fall()) {
+    // On lance le minuteur avant de poser définitivement le tetromino dans la carte.
     if (this->insert_timer == nullptr) {
       this->insert_timer = new topi::tools::time::Timer(this->time_before_insertion);
     }
 
+    // S'il a fini, on pose tetromino, on en créer un nouveau
+    // et on vérifie qu'on est pas en game over.
     if (this->insert_timer->finished_to_wait()) {
       this->tetromino_insert_in_final_map_layer();
+
       delete tetromino;
       this->tetromino = new Tetromino();
+
       delete this->insert_timer;
       this->insert_timer = nullptr;
       this->time_before_insertion = 450;
+      
+      this->game_over = !this->tetromino_can_fall();
+
+      // On affiche le nouveau tetromino pour montrer qu'on est dans une situation de game over.
+      this->tetromino_insert_in_current_map_layer();
     }
   } 
   else {
@@ -73,6 +83,10 @@ void Game::update() {
 void Game::display(topi::render::Renderer *renderer) const {
   renderer->new_colored_filled_rectangle(0, 0, 320, 640, 27, 36, 71, 255);
   this->map->display(renderer);
+}
+
+bool Game::game_is_over() const {
+  return this->game_over;
 }
 
 int Game::get_full_line_index() const {

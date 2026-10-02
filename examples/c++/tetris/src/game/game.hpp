@@ -36,6 +36,11 @@ class Game {
      */
     void display(topi::render::Renderer *renderer) const;
 
+    /**
+     * @brief Vérifie si le joueur a perdu.
+     */
+    bool game_is_over() const;
+
   private:
     /**
      * @brief Renvoie l'index de la première ligne pleine dans la carte du jeu.
@@ -101,6 +106,7 @@ class Game {
     uint64_t time_to_fall;
     uint64_t time_before_insertion;
     uint64_t score;
+    bool game_over;
 };
 
 #endif // !GAME_HEADER

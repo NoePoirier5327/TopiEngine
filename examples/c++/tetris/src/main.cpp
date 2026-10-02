@@ -7,11 +7,11 @@ int main() {
   Game game;
 
   topi.on_command().on_input([&game](const topi::input::InputManager &input_manager, double dt) {
-    game.handle_inputs(input_manager);
+    if (!game.game_is_over()) game.handle_inputs(input_manager);
   });
 
   topi.on_command().on_update([&game](double dt) {
-    game.update();
+    if (!game.game_is_over()) game.update();
   });
 
   topi.on_command().on_display([&game](topi::render::Renderer *renderer) {
