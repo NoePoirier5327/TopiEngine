@@ -1,11 +1,13 @@
 #ifndef TIME_HEADER
 #define TIME_HEADER
 
+#include <cstdint>
+
 namespace topi::tools::time {
   /**
-   * @brief Renvoie le temps courant sous forme de secondes.
+   * @brief Renvoie le temps courant sous forme de milisecondes.
    */
-  double now_as_seconds();
+  uint64_t now_as_milliseconds();
 };
 
 #endif // !TIME_HEADER
