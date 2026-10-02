@@ -16,105 +16,55 @@ class Tetromino {
     Tetromino();
 
     /**
-     * @brief Désalloue le tetromino courant.
-     */
-    ~Tetromino();
-
-    /**
-     * @brief Positionne le tetromino courant dans la carte en paramètre.
-     *
-     * Si il peut tomber, alors, on le met au premier plan.
-     * Sinon, ajoute la méthode ajoute le tetromino courant à la couche finale de la carte.
-     *
-     * @return false si le tetromino a été insérer dans le plan finale de la carte, true sinon.
-     */
-    bool insert_in_map(topi::object::tilemap::ColoredTilemap *map) const;
-
-    /**
      * @brief Fait descendre le tetromino courant vers le bas.
      */
     void fall();
 
     /**
-     * @brief Fait descendre immédiatement le tetromino.
-     */
-    void hard_drop(topi::object::tilemap::ColoredTilemap *map);
-
-    /**
      * @brief Transpose la matrice interne au tetromino courant.
-     * Vérifie qu'on peut effectuer une rotation avant de l'appliquer.
+     * Suppose qu'on peut effectuer une rotation.
      */
-    void rotate(topi::object::tilemap::ColoredTilemap *map);
+    void rotate();
 
     /**
      * @brief Bouge le tetromino courant vers la droite.
-     * Vérifie si on peut se déplacer avant de réaliser le déplacement.
+     * Suppose qu'on peut se déplacer vers la droite.
      */
-    void move_right(topi::object::tilemap::ColoredTilemap *map);
+    void move_right();
 
     /**
      * @brief Bouge le tetromino courant vers la gauche.
-     * Vérifie si on peut se déplacer avant le déplacement.
+     * Suppose qu'on peut se déplacer vers la gauche.
      */
-    void move_left(topi::object::tilemap::ColoredTilemap *map);
+    void move_left();
+
+    /**
+     * @brief Renvoie la taille du tetromino courant.
+     */
+    size_t get_size() const;
+
+    /**
+     * @brief Renvoie la position en x du tetromino courant.
+     */
+    int get_pos_x() const;
+
+    /**
+     * @brief Renvoie la position en y du tetromino courant.
+     */
+    int get_pos_y() const;
+
+    /**
+     * @brief Accesseur en lecture de la matrice de contenu du tetromino.
+     *
+     * @throw std::out_of_range si x >= this->size || y >= this->size
+     */
+    TileType operator()(size_t x, size_t y) const;
 
   private:
-    /**
-     * @brief Vérifie dans la carte, que le tetromino peut continuer sa chute.
-     */
-    bool can_fall(topi::object::tilemap::ColoredTilemap *map) const;
-
-    /**
-     * @brief Vérifie si le tetromino courant va toucher le sol ou non.
-     */
-    bool has_reached_ground() const;
-
-    /**
-     * @brief Vérifie la collision vers le bas entre le tétromino courant et ceux en bas de lui sur la carte.
-     * ATTENTION, il faut vérifier d'abord que le tetromino courant n'a pas atteint le sol avant d'appeler cette fonction.
-     */
-    bool has_reached_another_tetromino(topi::object::tilemap::ColoredTilemap *map) const;
-
-    /**
-     * @brief Détermine si le tetromino courant peut se déplacer vers la droite ou non.
-     */
-    bool can_move_right(topi::object::tilemap::ColoredTilemap *map) const;
-
-    /**
-     * @brief Vérifie qu'on n'entre pas en collision avec le mur de droite.
-     */
-    bool collides_with_right_wall() const;
-
-    /**
-     * @brief Vérifie qu'on entre pas en collision à droite avec un autre tetromino.
-     * ATTENTION, on doit d'abord vérifier qu'on n'entre pas en collision avec le mur droit avant (pour éviter les out of range).
-     */
-    bool collides_with_another_tetromino_on_the_right(topi::object::tilemap::ColoredTilemap *map) const;
-
-    /**
-     * @brief Vérifie qu'on peut se déplacer vers la gauche.
-     */
-    bool can_move_left(topi::object::tilemap::ColoredTilemap *map) const;
-
-    /**
-     * @brief Vérifie si on entre en collision ou non avec le mur de gauche.
-     */
-    bool collides_with_left_wall() const;
-
-    /**
-     * @brief Vérifie si on entre en collision avec un autre tetromino sur la gauche.
-     * ATTENTION, on doit d'abord vérifier qu'on n'entre pas en collision avec le mut gauche (pour éviter les out of range).
-     */
-    bool collides_with_another_tetromino_on_the_left(topi::object::tilemap::ColoredTilemap *map) const;
-
-    /**
-     * @brief Vérifie que l'on peut effectuer une rotation dans la carte courante.
-     */
-    bool can_rotate(topi::object::tilemap::ColoredTilemap *map) const;
-
     TileType content[16];
     size_t size;
-    topi::tools::vector::Vector2i *pos;
+    int pos_x;
+    int pos_y;
 };
 
 #endif // !TETROMINO_HEADER

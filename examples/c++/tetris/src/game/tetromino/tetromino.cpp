@@ -1,4 +1,5 @@
 #include "tetromino.hpp"
+#include <stdexcept>
 
 const TileType TETROMINOS[65] = {
   // I
@@ -57,87 +58,15 @@ Tetromino::Tetromino() {
   }
 
   // On détermine la position du tetromino courant sur la grille de jeu.
-  this->pos = new topi::tools::vector::Vector2i((this->size % 2 == 0 ? static_cast<int>(static_cast<float>(MAP_WIDTH - this->size) / 2) : MAP_WIDTH / 2 - 1), MAP_HEIGHT - 1);
-}
-
-Tetromino::~Tetromino() {
-  if (this->pos != nullptr) {
-    delete pos;
-  }
-}
-
-bool Tetromino::insert_in_map(topi::object::tilemap::ColoredTilemap *map) const {
-  bool can_fall = this->can_fall(map);
-
-  for (size_t x = 0; x < this->size; ++x) {
-    for (size_t y = 0; y < this->size; ++y) {
-      if (this->content[x + y * this->size] != transparent_tile) {
-        (*map)(static_cast<size_t>(this->pos->x) + x, static_cast<size_t>(this->pos->y) - y, can_fall ? 1 : 0) = this->content[x + y * this->size];
-      }
-    }
-  }
-
-  return can_fall;
-}
-
-bool Tetromino::can_fall(topi::object::tilemap::ColoredTilemap *map) const {
-  // Si on a déjà atteint le sol, on s'épargne la suite des calculs.
-  if (this->has_reached_ground()) {
-    return false;
-  }
-
-  return !this->has_reached_another_tetromino(map);
+  this->pos_x= (this->size % 2 == 0 ? static_cast<int>(static_cast<float>(MAP_WIDTH - this->size) / 2) : MAP_WIDTH / 2 - 1);
+  this->pos_y = MAP_HEIGHT - 1;
 }
 
 void Tetromino::fall() {
-  this->pos->y -= 1;
+  this->pos_y -= 1;
 }
 
-void Tetromino::hard_drop(topi::object::tilemap::ColoredTilemap *map) {
-  while (this->can_fall(map)) {
-    this->fall();
-  }
-}
-
-bool Tetromino::has_reached_ground() const {
-  bool has_reached_ground = false;
-
-  size_t x = 0;
-  while (x < this->size && !has_reached_ground) {
-    size_t y = 0;
-    while (y < this->size && !has_reached_ground) {
-      if (this->content[x + y * this->size] != transparent_tile) {
-        has_reached_ground = has_reached_ground | (this->pos->y - static_cast<int>(y) <= 0);
-      }
-      ++y;
-    }
-    ++x;
-  }
-
-  return has_reached_ground;
-}
-
-bool Tetromino::has_reached_another_tetromino(topi::object::tilemap::ColoredTilemap *map) const {
-  bool has_reached_another_tetromino = false;
-
-  size_t x = 0;
-  while (x < this->size && !has_reached_another_tetromino) {
-    size_t y = 0;
-    while (y < this->size && !has_reached_another_tetromino) {
-      if (this->content[x + y * this->size] != transparent_tile) {
-        has_reached_another_tetromino = has_reached_another_tetromino | ((*map)(static_cast<size_t>(this->pos->x) + x, static_cast<size_t>(this->pos->y) - y - 1, 0) != transparent_tile);
-      }
-      ++y;
-    }
-    ++x;
-  }
-
-  return has_reached_another_tetromino;
-}
-
-void Tetromino::rotate(topi::object::tilemap::ColoredTilemap *map) {
-  if (!this->can_rotate(map)) return;
-
+void Tetromino::rotate() {
   TileType temp[16];
 
   for (size_t x = 0; x < this->size; ++x) {
@@ -153,133 +82,30 @@ void Tetromino::rotate(topi::object::tilemap::ColoredTilemap *map) {
   }
 }
 
-bool Tetromino::can_rotate(topi::object::tilemap::ColoredTilemap *map) const {
-  bool can_rotate = true;
-
-  size_t x = 0;
-  while (x < this->size && can_rotate) {
-    size_t y = 0;
-    while (y < this->size && can_rotate) {
-      size_t px = this->size - x - 1;
-      size_t py = y;
-      if (this->content[py + this->size * px] != transparent_tile) {
-        // Collision avec les bords de la carte
-        topi::tools::vector::Vector2i final_pos = topi::tools::vector::Vector2i(this->pos->x + static_cast<int>(px), this->pos->y - static_cast<int>(y));
-        can_rotate = can_rotate & (final_pos.x >= 0); // bord droit
-        can_rotate = can_rotate & (final_pos.x <= static_cast<int>(MAP_WIDTH) - 1); // bord gauche
-        
-        // TODO Implémenter collision de rotation entre tetromino qui tombe et tetromino dans la grille.
-      }
-      ++y;
-    }
-    ++x;
-  }
-
-  return can_rotate;
+void Tetromino::move_right() {
+  this->pos_x --;
 }
 
-void Tetromino::move_right(topi::object::tilemap::ColoredTilemap *map) {
-  if (!this->can_move_right(map)) {
-    return;
-  }
-
-  this->pos->x --;
+void Tetromino::move_left() {
+  this->pos_x ++;
 }
 
-void Tetromino::move_left(topi::object::tilemap::ColoredTilemap *map) {
-  if (!this->can_move_left(map)) {
-    return;
-  }
-
-  this->pos->x ++;
+int Tetromino::get_pos_x() const {
+  return this->pos_x;
 }
 
-bool Tetromino::can_move_right(topi::object::tilemap::ColoredTilemap *map) const {
-  // Si on a déjà une collision avec le mur, on s'épargne le reste des calculs.
-  if (this->collides_with_right_wall()) {
-    return false;
-  }
-
-  return !this->collides_with_another_tetromino_on_the_right(map);
+int Tetromino::get_pos_y() const {
+  return this->pos_y;
 }
 
-bool Tetromino::collides_with_another_tetromino_on_the_right(topi::object::tilemap::ColoredTilemap *map) const {
-  bool collides = false;
-
-  size_t x = 0;
-  while (x < this->size && !collides) {
-    size_t y = 0;
-    while (y < this->size && !collides) {
-      if (this->content[x + this->size * y] != transparent_tile) {
-        collides = collides | ((*map)(static_cast<size_t>(this->pos->x) + x - 1, static_cast<size_t>(this->pos->y) - y, 0) != transparent_tile);
-      }
-      ++y;
-    }
-    ++x;
-  }
-
-  return collides;
+size_t Tetromino::get_size() const {
+  return this->size;
 }
 
-bool Tetromino::collides_with_right_wall() const {
-  bool collides = false;
-
-  size_t x = 0;
-  while (x < this->size && !collides) {
-    size_t y = 0;
-    while (y < this->size && !collides) {
-      if (this->content[x + y * this->size] != transparent_tile) {
-        collides = collides | (this->pos->x + static_cast<int>(x) <= 0);
-      }
-      ++y;
-    }
-    ++x;
+TileType Tetromino::operator()(size_t x, size_t y) const {
+  if (x >= this->size || y >= this->size) {
+    throw std::out_of_range("Tetromino content index out of range.");
   }
 
-  return collides;
-}
-
-bool Tetromino::can_move_left(topi::object::tilemap::ColoredTilemap *map) const {
-  if (this->collides_with_left_wall()) {
-    return false;
-  }
-
-  return !this->collides_with_another_tetromino_on_the_left(map);
-}
-
-bool Tetromino::collides_with_left_wall() const {
-  bool collides = false;
-
-  size_t x = 0;
-  while (x < this->size && !collides) {
-    size_t y = 0;
-    while (y < this->size && !collides) {
-      if (this->content[x + y * this->size] != transparent_tile) {
-        collides = collides | (static_cast<size_t>(this->pos->x) + x >= MAP_WIDTH - 1);
-      }
-      ++y;
-    }
-    ++x;
-  }
-
-  return collides;
-}
-
-bool Tetromino::collides_with_another_tetromino_on_the_left(topi::object::tilemap::ColoredTilemap *map) const {
-  bool collides = false;
-
-  size_t x = 0;
-  while (x < this->size && !collides) {
-    size_t y = 0;
-    while (y < this->size && !collides) {
-      if (this->content[x + this->size * y] != transparent_tile) {
-        collides = collides | ((*map)(static_cast<size_t>(this->pos->x) + x + 1, static_cast<size_t>(this->pos->y) - y, 0) != transparent_tile);
-      }
-      ++y;
-    }
-    ++x;
-  }
-
-  return collides;
-
+  return this->content[x + this->size * y];
 }

@@ -38,11 +38,6 @@ class Game {
 
   private:
     /**
-     * @brief Détermine et renvoie le nombre de ligne pleine dans la carte du jeu.
-     */
-    size_t get_nb_full_line() const;
-
-    /**
      * @brief Renvoie l'index de la première ligne pleine dans la carte du jeu.
      * Renvoie -1 sinon.
      */
@@ -58,11 +53,53 @@ class Game {
      */
     void destroy_line(size_t line_index);
 
+    /**
+     * @brief Vérifie que le tetromino peut continuer de descendre dans la carte.
+     */
+    bool tetromino_can_fall() const;
+
+    /**
+     * @brief Fait descendre le tetromino au plus bas possible.
+     */
+    void tetromino_hard_drop() const;
+
+    /**
+     * @brief Fait descendre le tetromino plus rapidement qu'à l'ordinaire.
+     */
+    void tetromino_fast_fall() const;
+
+    /**
+     * @brief Vérifie que le tetromino courant peut se déplacer vers la droite.
+     */
+    bool tetromino_can_move_right() const;
+
+    /**
+     * @brief Vérifie que le tetromino courant peut se déplacer vers la gauche.
+     */
+    bool tetromino_can_move_left() const;
+
+    /**
+     * @brief Vérifie que le tetromino courant peut effectuer une rotation.
+     */
+    bool tetromino_can_rotate() const;
+
+    /**
+     * @brief Appeler à la destruction du tetromino, l'insert dans la carte de manière permanente.
+     */
+    void tetromino_insert_in_final_map_layer() const;
+
+    /**
+     * @brief Insert le tetromino courant dans la carte.
+     */
+    void tetromino_insert_in_current_map_layer() const;
+
     topi::object::tilemap::ColoredTilemap *map;
     Tetromino *tetromino;
     topi::tools::time::Timer *falling_timer;
-    topi::tools::time::Timer *soft_drop_timer;
+    topi::tools::time::Timer *fast_fall_timer;
+    topi::tools::time::Timer *insert_timer;
     uint64_t time_to_fall;
+    uint64_t score;
 };
 
 #endif // !GAME_HEADER
