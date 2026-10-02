@@ -239,7 +239,10 @@ bool Game::tetromino_can_rotate() const {
         can_rotate = can_rotate & (final_pos_x <= static_cast<int>(MAP_WIDTH) - 1); // bord gauche
         can_rotate = can_rotate & (final_pos_y >= 0); // bord inférieur
 
-        // TODO Implémenter collision de rotation entre tetromino qui tombe et tetromino dans la grille.
+        // Collision de rotation entre tetromino qui tombe et tetromino dans la grille.
+        if (can_rotate) {
+          can_rotate = can_rotate & ((*this->map)(static_cast<size_t>(final_pos_x), static_cast<size_t>(final_pos_y), 0) == transparent_tile);
+        }
       }
       ++y;
     }
