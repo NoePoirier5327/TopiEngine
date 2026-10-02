@@ -61,7 +61,7 @@ class Game {
     /**
      * @brief Fait descendre le tetromino au plus bas possible.
      */
-    void tetromino_hard_drop() const;
+    void tetromino_hard_drop();
 
     /**
      * @brief Fait descendre le tetromino plus rapidement qu'à l'ordinaire.
@@ -99,6 +99,7 @@ class Game {
     topi::tools::time::Timer *fast_fall_timer;
     topi::tools::time::Timer *insert_timer;
     uint64_t time_to_fall;
+    uint64_t time_before_insertion;
     uint64_t score;
 };
 

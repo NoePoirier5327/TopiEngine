@@ -7,7 +7,8 @@ Game::Game() {
   this->time_to_fall = 800;
   this->falling_timer = new topi::tools::time::Timer(this->time_to_fall);
   this->fast_fall_timer = new topi::tools::time::Timer(100);
-  this->insert_timer = new topi::tools::time::Timer(50);
+  this->insert_timer = nullptr;
+  this->time_before_insertion = 450;
 }
 
 Game::~Game() {
@@ -44,10 +45,20 @@ void Game::update() {
   this->tetromino_insert_in_current_map_layer();
 
   if (!this->tetromino_can_fall()) {
-    this->tetromino_insert_in_final_map_layer();
-    delete tetromino;
-    this->tetromino = new Tetromino();
-  } else {
+    if (this->insert_timer == nullptr) {
+      this->insert_timer = new topi::tools::time::Timer(this->time_before_insertion);
+    }
+
+    if (this->insert_timer->finished_to_wait()) {
+      this->tetromino_insert_in_final_map_layer();
+      delete tetromino;
+      this->tetromino = new Tetromino();
+      delete this->insert_timer;
+      this->insert_timer = nullptr;
+      this->time_before_insertion = 450;
+    }
+  } 
+  else {
     if (this->falling_timer->finished_to_wait()) {
       this->tetromino->fall();
       this->falling_timer->restart();
@@ -130,7 +141,8 @@ bool Game::tetromino_can_fall() const {
   return can_fall;
 }
 
-void Game::tetromino_hard_drop() const {
+void Game::tetromino_hard_drop() {
+  this->time_before_insertion = 0;
   while (this->tetromino_can_fall()) {
     this->tetromino->fall();
   }
