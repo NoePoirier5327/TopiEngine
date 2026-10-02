@@ -232,10 +232,13 @@ bool Game::tetromino_can_rotate() const {
       size_t py = y;
       if ((*tetromino)(py, px) != transparent_tile) {
         // Collision avec les bords de la carte
-        topi::tools::vector::Vector2i final_pos = topi::tools::vector::Vector2i(this->tetromino->get_pos_x() + static_cast<int>(px), this->tetromino->get_pos_y() - static_cast<int>(y));
-        can_rotate = can_rotate & (final_pos.x >= 0); // bord droit
-        can_rotate = can_rotate & (final_pos.x <= static_cast<int>(MAP_WIDTH) - 1); // bord gauche
-        
+        int final_pos_x = this->tetromino->get_pos_x() + static_cast<int>(px);
+        int final_pos_y = this->tetromino->get_pos_y() - static_cast<int>(y);
+
+        can_rotate = can_rotate & (final_pos_x >= 0); // bord droit
+        can_rotate = can_rotate & (final_pos_x <= static_cast<int>(MAP_WIDTH) - 1); // bord gauche
+        can_rotate = can_rotate & (final_pos_y >= 0); // bord inférieur
+
         // TODO Implémenter collision de rotation entre tetromino qui tombe et tetromino dans la grille.
       }
       ++y;
