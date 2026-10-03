@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdexcept>
 #include <string>
 #include <chrono>
@@ -22,6 +23,12 @@ namespace topi {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
       std::string error = "Failed to init SDL2.\n";
       error += SDL_GetError();
+      throw std::runtime_error(error);
+    }
+
+    if (TTF_Init() < 0) {
+      std::string error = "Failed to init the ttf sdl2 module.\n";
+      error += TTF_GetError();
       throw std::runtime_error(error);
     }
 
@@ -50,7 +57,7 @@ namespace topi {
 
     // On instancie le renderer du moteur.
     try {
-      this->renderer = new render::Renderer(this->window);
+      this->renderer = new render::Renderer(this->window, this->resource_manager);
     } 
     catch (std::runtime_error &e) {
       // On désalloue la fenêtre.
@@ -114,11 +121,18 @@ namespace topi {
       SDL_DestroyWindow(this->window);
     }
 
+    this->resource_manager.unload_everything();
+
+    TTF_Quit();
     SDL_Quit();
     AN_INSTANCE_IS_ALREADY_RUNNING = false;
   }
 
   command::CommandManager& TopiEngine::on_command() {
     return this->command_manager;
+  }
+
+  resource::ResourceManager &TopiEngine::on_resource() {
+    return this->resource_manager;
   }
 }

@@ -5,6 +5,7 @@
 #include "renderer/renderer.hpp"
 #include "command_manager/command_manager.hpp"
 #include "input_manager/input_manager.hpp"
+#include "resource_manager/resource_manager.hpp"
 #include "object/tilemap/tilemap.hpp"
 #include "tools/tools.hpp"
 
@@ -29,7 +30,7 @@ namespace topi {
        * @param height, hauteur de la fenêtre à instancier.
        *
        * @throw std::runtime_error si une instance déjà existante en mémoire.
-       * @throw std::runtime_error si erreur dans le chargement de la sdl2 et la création de sa fenêtre et ses composantes.
+       * @throw std::runtime_error si erreur dans le chargement de la sdl2, la création de sa fenêtre et ses composantes.
        * @throw std::runtime_error si erreur dans la création de l'instance du renderer.
        * @throw std::invalid_argument si erreur dans la création de l'instance du renderer.
       */
@@ -50,15 +51,21 @@ namespace topi {
       void run();
 
       /**
-      * @brief Accesseur de l'interface des commandes du moteur.
+       * @brief Accesseur de l'interface des commandes du moteur.
       */
       command::CommandManager& on_command();
+
+      /**
+       * @brief Accesseur de l'interface de gestions des ressources du moteur.
+       */
+      resource::ResourceManager& on_resource();
 
     private:
       SDL_Window *window;
       render::Renderer *renderer;
       command::CommandManager command_manager;
       input::InputManager input_manager;
+      resource::ResourceManager resource_manager;
   };
 }
 
