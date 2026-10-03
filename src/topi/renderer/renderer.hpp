@@ -44,7 +44,7 @@ namespace topi::render {
       void display();
 
       /**
-       * @brief Créer un nouveau rectangle plein coloré.
+       * @brief Affiche un nouveau rectangle plein coloré.
        *
        * Créer une nouvelle instance de ColoredFilledRectangle et l'ajoute à la file
        * d'objets à afficher.
@@ -57,7 +57,7 @@ namespace topi::render {
        * @param g, taux de vert de la couleur du rectangle.
        * @param a, taux de transparence du rectangle.
        */
-      void new_colored_filled_rectangle(
+      void draw_colored_filled_rectangle(
         int x,
         int y,
         size_t w,
