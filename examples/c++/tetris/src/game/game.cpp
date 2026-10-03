@@ -165,20 +165,10 @@ bool Game::tetromino_can_fall() const {
     while (y < this->tetromino->get_size() && can_fall) {
       if ((*this->tetromino)(x, y) != transparent_tile) {
         can_fall = can_fall & (static_cast<int>(this->tetromino->get_pos_y()) - static_cast<int>(y) > 0);
-      }
-      y++;
-    }
-    x++;
-  }
 
-  if (!can_fall) return false;
-
-  x = 0;
-  while (x < this->tetromino->get_size() && can_fall) {
-    size_t y = 0;
-    while (y < this->tetromino->get_size() && can_fall) {
-      if ((*this->tetromino)(x, y) != transparent_tile) {
-        can_fall = can_fall & ((*this->map)(static_cast<size_t>(this->tetromino->get_pos_x()) + x, static_cast<size_t>(this->tetromino->get_pos_y()) - y - 1, 0) == transparent_tile);
+        if (can_fall) {
+          can_fall = can_fall & ((*this->map)(static_cast<size_t>(this->tetromino->get_pos_x()) + x, static_cast<size_t>(this->tetromino->get_pos_y()) - y - 1, 0) == transparent_tile);
+        }
       }
       y++;
     }
@@ -213,20 +203,10 @@ bool Game::tetromino_can_move_right() const {
     while (y < this->tetromino->get_size() && can_move) {
       if ((*tetromino)(x, y) != transparent_tile) {
         can_move = can_move & (this->tetromino->get_pos_x() + static_cast<int>(x) > 0);
-      }
-      y++;
-    }
-    x++;
-  }
 
-  if (!can_move) return false;
-
-  x = 0;
-  while (x < this->tetromino->get_size() && can_move) {
-    size_t y = 0;
-    while (y < this->tetromino->get_size() && can_move) {
-      if ((*this->tetromino)(x, y) != transparent_tile) {
-        can_move = can_move & ((*this->map)(static_cast<size_t>(this->tetromino->get_pos_x()) + x - 1, static_cast<size_t>(this->tetromino->get_pos_y()) - y, 0) == transparent_tile);
+        if (can_move) {
+          can_move = can_move & ((*this->map)(static_cast<size_t>(this->tetromino->get_pos_x()) + x - 1, static_cast<size_t>(this->tetromino->get_pos_y()) - y, 0) == transparent_tile);
+        }
       }
       y++;
     }
@@ -245,20 +225,10 @@ bool Game::tetromino_can_move_left() const {
     while (y < this->tetromino->get_size() && can_move) {
       if ((*this->tetromino)(x, y) != transparent_tile) {
         can_move = can_move & (static_cast<size_t>(this->tetromino->get_pos_x()) + x < MAP_WIDTH - 1);
-      }
-      y++;
-    }
-    x++;
-  }
 
-  if (!can_move) return false;
-
-  x = 0;
-  while (x < this->tetromino->get_size() && can_move) {
-    size_t y = 0;
-    while (y < this->tetromino->get_size() && can_move) {
-      if ((*tetromino)(x, y) != transparent_tile) {
-        can_move = can_move & ((*this->map)(static_cast<size_t>(this->tetromino->get_pos_x()) + x + 1, static_cast<size_t>(this->tetromino->get_pos_y()) - y, 0) == transparent_tile);
+        if (can_move) {
+          can_move = can_move & ((*this->map)(static_cast<size_t>(this->tetromino->get_pos_x()) + x + 1, static_cast<size_t>(this->tetromino->get_pos_y()) - y, 0) == transparent_tile);
+        }
       }
       y++;
     }
