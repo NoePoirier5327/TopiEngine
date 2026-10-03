@@ -26,13 +26,15 @@ namespace topi::render::items {
        * @param g, taux de vert du texte à afficher.
        * @param b, taux de bleu du texte à afficher.
        * @param a, taux de transparence du texte à afficher.
+       *
+       * @throw std::invalid_argument si text_size < 0
        */
       Text(
         const std::string &text,
         TTF_Font *font,
         int x,
         int y,
-        size_t text_size,
+        double text_size,
         uint8_t r,
         uint8_t g,
         uint8_t b,
@@ -51,7 +53,7 @@ namespace topi::render::items {
       int pos_y;
       TTF_Font *font;
       std::string to_display;
-      size_t size;
+      double size;
   };
 }
 

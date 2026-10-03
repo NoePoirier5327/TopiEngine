@@ -2,7 +2,11 @@
 #include <stdexcept>
 
 namespace topi::render::items {
-  Text::Text(const std::string &text, TTF_Font *_font, int x, int y, size_t text_size, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+  Text::Text(const std::string &text, TTF_Font *_font, int x, int y, double text_size, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+    if (text_size < 0) {
+      throw std::invalid_argument("The text size should'nt be negative.");
+    }
+
     this->color = SDL_Color {r, g, b, a};
     this->font = _font;
     this->pos_x = x;
@@ -30,7 +34,7 @@ namespace topi::render::items {
       throw std::runtime_error(error);
     }
 
-    SDL_Rect dst = SDL_Rect{this->pos_x, this->pos_y, surface->w, surface->h};
+    SDL_Rect dst = SDL_Rect{this->pos_x, this->pos_y, static_cast<int>(static_cast<double>(surface->w) * this->size), static_cast<int>(static_cast<double>(surface->h) * this->size)};
 
     SDL_FreeSurface(surface);
     SDL_RenderCopy(renderer, texture, nullptr, &dst);

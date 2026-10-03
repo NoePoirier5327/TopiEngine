@@ -64,7 +64,7 @@ namespace topi::render {
     }
   }
 
-  void Renderer::draw_text(const std::string &text, resource::FontId font_id, int x, int y, size_t text_size, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+  void Renderer::draw_text(const std::string &text, resource::FontId font_id, int x, int y, double text_size, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     if (a == 0) return;
 
     TTF_Font *font = this->resource_manager.get_font(font_id);

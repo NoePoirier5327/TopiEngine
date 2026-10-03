@@ -85,13 +85,14 @@ namespace topi::render {
        * @param a, taux de transparence du texte à afficher.
        *
        * @throw std::runtime_error si font_id ne renvoie pas à une police chargée.
+       * @throw std::invalid_argument si text_size < 0
        */
       void draw_text(
         const std::string &text,
         resource::FontId font_id,
         int x,
         int y,
-        size_t text_size,
+        double text_size,
         uint8_t r,
         uint8_t g,
         uint8_t b,
