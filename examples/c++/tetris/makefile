@@ -1,6 +1,6 @@
 CXX = g++
 LDDIR = -Llib
-LDFLAGS = -ltopi -lSDL2
+LDFLAGS = -ltopi -lSDL2 -lSDL2_ttf
 INCLDDIR = -Iinclude
 DEBUGFLAGS = -g
 CXXFLAGS = -std=c++17 -pedantic -Wfatal-errors -Wconversion -Wredundant-decls -Wshadow -Wall -Wextra
