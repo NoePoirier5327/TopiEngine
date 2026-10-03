@@ -50,7 +50,7 @@ $(CXXLIB): $(OBJ_CXX_LIB)
 
 $(LUALIB): $(OBJ_LUA_LIB)
 	@mkdir -p lua
-	$(CXX) -shared -o $@ $^ $(LDFLAGS)
+	$(CXX) -o $@ $^ $(LDFLAGS)
 
 # Compilation du binaire de test avec GTest
 $(TESTAPP): $(OBJ_NO_MAIN) $(TESTOBJ)
@@ -68,7 +68,7 @@ lib: CXXFLAGS += -DNDEBUG
 lib: clean $(CXXLIB)
 
 lua: INCLUDE_DIR += -I/usr/include/lua5.4
-lua: LDFLAGS += -llua5.4
+lua: LDFLAGS += -shared -llua5.4
 lua: CXXFLAGS += -DNDEBUG -fPIC
 lua: clean $(LUALIB)
 
