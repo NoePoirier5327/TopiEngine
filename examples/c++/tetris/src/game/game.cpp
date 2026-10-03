@@ -81,7 +81,7 @@ void Game::update() {
 }
 
 void Game::display(topi::render::Renderer *renderer) const {
-  renderer->new_colored_filled_rectangle(0, 0, 320, 640, 27, 36, 71, 255);
+  renderer->draw_colored_filled_rectangle(0, 0, 320, 640, 27, 36, 71, 255);
   this->map->display(renderer);
 }
 

@@ -4,8 +4,10 @@
 #include <SDL2/SDL.h>
 #include <cstdint>
 #include <memory>
+#include <string>
 #include <vector>
 #include "renderable_items/renderable_item.hpp"
+#include "../resource_manager/resource_manager.hpp"
 
 namespace topi::render {
   /**
@@ -21,12 +23,13 @@ namespace topi::render {
        * Instancie le renderer sdl2 sous-jacent à partir de la fenêtre en paramètre.
        * 
        * @param window, fenêtre à partir de laquelle créer le renderer sdl2.
+       * @param resource, référence vers le gestionnaire de ressource du moteur.
        *
        * @throw sdt::invalid_argument si window == nullptr.
        * @throw std::runtime_error si erreur lors de la création du renderer.
        * @throw std::runtime_error si une autre instance tourne.
        */
-      Renderer(SDL_Window* window);
+      Renderer(SDL_Window* window, resource::ResourceManager &resource_manager);
 
       /**
        * @brief Désalloue l'instance courante.
@@ -44,7 +47,7 @@ namespace topi::render {
       void display();
 
       /**
-       * @brief Créer un nouveau rectangle plein coloré.
+       * @brief Affiche un nouveau rectangle plein coloré.
        *
        * Créer une nouvelle instance de ColoredFilledRectangle et l'ajoute à la file
        * d'objets à afficher.
@@ -57,7 +60,7 @@ namespace topi::render {
        * @param g, taux de vert de la couleur du rectangle.
        * @param a, taux de transparence du rectangle.
        */
-      void new_colored_filled_rectangle(
+      void draw_colored_filled_rectangle(
         int x,
         int y,
         size_t w,
@@ -68,8 +71,37 @@ namespace topi::render {
         uint8_t a
       );
 
+      /**
+       * @brief Affiche le texte en paramètre sur l'écran courant.
+       *
+       * @param text, texte à afficher sur la fenêtre de rendu.
+       * @param font_id, police d'affichage du texte à afficher.
+       * @param x, position en x du texte à afficher.
+       * @param y, position en y du texte à afficher.
+       * @param text_size, taille du texte à afficher.
+       * @param r, taux de rouge du texte à afficher.
+       * @param g, taux de vert du texte à afficher.
+       * @param b, taux de bleu du texte à afficher.
+       * @param a, taux de transparence du texte à afficher.
+       *
+       * @throw std::runtime_error si font_id ne renvoie pas à une police chargée.
+       * @throw std::invalid_argument si text_size < 0
+       */
+      void draw_text(
+        const std::string &text,
+        resource::FontId font_id,
+        int x,
+        int y,
+        double text_size,
+        uint8_t r,
+        uint8_t g,
+        uint8_t b,
+        uint8_t a
+      );
+
     private:
       SDL_Renderer *renderer;
+      resource::ResourceManager &resource_manager;
 
       // On utilise unique_ptr pour des raisons de sécurité mémoire car désalloué automatiquement.
       // Et copie le caractère enfant des RenderableItems dans la file.
