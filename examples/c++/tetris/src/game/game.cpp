@@ -1,6 +1,11 @@
 #include "game.hpp"
 #include "tileset/tileset.hpp"
 
+const uint64_t SCORE_FOR_A_TETRO_INSERTED = 10;
+const uint64_t SCORE_FOR_1_AND_2_LINES_DESTROYED = 20;
+const uint64_t SCORE_FOR_3_LINES_DESTROYED = 50;
+const uint64_t SCORE_FOR_4_LINES_DESTROYED = 100;
+
 Game::Game() {
   this->map = new_map();
   this->tetromino = new Tetromino();
@@ -9,6 +14,7 @@ Game::Game() {
   this->fast_fall_timer = new topi::tools::time::Timer(100);
   this->insert_timer = nullptr;
   this->time_before_insertion = 450;
+  this->score = 0;
 }
 
 Game::~Game() {
@@ -66,6 +72,8 @@ void Game::update() {
 
       // On affiche le nouveau tetromino pour montrer qu'on est dans une situation de game over.
       this->tetromino_insert_in_current_map_layer();
+
+      this->score += SCORE_FOR_A_TETRO_INSERTED;
     }
   } 
   else {
@@ -75,14 +83,39 @@ void Game::update() {
     }
   }
 
+  size_t nb_line_destroyed = 0;
   for (int index = this->get_full_line_index(); index != -1; index = this->get_full_line_index()) {
     this->destroy_line(static_cast<size_t>(index));
+    nb_line_destroyed++;
+  }
+
+  // On attribut le score en fonction des lignes détruites.
+  switch (nb_line_destroyed) {
+    case 1:
+      this->score += SCORE_FOR_1_AND_2_LINES_DESTROYED;
+      break;
+
+    case 2:
+      this->score += SCORE_FOR_1_AND_2_LINES_DESTROYED;
+      break;
+
+    case 3:
+      this->score += SCORE_FOR_3_LINES_DESTROYED;
+      break;
+
+    case 4:
+      this->score += SCORE_FOR_4_LINES_DESTROYED;
+      break;
+
+    default:
+      break;
   }
 }
 
 void Game::display(topi::render::Renderer *renderer) const {
   renderer->draw_colored_filled_rectangle(0, 0, 320, 640, 27, 36, 71, 255);
   this->map->display(renderer);
+  renderer->draw_text("Score = " + std::to_string(this->score), 0, 340, 16, 1.0, 255, 255, 255, 255);
 }
 
 bool Game::game_is_over() const {
