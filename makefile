@@ -1,7 +1,7 @@
 CXX = g++
 AR = ar
 ARFLAGS = rcs
-LDFLAGS = -lSDL2
+LDFLAGS = -lSDL2 -lSDL2_ttf
 TESTFLAGS = -lgtest -lgtest_main -lpthread
 CXXFLAGS = -std=c++17 -pedantic -Wfatal-errors -Wconversion -Wredundant-decls -Wshadow -Wall -Wextra
 INCLUDE_DIR = 
@@ -24,15 +24,15 @@ TESTAPP = bin/run_tests
 # On exclut main.o lors de la liaison des tests
 OBJ_NO_MAIN = $(filter-out $(OBJDIR)/main.o, $(OBJ))
 OBJ_LUA_LIB = $(filter-out $(OBJDIR)/main.o, $(OBJ))
+OBJ_WITHOUT_LUA = $(filter-out $(OBJDIR)/lua.o, $(OBJ))
 OBJ_CXX_LIB = $(filter-out $(OBJDIR)/main.o $(OBJDIR)/lua.o, $(OBJ))
 
 .PHONY: all run clean debug doc init lib test release
 
 # Compilation du binaire simple
-all: CXXFLAGS = $(CXXFLAGS_BASE)
 all: $(APP)
 
-$(APP): $(OBJ)
+$(APP): $(OBJ_WITHOUT_LUA)
 	@mkdir -p bin
 	$(CXX) -o $(APP) $^ $(BINFLAGS) $(CXXFLAGS) $(LDFLAGS)
 
