@@ -1,16 +1,17 @@
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_surface.h>
+#include <SDL2/SDL_ttf.h>
 #include <memory>
 #include <stdexcept>
 #include "renderer.hpp"
 #include "renderable_items/rectangle/rectangle.hpp"
-#include "renderable_items/renderable_item.hpp"
-
+#include "renderable_items/text/text.hpp"
 
 namespace topi::render {
   // Nombre d'instance du moteur de rendu tournant en mémoire.
   static bool AN_INSTANCE_IS_ALREADY_RUNNING = false;
 
-
-  Renderer::Renderer(SDL_Window *window) {
+  Renderer::Renderer(SDL_Window *window, resource::ResourceManager &_resource_manager) : resource_manager(_resource_manager) {
     if (window == nullptr) {
       throw std::invalid_argument("The given window should be instanciated to create renderer.");
     }
@@ -61,5 +62,12 @@ namespace topi::render {
     if (a != 0) {
       this->rendering_queue.push_back(std::make_unique<items::ColoredFilledRectangle>(items::ColoredFilledRectangle(x, y, w, h, r, g, b, a)));
     }
+  }
+
+  void Renderer::draw_text(const std::string &text, resource::FontId font_id, int x, int y, size_t text_size, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+    if (a == 0) return;
+
+    TTF_Font *font = this->resource_manager.get_font(font_id);
+    this->rendering_queue.push_back(std::make_unique<items::Text>(items::Text(text, font, x, y, text_size, r, g, b, a)));
   }
 }
