@@ -9,12 +9,13 @@ const uint64_t SCORE_FOR_4_LINES_DESTROYED = 100;
 Game::Game() {
   this->map = new_map();
   this->tetromino = new Tetromino();
-  this->time_to_fall = 800;
+  this->time_to_fall = 600;
   this->falling_timer = new topi::tools::time::Timer(this->time_to_fall);
   this->fast_fall_timer = new topi::tools::time::Timer(100);
   this->insert_timer = nullptr;
   this->time_before_insertion = 450;
   this->score = 0;
+  this->level = 0;
 }
 
 Game::~Game() {
@@ -73,7 +74,7 @@ void Game::update() {
       // On affiche le nouveau tetromino pour montrer qu'on est dans une situation de game over.
       this->tetromino_insert_in_current_map_layer();
 
-      this->score += SCORE_FOR_A_TETRO_INSERTED;
+      this->attribute_score_and_level(SCORE_FOR_A_TETRO_INSERTED);
     }
   } 
   else {
@@ -92,19 +93,19 @@ void Game::update() {
   // On attribut le score en fonction des lignes détruites.
   switch (nb_line_destroyed) {
     case 1:
-      this->score += SCORE_FOR_1_AND_2_LINES_DESTROYED;
+      this->attribute_score_and_level(SCORE_FOR_1_AND_2_LINES_DESTROYED);
       break;
 
     case 2:
-      this->score += SCORE_FOR_1_AND_2_LINES_DESTROYED;
+      this->attribute_score_and_level(SCORE_FOR_1_AND_2_LINES_DESTROYED);
       break;
 
     case 3:
-      this->score += SCORE_FOR_3_LINES_DESTROYED;
+      this->attribute_score_and_level(SCORE_FOR_3_LINES_DESTROYED);
       break;
 
     case 4:
-      this->score += SCORE_FOR_4_LINES_DESTROYED;
+      this->attribute_score_and_level(SCORE_FOR_4_LINES_DESTROYED);
       break;
 
     default:
@@ -116,6 +117,7 @@ void Game::display(topi::render::Renderer *renderer) const {
   renderer->draw_colored_filled_rectangle(0, 0, 320, 640, 27, 36, 71, 255);
   this->map->display(renderer);
   renderer->draw_text("Score = " + std::to_string(this->score), 0, 340, 16, 1.0, 255, 255, 255, 255);
+  renderer->draw_text("Level = " + std::to_string(this->level), 0, 340, 56, 1.0, 255, 255, 255, 255);
 }
 
 bool Game::game_is_over() const {
@@ -291,6 +293,19 @@ void Game::tetromino_insert_in_current_map_layer() const {
       if ((*this->tetromino)(x, y) != transparent_tile) {
         (*this->map)(static_cast<size_t>(this->tetromino->get_pos_x()) + x, static_cast<size_t>(this->tetromino->get_pos_y()) - y, 1) = (*this->tetromino)(x, y);
       }
+    }
+  }
+}
+
+void Game::attribute_score_and_level(uint64_t score_to_attribute) {
+  this->score += score_to_attribute;
+
+  if (this->score % 200 == 0) {
+    this->level ++;
+
+    if (static_cast<int>(this->time_to_fall) - 50 >= 0) {
+      this->time_to_fall -= 50;
+      this->falling_timer->set_seconds_to_wait(this->time_to_fall);
     }
   }
 }

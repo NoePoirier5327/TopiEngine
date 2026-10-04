@@ -98,6 +98,12 @@ class Game {
      */
     void tetromino_insert_in_current_map_layer() const;
 
+    /**
+     * @brief Détermine le score et le niveau qui dépend de lui à un moment donné.
+     * Attribut aussi la vitesse de chute en fonction du niveau.
+     */
+    void attribute_score_and_level(uint64_t score_to_attribute);
+
     topi::object::tilemap::ColoredTilemap *map;
     Tetromino *tetromino;
     topi::tools::time::Timer *falling_timer;
@@ -106,6 +112,7 @@ class Game {
     uint64_t time_to_fall;
     uint64_t time_before_insertion;
     uint64_t score;
+    uint8_t level;
     bool game_over;
 };
 
