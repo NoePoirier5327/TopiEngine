@@ -6,6 +6,7 @@
 #include "renderer.hpp"
 #include "renderable_items/rectangle/rectangle.hpp"
 #include "renderable_items/text/text.hpp"
+#include "renderable_items/line/line.hpp"
 
 namespace topi::render {
   // Nombre d'instance du moteur de rendu tournant en mémoire.
@@ -69,5 +70,11 @@ namespace topi::render {
 
     TTF_Font *font = this->resource_manager.get_font(font_id);
     this->rendering_queue.push_back(std::make_unique<items::Text>(items::Text(text, font, x, y, text_size, r, g, b, a)));
+  }
+
+  void Renderer::draw_line(int x1, int y1, int x2, int y2, size_t thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+    if (a == 0) return;
+
+    this->rendering_queue.push_back(std::make_unique<items::Line>(items::Line(x1, y1, x2, y2, thickness, r, g, b, a)));
   }
 }

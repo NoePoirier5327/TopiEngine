@@ -99,6 +99,31 @@ namespace topi::render {
         uint8_t a
       );
 
+      /**
+       * @brief Affiche une ligne coloré d'une certaine épaisseur.
+       *
+       * @param x1, position en x du premier point de la ligne.
+       * @param y1, position en y du premier point de la ligne.
+       * @param x2, position en x du second point de la ligne.
+       * @param y2, position en y du second point de la ligne.
+       * @param thickness, épaisseur de la ligne à afficher.
+       * @param r, taux de rouge de la ligne à afficher.
+       * @param g, taux de vert de la ligne à afficher.
+       * @param b, taux de bleu de la ligne à afficher.
+       * @param a, taux de transparence de la ligne à afficher.
+       */
+      void draw_line(
+        int x1,
+        int y1,
+        int x2,
+        int y2,
+        size_t thickness,
+        uint8_t r,
+        uint8_t g,
+        uint8_t b,
+        uint8_t a
+      );
+
     private:
       SDL_Renderer *renderer;
       resource::ResourceManager &resource_manager;
