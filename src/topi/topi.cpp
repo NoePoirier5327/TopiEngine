@@ -3,11 +3,10 @@
 #include <stdexcept>
 #include <string>
 #include <chrono>
+#include <thread>
 #include "topi.hpp"
 
 namespace topi {
-  using Clock = std::chrono::high_resolution_clock;
-
   // Vérifie si une instance existe déjà en mémoire.
   static bool AN_INSTANCE_IS_ALREADY_RUNNING = false;
 
@@ -40,7 +39,7 @@ namespace topi {
       SDL_WINDOWPOS_UNDEFINED,
       width,
       height,
-      SDL_WINDOW_SHOWN
+      SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI
     );
 
     // On vérifie sa bonne initialisation.
@@ -81,11 +80,16 @@ namespace topi {
     this->command_manager.process_setup();
 
     // Mise en place de la gestion du delta time.
-    double max_dt = 1.0 / 60.0; // 60 fps
-    auto last_tick = Clock::now();
+    constexpr double TARGET_FPS = 60.0;
+    constexpr double MAX_DT = 1.0 / TARGET_FPS;
+    constexpr auto TARGET_FRAME_TIME = std::chrono::duration<double>(MAX_DT);
+    
+    auto last_tick = std::chrono::steady_clock::now();
 
     // Boucle de jeu
     while (run) {
+      auto frame_start = std::chrono::steady_clock::now();
+
       // Gestion des évenements liés à la SDL.
       while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
@@ -94,14 +98,19 @@ namespace topi {
       }
 
       // On calcul le delta time
-      auto current_tick = Clock::now();
-      double dt = (static_cast<std::chrono::duration<double>>(current_tick - last_tick)).count();
+      auto current_tick = std::chrono::steady_clock::now();
+      std::chrono::duration<double> dt = current_tick - last_tick;
       last_tick = current_tick;
-      dt = std::min(dt, max_dt); // qu'on cape à 1/60
+
+      // On clamp la valeur pour éviter les gros sauts.
+      double dt_seconds = dt.count();
+      if (dt_seconds > MAX_DT) {
+        dt_seconds = MAX_DT;
+      }
 
       // On exécute les commandes du moteur.
-      this->command_manager.process_input(this->input_manager, dt);
-      this->command_manager.process_update(dt);
+      this->command_manager.process_input(this->input_manager, dt_seconds);
+      this->command_manager.process_update(dt_seconds);
       this->command_manager.process_display(this->renderer);
 
       // On met à jour les buffers d'entrées utilisateur.
@@ -109,6 +118,13 @@ namespace topi {
 
       // On refraichi l'affichage.
       this->renderer->display();
+
+      // Si la frame courante s'est exécuté trop rapidement, on attend
+      auto frame_duration = std::chrono::steady_clock::now() - frame_start;
+      auto time_to_sleep = TARGET_FRAME_TIME - frame_duration;
+      if (time_to_sleep.count() > 0.0) {
+        std::this_thread::sleep_for(time_to_sleep);
+      }
     }
   }
 
