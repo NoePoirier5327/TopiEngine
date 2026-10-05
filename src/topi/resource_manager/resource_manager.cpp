@@ -4,21 +4,51 @@
 #include <string>
 
 namespace topi::resource {
-  static bool ALREADY_INSTANCED = false;
+  static ResourceManager *INSTANCE = nullptr;
+
+  /**
+   * @brief Renvoie l'instance interne du gestionnaire de ressources.
+   *
+   * @throw std::runtime_error l'instance n'est pas instanciée.
+   */
+  ResourceManager *access_instance() {
+    if (INSTANCE == nullptr) {
+      throw std::runtime_error("The resource manager should be instanciated before performing this operation.");
+    }
+
+    return INSTANCE;
+  }
+
+  ////////////////////
+  /// Wrapper code ///
+  ////////////////////
+
+  FontId load_font(const std::string &font_path, int font_size) {
+    ResourceManager *instance = access_instance();
+    return instance->load_font(font_path, font_size);
+  }
+
+  void unload_font(FontId font) {
+    ResourceManager *instance = access_instance();
+    instance->unload_font(font);
+  }
+
+  ////////////////////////////
+  /// ResourceManager code ///
+  ////////////////////////////
 
   ResourceManager::ResourceManager() {
-    if (ALREADY_INSTANCED) {
+    if (INSTANCE != nullptr) {
       throw std::runtime_error("Only one instance of the resource manager can run.");
     }
 
     this->next_font_id = 0;
-    ALREADY_INSTANCED = true;
+    INSTANCE = this;
   }
 
   ResourceManager::~ResourceManager() {
     this->unload_everything();
-
-    ALREADY_INSTANCED = false;
+    INSTANCE = nullptr;
   }
 
   FontId ResourceManager::load_font(const std::string &font_path, int size) {
@@ -52,7 +82,7 @@ namespace topi::resource {
     return id->second;
   }
 
-  void ResourceManager::free_font(FontId font_id) {
+  void ResourceManager::unload_font(FontId font_id) {
     // Si la police qu'on cherche à décharger est introuvable,
     // on renvoie une erreur.
     auto id = this->fonts.find(font_id);

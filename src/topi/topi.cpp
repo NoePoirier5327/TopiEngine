@@ -154,8 +154,4 @@ namespace topi {
   void TopiEngine::display(const std::function<void (render::Renderer *)> &display_handler) {
     this->display_function = display_handler;
   }
-
-  resource::ResourceManager &TopiEngine::on_resource() {
-    return this->resource_manager;
-  }
 }

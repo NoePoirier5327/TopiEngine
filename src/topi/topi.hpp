@@ -65,11 +65,6 @@ namespace topi {
        */
       void display(const std::function<void (render::Renderer *)> &display_handler);
 
-      /**
-       * @brief Accesseur de l'interface de gestions des ressources du moteur.
-       */
-      resource::ResourceManager& on_resource();
-
     private:
       SDL_Window *window;
       render::Renderer *renderer;
