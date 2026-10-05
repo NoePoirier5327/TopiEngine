@@ -26,24 +26,24 @@ Game::~Game() {
   if (this->insert_timer != nullptr) delete this->insert_timer;
 }
 
-void Game::handle_inputs(const topi::input::InputManager &input_manager) {
-  if (input_manager.is_just_key_pressed(topi::input::keycode::KEY_UP)) {
+void Game::handle_inputs() {
+  if (topi::input::is_key_pressed(topi::input::keycode::KEY_UP)) {
     if (this->tetromino_can_rotate()) this->tetromino->rotate();
   }
 
-  if (input_manager.is_key_down(topi::input::keycode::KEY_DOWN)) {
+  if (topi::input::is_key_held(topi::input::keycode::KEY_DOWN)) {
     this->tetromino_fast_fall();
   }
 
-  if (input_manager.is_just_key_pressed(topi::input::keycode::KEY_SPACE)) {
+  if (topi::input::is_key_pressed(topi::input::keycode::KEY_SPACE)) {
     this->tetromino_hard_drop();
   }
 
-  if (input_manager.is_just_key_pressed(topi::input::keycode::KEY_RIGHT)) {
+  if (topi::input::is_key_pressed(topi::input::keycode::KEY_RIGHT)) {
     if (this->tetromino_can_move_right()) this->tetromino->move_right();
   }
 
-  if (input_manager.is_just_key_pressed(topi::input::keycode::KEY_LEFT)) {
+  if (topi::input::is_key_pressed(topi::input::keycode::KEY_LEFT)) {
     if (this->tetromino_can_move_left()) this->tetromino->move_left();
   }
 }

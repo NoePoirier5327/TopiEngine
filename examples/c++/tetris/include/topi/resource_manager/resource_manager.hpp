@@ -10,6 +10,28 @@
 namespace topi::resource {
   using FontId = size_t;
   //using TextureId = size_t;
+  
+  /**
+   * @brief Charge une police d'écriture dans le gestionnaire de ressource.
+   *
+   * @param font_path, chemin vers la police à charger.
+   * @param font_size, taille de la police d'écriture à charger.
+   * @return identifiant associé à la police chargée.
+   *
+   * @throw std::runtime_error si impossible de charger la police.
+   * @throw std::runtime_error si l'application n'est pas instanciée.
+   */
+  FontId load_font(const std::string &font_path, int font_size);
+
+  /**
+   * @brief Décharge la police d'écriture en paramètre.
+   *
+   * @param font, police à décharger.
+   *
+   * @throw std::runtime_error si la police qu'on veut décharger est introuvable dans le gestionnaire de ressource.
+   * @throw std::runtime_error si l'application n'est pas chargée.
+   */
+  void unload_font(FontId font);
 
   /**
    * @class ResourceManager
@@ -53,7 +75,7 @@ namespace topi::resource {
        *
        * @throw std::runtime_error si police non trouvée.
        */
-      void free_font(FontId font);
+      void unload_font(FontId font);
 
       /**
        * @brief Décharge toute la mémoire accumulée par le gestionnaire de ressources.

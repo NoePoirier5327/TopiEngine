@@ -24,7 +24,7 @@ class Game {
     /**
      * @brief Gère les entrées claviers du joueur.
      */
-    void handle_inputs(const topi::input::InputManager &input_manager);
+    void handle_inputs();
 
     /**
      * @brief Met à jour la logique du jeu courant.
