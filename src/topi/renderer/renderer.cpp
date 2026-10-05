@@ -61,20 +61,25 @@ namespace topi::render {
   void Renderer::draw_colored_filled_rectangle(int x, int y, size_t w, size_t h, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     // On s'épargne de l'allocation si un objet est inaffichable car complétement transparent.
     if (a != 0) {
-      this->rendering_queue.push_back(std::make_unique<items::ColoredFilledRectangle>(items::ColoredFilledRectangle(x, y, w, h, r, g, b, a)));
+      this->rendering_queue.push_back(std::make_unique<items::ColoredFilledRectangle>(x, y, w, h, r, g, b, a));
     }
+  }
+
+  void Renderer::draw_colored_rectangle(int x, int y, size_t w, size_t h, size_t line_thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+    if (a == 0) return;
+    this->rendering_queue.push_back(std::make_unique<items::ColoredRectangle>(x, y, w, h, line_thickness, r, g, b, a));
   }
 
   void Renderer::draw_text(const std::string &text, resource::FontId font_id, int x, int y, double text_size, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     if (a == 0) return;
 
     TTF_Font *font = this->resource_manager.get_font(font_id);
-    this->rendering_queue.push_back(std::make_unique<items::Text>(items::Text(text, font, x, y, text_size, r, g, b, a)));
+    this->rendering_queue.push_back(std::make_unique<items::Text>(text, font, x, y, text_size, r, g, b, a));
   }
 
   void Renderer::draw_line(int x1, int y1, int x2, int y2, size_t thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     if (a == 0) return;
 
-    this->rendering_queue.push_back(std::make_unique<items::Line>(items::Line(x1, y1, x2, y2, thickness, r, g, b, a)));
+    this->rendering_queue.push_back(std::make_unique<items::Line>(x1, y1, x2, y2, thickness, r, g, b, a));
   }
 }

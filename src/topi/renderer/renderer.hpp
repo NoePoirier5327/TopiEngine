@@ -72,6 +72,31 @@ namespace topi::render {
       );
 
       /**
+       * @brief Affiche un rectangle coloré pas plein.
+       *
+       * @param x, coordonnée en x du haut gauche du rectangle à afficher.
+       * @param y, coordonnée en y du haut gauche du rectangle à afficher.
+       * @param w, largeur du rectangle à afficher.
+       * @param h, hauteur du rectangle à afficher.
+       * @param line_thickness, épaisseur des lignes du rectangle à afficher.
+       * @param r, taux de rouge du rectangle à afficher.
+       * @param g, taux de vert du rectangle à afficher.
+       * @param b, taux de bleu du rectangle à afficher.
+       * @param a, taux de transparence du rectangle à afficher.
+       */
+      void draw_colored_rectangle(
+        int x,
+        int y,
+        size_t w,
+        size_t h,
+        size_t line_thickness,
+        uint8_t r,
+        uint8_t g,
+        uint8_t b,
+        uint8_t a
+      );
+
+      /**
        * @brief Affiche le texte en paramètre sur l'écran courant.
        *
        * @param text, texte à afficher sur la fenêtre de rendu.
