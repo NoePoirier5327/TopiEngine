@@ -18,13 +18,21 @@ int main() {
   tilemap.exchange_lines(0, 3, 0);
   tilemap.exchange_layers(0, 1);
 
-  app.setup([]() {});
-  app.update([](double dt) {});
+  int x = 0;
+  bool is_rectangle_invisible = false;
 
-  app.display([&tilemap](topi::render::Renderer *renderer) {
+  app.setup([]() {});
+
+  app.update([&x, &is_rectangle_invisible](double dt) {
+    if (topi::input::is_key_held(topi::input::keycode::KEY_RIGHT)) x -= 200 * dt;
+    if (topi::input::is_key_held(topi::input::keycode::KEY_LEFT)) x += 200 * dt;
+    if (topi::input::is_key_pressed(topi::input::keycode::KEY_A)) is_rectangle_invisible = !is_rectangle_invisible;
+  });
+
+  app.display([&tilemap, &x, &is_rectangle_invisible](topi::render::Renderer *renderer) {
     tilemap.display_layer(renderer, 0);
     renderer->draw_line(0, 0, 400, 400, 20, 255, 255, 0, 255);
-    renderer->draw_colored_rectangle(200, 200, 400, 100, 10, 0, 255, 0, 255);
+    if (!is_rectangle_invisible) renderer->draw_colored_rectangle(x, 200, 400, 100, 10, 0, 255, 0, 255);
   });
 
   app.run();
