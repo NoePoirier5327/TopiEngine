@@ -77,7 +77,7 @@ namespace topi {
     SDL_Event event;
 
     // On exécute les commandes de mise en place du jeu.
-    this->command_manager.process_setup();
+    this->setup_function();
 
     // Mise en place de la gestion du delta time.
     constexpr double TARGET_FPS = 60.0;
@@ -109,9 +109,8 @@ namespace topi {
       }
 
       // On exécute les commandes du moteur.
-      this->command_manager.process_input(this->input_manager, dt_seconds);
-      this->command_manager.process_update(dt_seconds);
-      this->command_manager.process_display(this->renderer);
+      this->update_function(dt_seconds);
+      this->display_function(this->renderer);
 
       // On met à jour les buffers d'entrées utilisateur.
       this->input_manager.update();
@@ -144,8 +143,16 @@ namespace topi {
     AN_INSTANCE_IS_ALREADY_RUNNING = false;
   }
 
-  command::CommandManager& TopiEngine::on_command() {
-    return this->command_manager;
+  void TopiEngine::setup(const std::function<void ()> &setup_handler) {
+    this->setup_function = setup_handler;
+  }
+
+  void TopiEngine::update(const std::function<void (double)> &update_handler) {
+    this->update_function = update_handler;
+  }
+
+  void TopiEngine::display(const std::function<void (render::Renderer *)> &display_handler) {
+    this->display_function = display_handler;
   }
 
   resource::ResourceManager &TopiEngine::on_resource() {

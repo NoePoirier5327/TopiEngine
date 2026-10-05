@@ -2,8 +2,8 @@
 #define TOPI_HEADER
 
 #include <SDL2/SDL.h>
+#include <functional>
 #include "renderer/renderer.hpp"
-#include "command_manager/command_manager.hpp"
 #include "input_manager/input_manager.hpp"
 #include "resource_manager/resource_manager.hpp"
 #include "object/tilemap/tilemap.hpp"
@@ -51,9 +51,19 @@ namespace topi {
       void run();
 
       /**
-       * @brief Accesseur de l'interface des commandes du moteur.
-      */
-      command::CommandManager& on_command();
+       * @brief Permet d'exécuter du code à l'ouverture de l'application.
+       */
+      void setup(const std::function<void ()> &setup_handler);
+
+      /**
+       * @brief Permet d'exécuter du code de manière périodique en fonction du delta time.
+       */
+      void update(const std::function<void (double)> &update_handler);
+
+      /**
+       * @brief Permet d'exécuter du code à l'affichage de l'application.
+       */
+      void display(const std::function<void (render::Renderer *)> &display_handler);
 
       /**
        * @brief Accesseur de l'interface de gestions des ressources du moteur.
@@ -63,9 +73,12 @@ namespace topi {
     private:
       SDL_Window *window;
       render::Renderer *renderer;
-      command::CommandManager command_manager;
       input::InputManager input_manager;
       resource::ResourceManager resource_manager;
+
+      std::function<void ()> setup_function;
+      std::function<void (double)> update_function;
+      std::function<void (render::Renderer *)> display_function;
   };
 }
 

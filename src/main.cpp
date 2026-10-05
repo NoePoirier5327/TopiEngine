@@ -18,7 +18,10 @@ int main() {
   tilemap.exchange_lines(0, 3, 0);
   tilemap.exchange_layers(0, 1);
 
-  app.on_command().on_display([&tilemap](topi::render::Renderer *renderer) {
+  app.setup([]() {});
+  app.update([](double dt) {});
+
+  app.display([&tilemap](topi::render::Renderer *renderer) {
     tilemap.display_layer(renderer, 0);
     renderer->draw_line(0, 0, 400, 400, 20, 255, 255, 0, 255);
     renderer->draw_colored_rectangle(200, 200, 400, 100, 10, 0, 255, 0, 255);
