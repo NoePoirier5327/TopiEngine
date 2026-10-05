@@ -58,6 +58,20 @@ namespace topi::input::keycode {
 
 namespace topi::input {
   /**
+   * @brief Vérifie si la touche en paramètre est maintenu.
+   *
+   * @throw std::runtime_error si l'application n'est pas instanciée.
+   */
+  bool is_key_held(keycode::TopiKey keycode);
+
+  /**
+   * @brief Vérifie si la touche en paramètre juste appuyé.
+   *
+   * @throw std::runtime_error si l'application n'est pas instanciée.
+   */
+  bool is_key_pressed(keycode::TopiKey keycode);
+
+  /**
    * @class InputManager
    * @brief Gestionnaire des entrées du moteur.
    * Il ne peut y avoir qu'une seule instance de et classe en vie.
@@ -91,7 +105,7 @@ namespace topi::input {
        *
        * @return true si touche pressée, false sinon.
        */
-      bool is_key_down(keycode::TopiKey key_code) const;
+      bool is_key_held(keycode::TopiKey key_code) const;
 
       /**
        * @brief Détermine si la touche en paramètre est appuyé mais pas maintenu par l'utilisateur.
@@ -100,7 +114,7 @@ namespace topi::input {
        *
        * @return true si touche pressé, false sinon.
        */
-      bool is_just_key_pressed(keycode::TopiKey key_code) const;
+      bool is_key_pressed(keycode::TopiKey key_code) const;
 
     private:
       const uint8_t *keyboard_state;
