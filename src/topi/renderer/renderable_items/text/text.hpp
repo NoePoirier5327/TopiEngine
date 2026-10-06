@@ -3,8 +3,6 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
-#include <string>
-#include <cstdint>
 #include "../renderable_item.hpp"
 
 namespace topi::render::items {
@@ -17,43 +15,22 @@ namespace topi::render::items {
       /**
        * @brief Instancie le texte à afficher par le moteur de rendu.
        *
-       * @param text, texte à afficher sur la fenêtre de rendu.
-       * @param font, police d'affichage du texte à afficher.
-       * @param x, position en x du texte à afficher.
-       * @param y, position en y du texte à afficher.
-       * @param text_size, taille du texte à afficher.
-       * @param r, taux de rouge du texte à afficher.
-       * @param g, taux de vert du texte à afficher.
-       * @param b, taux de bleu du texte à afficher.
-       * @param a, taux de transparence du texte à afficher.
-       *
-       * @throw std::invalid_argument si text_size < 0
+       * @param text_texture, texte à afficher sur la fenêtre de rendu.
+       * @param text_position, position du texte à afficher.
        */
       Text(
-        const std::string &text,
-        TTF_Font *font,
-        int x,
-        int y,
-        double text_size,
-        uint8_t r,
-        uint8_t g,
-        uint8_t b,
-        uint8_t a
+        SDL_Texture *text_texture,
+        const SDL_Rect &text_position
       );
 
       /**
        * @brief Interface d'affichage du texte.
-       * @throw std::runtime_error si problème lors des créations des surfaces et textures de rendu.
        */
       void display(SDL_Renderer *renderer) const override;
 
     private:
-      SDL_Color color;
-      int pos_x;
-      int pos_y;
-      TTF_Font *font;
-      std::string to_display;
-      double size;
+      SDL_Texture *texture;
+      SDL_Rect position;
   };
 }
 

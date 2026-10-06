@@ -4,7 +4,6 @@
 #include <cstdlib> 
 #include <SDL2/SDL_render.h>
 
-
 namespace topi::render::items {
   /**
    * @class RenderableItem

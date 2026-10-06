@@ -70,11 +70,32 @@ namespace topi::render {
     this->rendering_queue.push_back(std::make_unique<items::ColoredRectangle>(x, y, w, h, line_thickness, r, g, b, a));
   }
 
-  void Renderer::draw_text(const std::string &text, resource::FontId font_id, int x, int y, double text_size, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+  void Renderer::draw_text(const std::string &text, const std::string &font_path, int x, int y, size_t font_size, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     if (a == 0) return;
 
-    TTF_Font *font = this->resource_manager.get_font(font_id);
-    this->rendering_queue.push_back(std::make_unique<items::Text>(text, font, x, y, text_size, r, g, b, a));
+    TTF_Font *font = this->resource_manager.get_font(font_path, font_size);
+    SDL_Color color = {r, g, b, a};
+    SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(), color);
+
+    if (!surface) {
+      std::string error = "Failed to create the text surface.\n";
+      error += TTF_GetError();
+      throw std::runtime_error(error);
+    }
+
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+    if (!texture) {
+      SDL_FreeSurface(surface);
+
+      std::string error = "Failed to transform the text surface into a texture.\n";
+      error += SDL_GetError();
+      throw std::runtime_error(error);
+    }
+
+    SDL_Rect dst = {x, y, surface->w, surface->h};
+
+    this->rendering_queue.push_back(std::make_unique<items::Text>(texture, dst));
   }
 
   void Renderer::draw_line(int x1, int y1, int x2, int y2, size_t thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
