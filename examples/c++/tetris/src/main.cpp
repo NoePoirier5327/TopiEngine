@@ -5,9 +5,7 @@ int main() {
   topi::TopiEngine app = topi::TopiEngine("Tetris", 640, 640);
   Game game;
 
-  app.setup([]() {
-    topi::resource::load_font("./res/JetBrainsMonoNerdFont-Bold.ttf", 32);
-  });
+  app.setup([]() {});
 
   app.update([&game](double dt) {
     if (!game.game_is_over()) {

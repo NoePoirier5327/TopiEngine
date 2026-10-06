@@ -3,35 +3,23 @@
 
 #include <cstdlib>
 #include <string>
-#include <vector>
 #include <map>
 #include <SDL2/SDL_ttf.h>
 
 namespace topi::resource {
-  using FontId = size_t;
-  //using TextureId = size_t;
-  
   /**
-   * @brief Charge une police d'écriture dans le gestionnaire de ressource.
+   * @brief Représente un doublet font_path et size.
    *
-   * @param font_path, chemin vers la police à charger.
-   * @param font_size, taille de la police d'écriture à charger.
-   * @return identifiant associé à la police chargée.
-   *
-   * @throw std::runtime_error si impossible de charger la police.
-   * @throw std::runtime_error si l'application n'est pas instanciée.
+   * Cette structure est utilisée pour le cache des polices
+   * d'écritures, elle permet la réallocation de police avec une
+   * taille différente si besoin.
    */
-  FontId load_font(const std::string &font_path, int font_size);
+  struct Font {
+    std::string font_path;
+    size_t font_size;
 
-  /**
-   * @brief Décharge la police d'écriture en paramètre.
-   *
-   * @param font, police à décharger.
-   *
-   * @throw std::runtime_error si la police qu'on veut décharger est introuvable dans le gestionnaire de ressource.
-   * @throw std::runtime_error si l'application n'est pas chargée.
-   */
-  void unload_font(FontId font);
+    bool operator<(const Font &other) const;
+  };
 
   /**
    * @class ResourceManager
@@ -61,21 +49,30 @@ namespace topi::resource {
        *
        * @throw std::runtime_error si impossible de charger la police d'écriture.
        */
-      FontId load_font(const std::string &font_path, int font_size);
+      void load_font(const std::string &font_path, size_t font_size);
 
       /**
        * @brief Renvoie la police de caractère en paramètre.
        *
-       * @throw std::runtime_error la police est introuvable.
+       * Si la police demandée n'est pas chargée, alors, la charge dans
+       * le cache et la renvoie.
+       *
+       * @param font_path, chemin vers la police à laquelle on tente d'accéder.
+       * @param font_size, taille de la police à laquelle on tente d'accéder.
+       *
+       * @return pointeur vers la police à afficher.
+       *
+       * @throw std::runtime_error si impossible de charger la police d'écriture.
        */
-      TTF_Font *get_font(FontId font_id) const;
+      TTF_Font *get_font(const std::string &font_path, size_t font_size);
 
       /**
        * @brief Désalloue la police en paramètre.
        *
-       * @throw std::runtime_error si police non trouvée.
+       * Supprime du cache toute occurrence de la police désignée 
+       * par le paramètre.
        */
-      void unload_font(FontId font);
+      void unload_fonts(const std::string &font_path);
 
       /**
        * @brief Décharge toute la mémoire accumulée par le gestionnaire de ressources.
@@ -83,9 +80,44 @@ namespace topi::resource {
       void unload_everything();
 
     private:
-      FontId next_font_id;
-      std::vector<FontId> freed_font_id;
-      std::map<FontId, TTF_Font*> fonts;
+      /**
+       * @brief Gère le cache des polices d'écriture.
+       *
+       * Est appelé au chargement d'une nouvelle police.
+       * Si le nombre total de police ayant le même chemin que celui
+       * en paramètre est dépassé,
+       * alors, on en désalloue un au hasard pour permettre l'allocation de nouveau.
+       *
+       * Sinon, si la taille global autorisée est dépassée,
+       * alors, on en désalloue une au hasard.
+       *
+       * @param font_path, police décriture à vérifier.
+       */
+      void handle_font_cache_size(const std::string &font_path);
+
+      /**
+       * @brief Renvoie le nombre totale de polices chargée dans le cache.
+       */
+      size_t get_global_font_cache_size() const;
+
+      /**
+       * @brief Renvoie le nombre d'occurrence de polices chargée ayant pour source celle en paramètre.
+       */
+      size_t get_nb_of_font_in_cache_by_path(const std::string &font_path) const;
+
+      /**
+       * @brief Décharge la police en paramètre.
+       */
+      void unload_font_by_path_and_size(const Font &font);
+
+      /**
+       * @brief Récupère l'identifiant d'une police ayant le même chemin que celui en paramètre.
+       *
+       * @throw std::runtime_error si aucune police chargée depuis le chemin en paramètre.
+       */
+      const Font *pick_font_by_path(const std::string &font_path) const;
+
+      std::map<Font, TTF_Font*> fonts;
   };
 }
 

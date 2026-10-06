@@ -116,8 +116,8 @@ void Game::update() {
 void Game::display(topi::render::Renderer *renderer) const {
   renderer->draw_colored_filled_rectangle(0, 0, 320, 640, 27, 36, 71, 255);
   this->map->display(renderer);
-  renderer->draw_text("Score = " + std::to_string(this->score), 0, 340, 16, 1.0, 255, 255, 255, 255);
-  renderer->draw_text("Level = " + std::to_string(this->level), 0, 340, 56, 1.0, 255, 255, 255, 255);
+  renderer->draw_text("Score = " + std::to_string(this->score), "./res/JetBrainsMonoNerdFont-Bold.ttf", 340, 16, 32, 255, 255, 255, 255);
+  renderer->draw_text("Level = " + std::to_string(this->level), "./res/JetBrainsMonoNerdFont-Bold.ttf", 340, 56, 32, 255, 255, 255, 255);
 }
 
 bool Game::game_is_over() const {
