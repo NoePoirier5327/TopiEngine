@@ -1,5 +1,4 @@
 #include "text.hpp"
-#include <stdexcept>
 
 namespace topi::render::items {
   Text::Text(SDL_Texture *text_texture, const SDL_Rect &text_position) {
