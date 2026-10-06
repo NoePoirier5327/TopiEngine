@@ -100,24 +100,24 @@ namespace topi::render {
        * @brief Affiche le texte en paramètre sur l'écran courant.
        *
        * @param text, texte à afficher sur la fenêtre de rendu.
-       * @param font_id, police d'affichage du texte à afficher.
+       * @param font_path, chemin vers la police du texte à afficher.
        * @param x, position en x du texte à afficher.
        * @param y, position en y du texte à afficher.
-       * @param text_size, taille du texte à afficher.
+       * @param font_size, taille de la police du texte à afficher.
        * @param r, taux de rouge du texte à afficher.
        * @param g, taux de vert du texte à afficher.
        * @param b, taux de bleu du texte à afficher.
        * @param a, taux de transparence du texte à afficher.
        *
        * @throw std::runtime_error si font_id ne renvoie pas à une police chargée.
-       * @throw std::invalid_argument si text_size < 0
+       * @throw std::runtime_error si impossible de charger la texture de rendu du texte.
        */
       void draw_text(
         const std::string &text,
-        resource::FontId font_id,
+        const std::string &font_path,
         int x,
         int y,
-        double text_size,
+        size_t text_size,
         uint8_t r,
         uint8_t g,
         uint8_t b,
