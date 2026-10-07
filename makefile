@@ -78,7 +78,7 @@ lua: LDFLAGS := $(DEFAULT_LDFLAGS) -shared -llua5.4
 lua: CXXFLAGS := $(DEFAULT_CXXFLAGS) -DNDEBUG -fPIC
 lua: clean $(LUALIB) test
 
-test: CXXFLAGS := $(CXXFLAGS) -g
+test: CXXFLAGS := $(DEFAULT_CXXFLAGS) -g
 test: INCLUDE_DIR := 
 test: LDFLAGS := $(DEFAULT_LDFLAGS)
 test: clean $(TESTAPP)
