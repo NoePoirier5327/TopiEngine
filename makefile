@@ -1,9 +1,11 @@
 CXX = g++
 AR = ar
 ARFLAGS = rcs
-LDFLAGS = -lSDL2 -lSDL2_ttf
+DEFAULT_LDFLAGS = -lSDL2 -lSDL2_ttf
+LDFLAGS = 
 TESTFLAGS = -lgtest -lgtest_main -lpthread
-CXXFLAGS = -std=c++17 -pedantic -Wfatal-errors -Wconversion -Wredundant-decls -Wshadow -Wall -Wextra
+DEFAULT_CXXFLAGS = -std=c++17 -pedantic -Wfatal-errors -Wconversion -Wredundant-decls -Wshadow -Wall -Wextra
+CXXFLAGS = 
 INCLUDE_DIR = 
 BINFLAGS =
 
@@ -26,6 +28,7 @@ OBJ_NO_MAIN = $(filter-out $(OBJDIR)/main.o, $(OBJ))
 OBJ_LUA_LIB = $(filter-out $(OBJDIR)/main.o, $(OBJ))
 OBJ_WITHOUT_LUA = $(filter-out $(OBJDIR)/lua.o, $(OBJ))
 OBJ_CXX_LIB = $(filter-out $(OBJDIR)/main.o $(OBJDIR)/lua.o, $(OBJ))
+OBJ_TEST = $(filter-out $(OBJDIR)/main.o $(OBJDIR)/lua.o, $(OBJ))
 
 .PHONY: all run clean debug doc init lib test release
 
@@ -53,7 +56,7 @@ $(LUALIB): $(OBJ_LUA_LIB)
 	$(CXX) -o $@ $^ $(LDFLAGS)
 
 # Compilation du binaire de test avec GTest
-$(TESTAPP): $(OBJ_NO_MAIN) $(TESTOBJ)
+$(TESTAPP): $(OBJ_TEST) $(TESTOBJ)
 	@mkdir -p bin
 	$(CXX) -o $@ $^ $(BINFLAGS) $(CXXFLAGS) $(LDFLAGS) $(TESTFLAGS)
 
@@ -64,15 +67,18 @@ $(OBJDIR)/$(TESTDIR)/%.o: $(TESTDIR)/%.cpp
 run: 
 	$(APP)
 
-lib: CXXFLAGS += -DNDEBUG
-lib: clean $(CXXLIB)
+lib: CXXFLAGS := $(DEFAULT_CXXFLAGS) -DNDEBUG
+lib: LDFLAGS := $(DEFAULT_LDFLAGS)
+lib: clean $(CXXLIB) test
 
-lua: INCLUDE_DIR += -I/usr/include/lua5.4
-lua: LDFLAGS += -shared -llua5.4
-lua: CXXFLAGS += -DNDEBUG -fPIC
-lua: clean $(LUALIB)
+lua: INCLUDE_DIR := -I/usr/include/lua5.4
+lua: LDFLAGS := $(DEFAULT_LDFLAGS) -shared -llua5.4
+lua: CXXFLAGS := $(DEFAULT_CXXFLAGS) -DNDEBUG -fPIC
+lua: clean $(LUALIB) test
 
-test: CXXFLAGS += -g
+test: CXXFLAGS := $(CXXFLAGS) -g
+test: INCLUDE_DIR := 
+test: LDFLAGS := $(DEFAULT_LDFLAGS)
 test: clean $(TESTAPP)
 	$(TESTAPP)
 
