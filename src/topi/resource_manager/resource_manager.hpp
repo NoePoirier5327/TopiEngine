@@ -8,6 +8,24 @@
 
 namespace topi::resource {
   /**
+   * @brief Charge la police d'écriture en paramètre dans le gestionnaire de ressources.
+   *
+   * @param font_path, chemin vers la police à allouer.
+   * @param font_size, taille de la police à allouer.
+   */
+  void load_font(const std::string &font_path, size_t font_size);
+
+  /**
+   * @brief Décharge la police d'écriture en paramètre.
+   *
+   * Supprime toute occurrence de la police d'écriture dans le cache
+   * du gestionnaire de ressources.
+   *
+   * @param font_path, chemin de la police à décharger.
+   */
+  void unload_font(const std::string &font_path);
+
+  /**
    * @brief Représente un doublet font_path et size.
    *
    * Cette structure est utilisée pour le cache des polices

@@ -5,21 +5,40 @@
 #include <tuple>
 
 namespace topi::resource {
-  static bool IS_INSTANCIATED = false;
+  static ResourceManager *INSTANCE = nullptr;
   const size_t FONT_CACHE_SIZE_PER_ELEMENT = 10;
   const size_t GLOBAL_FONT_CACHE_SIZE = 20; 
 
+  /// Code du wrapper ///
+
+  ResourceManager *get_manager_instance() {
+    if (INSTANCE == nullptr)
+      throw std::runtime_error("The resource manager should be instanciated before performing this action.");
+
+    return INSTANCE;
+  }
+
+  void load_font(const std::string &font_path, size_t font_size) {
+    get_manager_instance()->load_font(font_path, font_size);
+  }
+
+  void unload_font(const std::string &font_path) {
+    get_manager_instance()->unload_fonts(font_path);
+  }
+
+  /// Code de ResourceManager ///
+
   ResourceManager::ResourceManager() {
-    if (IS_INSTANCIATED) {
+    if (INSTANCE != nullptr) {
       throw std::runtime_error("Only one instance of the resource manager can run.");
     }
 
-    IS_INSTANCIATED = true;
+    INSTANCE = this;
   }
 
   ResourceManager::~ResourceManager() {
     this->unload_everything();
-    IS_INSTANCIATED = false;
+    INSTANCE = nullptr;
   }
 
   void ResourceManager::load_font(const std::string &font_path, size_t font_size) {
