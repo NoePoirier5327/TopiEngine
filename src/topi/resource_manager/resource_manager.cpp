@@ -23,7 +23,15 @@ namespace topi::resource {
   }
 
   void unload_font(const std::string &font_path) {
-    get_manager_instance()->unload_fonts(font_path);
+    get_manager_instance()->unload_font(font_path);
+  }
+
+  void unload_font_cache() {
+    get_manager_instance()->unload_every_font();
+  }
+
+  void unload_cache() {
+    get_manager_instance()->unload_everything();
   }
 
   /// Code de ResourceManager ///
@@ -73,7 +81,7 @@ namespace topi::resource {
     return this->fonts[font_id_wrapper->first];
   }
 
-  void ResourceManager::unload_fonts(const std::string &font_path) {
+  void ResourceManager::unload_font(const std::string &font_path) {
     for (auto pair = this->fonts.begin(); pair != this->fonts.end();) {
       if (pair->first.font_path == font_path) {
         TTF_CloseFont(pair->second);
@@ -86,6 +94,10 @@ namespace topi::resource {
   }
 
   void ResourceManager::unload_everything() {
+    this->unload_every_font();
+  }
+
+  void ResourceManager::unload_every_font() {
     // On désalloue les polices chargées.
     for (auto &pair: this->fonts) {
       if (pair.second != nullptr) {
