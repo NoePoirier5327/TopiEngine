@@ -8,6 +8,40 @@
 
 namespace topi::resource {
   /**
+   * @brief Charge la police d'écriture en paramètre dans le gestionnaire de ressources.
+   *
+   * @param font_path, chemin vers la police à allouer.
+   * @param font_size, taille de la police à allouer.
+   *
+   * @throw std::runtime_error si le gestionnaire de ressources n'est pas instancié.
+   */
+  void load_font(const std::string &font_path, size_t font_size);
+
+  /**
+   * @brief Décharge la police d'écriture en paramètre.
+   *
+   * Supprime toute occurrence de la police d'écriture dans le cache
+   * du gestionnaire de ressources.
+   *
+   * @param font_path, chemin de la police à décharger.
+   *
+   * @throw std::runtime_error si le gestionnaire de ressources n'est pas instancié.
+   */
+  void unload_font(const std::string &font_path);
+
+  /**
+   * @brief Décharge le cache des polices de caractères dans le gestionnaire de ressources.
+   */
+  void unload_font_cache();
+
+  /**
+   * @brief Décharge l'entièreté du cache du gestionnaire de ressources.
+   *
+   * @throw std::runtime_error si le gestionnaire de ressources n'est pas instancié.
+   */
+  void unload_cache();
+
+  /**
    * @brief Représente un doublet font_path et size.
    *
    * Cette structure est utilisée pour le cache des polices
@@ -72,12 +106,17 @@ namespace topi::resource {
        * Supprime du cache toute occurrence de la police désignée 
        * par le paramètre.
        */
-      void unload_fonts(const std::string &font_path);
+      void unload_font(const std::string &font_path);
 
       /**
        * @brief Décharge toute la mémoire accumulée par le gestionnaire de ressources.
        */
       void unload_everything();
+
+      /**
+       * @brief Désalloue toutes les polices d'écriture chargées dans le cache.
+       */
+      void unload_every_font();
 
     private:
       /**
