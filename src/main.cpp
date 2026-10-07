@@ -3,7 +3,7 @@
 int main() {
   topi::TopiEngine app = topi::TopiEngine("Test", 400, 400);
 
-  topi::object::tilemap::ColoredTilemap tilemap = topi::object::tilemap::ColoredTilemap(10, 5, 3);
+  topi::game_object::tilemap::ColoredTilemap tilemap = topi::game_object::tilemap::ColoredTilemap(10, 5, 3);
 
   int x = 0;
   bool is_rectangle_invisible = false;

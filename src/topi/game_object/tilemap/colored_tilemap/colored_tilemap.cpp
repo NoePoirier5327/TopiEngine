@@ -3,7 +3,7 @@
 #include <iostream>
 #include <stdexcept>
 
-namespace topi::object::tilemap {
+namespace topi::game_object::tilemap {
   ColoredTilemap::ColoredTilemap(size_t _map_width, size_t _map_height, size_t _nb_layer, size_t _tile_width, size_t _tile_height, bool _is_x_flipped, bool _is_y_flipped) {
     this->map_width = _map_width;
     this->map_height = _map_height;

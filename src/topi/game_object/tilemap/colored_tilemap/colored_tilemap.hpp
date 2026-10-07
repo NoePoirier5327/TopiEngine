@@ -7,7 +7,7 @@
 #include <SDL2/SDL.h>
 #include "../../../renderer/renderer.hpp"
 
-namespace topi::object::tilemap {
+namespace topi::game_object::tilemap {
   /**
    * @class ColoredTilemap
    * @brief Tilemap 3D vue du dessus fait de rectangle de couleur.
