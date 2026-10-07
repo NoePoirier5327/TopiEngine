@@ -150,12 +150,12 @@ namespace topi::render {
       );
 
     private:
-      SDL_Renderer *renderer;
-      resource::ResourceManager &resource_manager;
+      SDL_Renderer *_renderer;
+      resource::ResourceManager &_resource_manager;
 
       // On utilise unique_ptr pour des raisons de sécurité mémoire car désalloué automatiquement.
       // Et copie le caractère enfant des RenderableItems dans la file.
-      std::vector<std::unique_ptr<items::RenderableItem>> rendering_queue;
+      std::vector<std::unique_ptr<items::RenderableItem>> _rendering_queue;
   };
 }
 

@@ -39,11 +39,11 @@ namespace topi::input {
       throw std::runtime_error("There should only be one instance of the input manager running.");
 
     SDL_PumpEvents();
-    this->keyboard_state = SDL_GetKeyboardState(NULL);
+    this->_keyboard_state = SDL_GetKeyboardState(NULL);
 
     // On copie l'état clavier dans son buffer d'entrées précédentes.
     for (int i = 0; i < SDL_NUM_SCANCODES; ++i)
-      this->prev_keyboard_states[i] = this->keyboard_state[i];
+      this->_prev_keyboard_states[i] = this->_keyboard_state[i];
 
     INSTANCE = this;
   }
@@ -54,18 +54,18 @@ namespace topi::input {
 
   void InputManager::update() {
     for (int i = 0; i < SDL_NUM_SCANCODES; ++i)
-      this->prev_keyboard_states[i] = this->keyboard_state[i];
+      this->_prev_keyboard_states[i] = this->_keyboard_state[i];
 
     SDL_PumpEvents();
   }
 
   bool InputManager::is_key_held(keycode::TopiKey key_code) const {
     SDL_Scancode scancode = SDL_GetScancodeFromKey(key_code);
-    return this->keyboard_state[scancode] != 0;
+    return this->_keyboard_state[scancode] != 0;
   }
 
   bool InputManager::is_key_pressed(keycode::TopiKey key_code) const {
     SDL_Scancode scancode = SDL_GetScancodeFromKey(key_code);
-    return this->keyboard_state[scancode] && !this->prev_keyboard_states[scancode];
+    return this->_keyboard_state[scancode] && !this->_prev_keyboard_states[scancode];
   }
 }

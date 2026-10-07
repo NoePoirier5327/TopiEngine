@@ -2,9 +2,9 @@
 #include <iostream>
 
 namespace topi::tools::vector {
-  Vector2i::Vector2i(int _x, int _y) {
-    this->x = _x;
-    this->y = _y;
+  Vector2i::Vector2i(int x, int y) {
+    this->x = x;
+    this->y = y;
   }
 
   Vector2i::Vector2i(const Vector2i &v) {

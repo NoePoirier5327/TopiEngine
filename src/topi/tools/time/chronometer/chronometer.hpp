@@ -26,7 +26,7 @@ namespace topi::tools::time {
       void restart();
 
     private:
-      uint64_t start_time;
+      uint64_t _start_time;
   };
 }
 

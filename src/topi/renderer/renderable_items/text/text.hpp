@@ -29,8 +29,8 @@ namespace topi::render::items {
       void display(SDL_Renderer *renderer) const override;
 
     private:
-      SDL_Texture *texture;
-      SDL_Rect position;
+      SDL_Texture *_text_texture;
+      SDL_Rect _text_position;
   };
 }
 

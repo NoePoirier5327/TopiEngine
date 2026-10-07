@@ -87,9 +87,9 @@ namespace topi::render::items {
       void display(SDL_Renderer *renderer) const override;
 
     private:
-      SDL_Rect rect;
-      SDL_Color color;
-      size_t thickness;
+      SDL_Rect _rect;
+      SDL_Color _color;
+      size_t _line_thickness;
   };
 }
 

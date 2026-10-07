@@ -52,7 +52,7 @@ namespace topi::resource {
   void ResourceManager::load_font(const std::string &font_path, size_t font_size) {
     // Si elle est déjà chargée, on ne fait rien.
     Font target_font = {font_path, font_size};
-    if (this->fonts.find(target_font) != this->fonts.end()) return;
+    if (this->_fonts.find(target_font) != this->_fonts.end()) return;
 
     // On gère les exigences du cache.
     this->handle_font_cache_size(font_path);
@@ -65,27 +65,27 @@ namespace topi::resource {
       throw std::runtime_error(error);
     }
 
-    this->fonts[target_font] = font;
+    this->_fonts[target_font] = font;
   }
 
   TTF_Font *ResourceManager::get_font(const std::string &font_path, size_t font_size) {
     // Si la police est introuvable, alors, on la charge puis la renvoie.
     Font target_font = {font_path, font_size};
-    auto font_id_wrapper = this->fonts.find(target_font);
-    if (font_id_wrapper == this->fonts.end()) {
+    auto font_id_wrapper = this->_fonts.find(target_font);
+    if (font_id_wrapper == this->_fonts.end()) {
       this->load_font(font_path, font_size);
-      font_id_wrapper = this->fonts.find(target_font);
+      font_id_wrapper = this->_fonts.find(target_font);
     }
 
     // Puis, on la renvoie
-    return this->fonts[font_id_wrapper->first];
+    return this->_fonts[font_id_wrapper->first];
   }
 
   void ResourceManager::unload_font(const std::string &font_path) {
-    for (auto pair = this->fonts.begin(); pair != this->fonts.end();) {
+    for (auto pair = this->_fonts.begin(); pair != this->_fonts.end();) {
       if (pair->first.font_path == font_path) {
         TTF_CloseFont(pair->second);
-        pair = this->fonts.erase(pair);
+        pair = this->_fonts.erase(pair);
       }
       else {
         pair++;
@@ -99,14 +99,14 @@ namespace topi::resource {
 
   void ResourceManager::unload_every_font() {
     // On désalloue les polices chargées.
-    for (auto &pair: this->fonts) {
+    for (auto &pair: this->_fonts) {
       if (pair.second != nullptr) {
         TTF_CloseFont(pair.second);
       }
     }
 
     // On désalloue les structures de stockages.
-    this->fonts.clear();
+    this->_fonts.clear();
   }
 
   void ResourceManager::handle_font_cache_size(const std::string &font_path) {
@@ -131,17 +131,17 @@ namespace topi::resource {
 
     // Sinon, on en désalloue un quelconque pour faire de la place
     // et permettre l'allocation.
-    this->unload_font_by_path_and_size(this->fonts.begin()->first);
+    this->unload_font_by_path_and_size(this->_fonts.begin()->first);
   }
 
   size_t ResourceManager::get_global_font_cache_size() const {
-    return this->fonts.size();
+    return this->_fonts.size();
   }
 
   size_t ResourceManager::get_nb_of_font_in_cache_by_path(const std::string &font_path) const {
     size_t nb_font = 0;
 
-    for (const auto &pair : this->fonts) {
+    for (const auto &pair : this->_fonts) {
       if (pair.first.font_path == font_path) nb_font++;
     }
 
@@ -149,15 +149,15 @@ namespace topi::resource {
   }
 
   void ResourceManager::unload_font_by_path_and_size(const Font &font) {
-    auto iterator = this->fonts.find(font);
-    if (iterator == this->fonts.end()) return;
+    auto iterator = this->_fonts.find(font);
+    if (iterator == this->_fonts.end()) return;
 
     TTF_CloseFont(iterator->second);
-    this->fonts.erase(iterator);
+    this->_fonts.erase(iterator);
   }
 
   const Font *ResourceManager::pick_font_by_path(const std::string &font_path) const {
-    for (const auto &iterator : this->fonts) {
+    for (const auto &iterator : this->_fonts) {
       if (iterator.first.font_path == font_path) {
         return &iterator.first;
       }

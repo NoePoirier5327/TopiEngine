@@ -207,15 +207,15 @@ namespace topi::game_object::tilemap {
       void debug_disp(size_t layer) const;
 
     private:
-      std::map<uint64_t, SDL_Color> tileset;
-      uint64_t *tilemap;
-      size_t map_width;
-      size_t map_height;
-      size_t nb_layer;
-      size_t tile_width;
-      size_t tile_height;
-      bool is_x_flipped;
-      bool is_y_flipped;
+      std::map<uint64_t, SDL_Color> _tileset;
+      uint64_t *_tilemap;
+      size_t _map_width;
+      size_t _map_height;
+      size_t _nb_layer;
+      size_t _tile_width;
+      size_t _tile_height;
+      bool _is_x_flipped;
+      bool _is_y_flipped;
   };
 }
 

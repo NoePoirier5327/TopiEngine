@@ -42,12 +42,12 @@ namespace topi::render::items {
       void display(SDL_Renderer *renderer) const override;
 
     private:
-      SDL_Color color;
-      int x1;
-      int x2;
-      int y1;
-      int y2;
-      size_t thickness;
+      SDL_Color _color;
+      int _x1;
+      int _x2;
+      int _y1;
+      int _y2;
+      size_t _thickness;
   };
 };
 

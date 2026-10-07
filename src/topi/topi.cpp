@@ -32,8 +32,8 @@ namespace topi {
     }
 
     // On initialise la fenêtre.
-    this->window = nullptr;
-    this->window = SDL_CreateWindow(
+    this->_window = nullptr;
+    this->_window = SDL_CreateWindow(
       name,
       SDL_WINDOWPOS_UNDEFINED,
       SDL_WINDOWPOS_UNDEFINED,
@@ -43,7 +43,7 @@ namespace topi {
     );
 
     // On vérifie sa bonne initialisation.
-    if (!this->window) {
+    if (!this->_window) {
       // On quitte la sdl.
       SDL_Quit();
 
@@ -52,15 +52,15 @@ namespace topi {
       throw std::runtime_error(error);
     }
 
-    this->renderer = nullptr;
+    this->_renderer = nullptr;
 
     // On instancie le renderer du moteur.
     try {
-      this->renderer = new render::Renderer(this->window, this->resource_manager);
+      this->_renderer = new render::Renderer(this->_window, this->_resource_manager);
     } 
     catch (std::runtime_error &e) {
       // On désalloue la fenêtre.
-      SDL_DestroyWindow(window);
+      SDL_DestroyWindow(this->_window);
 
       // On quitte la sdl.
       SDL_Quit();
@@ -77,7 +77,7 @@ namespace topi {
     SDL_Event event;
 
     // On exécute les commandes de mise en place du jeu.
-    this->setup_function();
+    this->_setup_function();
 
     // Mise en place de la gestion du delta time.
     constexpr double TARGET_FPS = 60.0;
@@ -109,14 +109,14 @@ namespace topi {
       }
 
       // On exécute les commandes du moteur.
-      this->update_function(dt_seconds);
-      this->display_function(this->renderer);
+      this->_update_function(dt_seconds);
+      this->_display_function(this->_renderer);
 
       // On met à jour les buffers d'entrées utilisateur.
-      this->input_manager.update();
+      this->_input_manager.update();
 
       // On refraichi l'affichage.
-      this->renderer->display();
+      this->_renderer->display();
 
       // Si la frame courante s'est exécuté trop rapidement, on attend
       auto frame_duration = std::chrono::steady_clock::now() - frame_start;
@@ -128,15 +128,15 @@ namespace topi {
   }
 
   TopiEngine::~TopiEngine() {
-    if (this->renderer != nullptr) {
-      delete this->renderer;
+    if (this->_renderer != nullptr) {
+      delete this->_renderer;
     }
 
-    if (this->window != nullptr) {
-      SDL_DestroyWindow(this->window);
+    if (this->_window != nullptr) {
+      SDL_DestroyWindow(this->_window);
     }
 
-    this->resource_manager.unload_everything();
+    this->_resource_manager.unload_everything();
 
     TTF_Quit();
     SDL_Quit();
@@ -144,14 +144,14 @@ namespace topi {
   }
 
   void TopiEngine::setup(const std::function<void ()> &setup_handler) {
-    this->setup_function = setup_handler;
+    this->_setup_function = setup_handler;
   }
 
   void TopiEngine::update(const std::function<void (double)> &update_handler) {
-    this->update_function = update_handler;
+    this->_update_function = update_handler;
   }
 
   void TopiEngine::display(const std::function<void (render::Renderer *)> &display_handler) {
-    this->display_function = display_handler;
+    this->_display_function = display_handler;
   }
 }
