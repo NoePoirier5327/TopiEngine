@@ -33,6 +33,8 @@ OBJ_TEST = $(filter-out $(OBJDIR)/main.o $(OBJDIR)/lua.o, $(OBJ))
 .PHONY: all run clean debug doc init lib test release
 
 # Compilation du binaire simple
+all: CXXFLAGS := $(DEFAULT_CXXFLAGS)
+all: LDFLAGS := $(DEFAULT_LDFLAGS)
 all: $(APP)
 
 $(APP): $(OBJ_WITHOUT_LUA)
