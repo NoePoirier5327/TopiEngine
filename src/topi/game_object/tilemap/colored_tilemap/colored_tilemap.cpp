@@ -25,12 +25,12 @@ namespace topi::game_object::tilemap {
     }
   }
 
-  void ColoredTilemap::new_tile(uint64_t tile, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+  void ColoredTilemap::new_tile(uint64_t tile, const topi::type::color::RGBAColor &color) {
     if (this->_tileset.find(tile) != this->_tileset.end()) {
       std::cout << "WARNING : Redefination of the tile `" << tile << "` in the tileset." << std::endl;
     }
 
-    this->_tileset[tile] = SDL_Color {r, g, b, a};
+    this->_tileset[tile] = color;
   }
 
   void ColoredTilemap::set(uint64_t tile, size_t x, size_t y, size_t layer) {
@@ -148,7 +148,6 @@ namespace topi::game_object::tilemap {
           throw std::runtime_error(to_display);
         }
 
-        SDL_Color current_color = this->_tileset.at(current_tile);
         size_t dx = (this->_is_x_flipped ? this->_map_width - x - 1 : x);
         size_t dy = (this->_is_y_flipped ? this->_map_height - y - 1 : y);
 
@@ -157,10 +156,7 @@ namespace topi::game_object::tilemap {
           static_cast<int>(static_cast<double>(dy) * static_cast<double>(this->_tile_height) * zoom + y_offset),
           static_cast<size_t>(static_cast<double>(this->_tile_width) * zoom),
           static_cast<size_t>(static_cast<double>(this->_tile_height) * zoom),
-          current_color.r,
-          current_color.g,
-          current_color.b,
-          current_color.a
+          this->_tileset.at(current_tile)
         );
       }
     }

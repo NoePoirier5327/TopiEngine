@@ -8,6 +8,7 @@
 #include <vector>
 #include "renderable_items/renderable_item.hpp"
 #include "../resource_manager/resource_manager.hpp"
+#include "../type/color/color.hpp"
 
 namespace topi::render {
   /**
@@ -55,20 +56,14 @@ namespace topi::render {
        * @param x, coordonnée en abcisse du haut gauche du rectangle à afficher.
        * @param y, coordonnée en ordonnée du haut gauche du rectangle à afficher.
        * @param w, largeur du rectangle à afficher.
-       * @param h, hauteur du rectangle à afficher.
-       * @param r, taux de rouge de la couleur du rectangle.
-       * @param g, taux de vert de la couleur du rectangle.
-       * @param a, taux de transparence du rectangle.
+       * @param color, couleur au format rgba du rectangle à afficher.
        */
       void draw_colored_filled_rectangle(
         int x,
         int y,
         size_t w,
         size_t h,
-        uint8_t r,
-        uint8_t g,
-        uint8_t b,
-        uint8_t a
+        const type::color::RGBAColor &color
       );
 
       /**
@@ -79,10 +74,7 @@ namespace topi::render {
        * @param w, largeur du rectangle à afficher.
        * @param h, hauteur du rectangle à afficher.
        * @param line_thickness, épaisseur des lignes du rectangle à afficher.
-       * @param r, taux de rouge du rectangle à afficher.
-       * @param g, taux de vert du rectangle à afficher.
-       * @param b, taux de bleu du rectangle à afficher.
-       * @param a, taux de transparence du rectangle à afficher.
+       * @param color, couleur au format gba du rectangle à afficher.
        */
       void draw_colored_rectangle(
         int x,
@@ -90,10 +82,7 @@ namespace topi::render {
         size_t w,
         size_t h,
         size_t line_thickness,
-        uint8_t r,
-        uint8_t g,
-        uint8_t b,
-        uint8_t a
+        const type::color::RGBAColor &color
       );
 
       /**
@@ -104,10 +93,7 @@ namespace topi::render {
        * @param x, position en x du texte à afficher.
        * @param y, position en y du texte à afficher.
        * @param font_size, taille de la police du texte à afficher.
-       * @param r, taux de rouge du texte à afficher.
-       * @param g, taux de vert du texte à afficher.
-       * @param b, taux de bleu du texte à afficher.
-       * @param a, taux de transparence du texte à afficher.
+       * @param color, couleur du texte à afficher
        *
        * @throw std::runtime_error si font_id ne renvoie pas à une police chargée.
        * @throw std::runtime_error si impossible de charger la texture de rendu du texte.
@@ -118,10 +104,7 @@ namespace topi::render {
         int x,
         int y,
         size_t text_size,
-        uint8_t r,
-        uint8_t g,
-        uint8_t b,
-        uint8_t a
+        const topi::type::color::RGBAColor &color
       );
 
       /**
@@ -132,10 +115,7 @@ namespace topi::render {
        * @param x2, position en x du second point de la ligne.
        * @param y2, position en y du second point de la ligne.
        * @param thickness, épaisseur de la ligne à afficher.
-       * @param r, taux de rouge de la ligne à afficher.
-       * @param g, taux de vert de la ligne à afficher.
-       * @param b, taux de bleu de la ligne à afficher.
-       * @param a, taux de transparence de la ligne à afficher.
+       * @param couleur de la ligne à afficher.
        */
       void draw_line(
         int x1,
@@ -143,10 +123,7 @@ namespace topi::render {
         int x2,
         int y2,
         size_t thickness,
-        uint8_t r,
-        uint8_t g,
-        uint8_t b,
-        uint8_t a
+        const topi::type::color::RGBAColor &color
       );
 
     private:

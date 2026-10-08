@@ -58,23 +58,22 @@ namespace topi::render {
     SDL_RenderPresent(this->_renderer);
   }
 
-  void RenderManager::draw_colored_filled_rectangle(int x, int y, size_t w, size_t h, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+  void RenderManager::draw_colored_filled_rectangle(int x, int y, size_t w, size_t h, const topi::type::color::RGBAColor &color) {
     // On s'épargne de l'allocation si un objet est inaffichable car complétement transparent.
-    if (a != 0) {
-      this->_rendering_queue.push_back(std::make_unique<items::ColoredFilledRectangle>(x, y, w, h, r, g, b, a));
+    if (color.a != 0) {
+      this->_rendering_queue.push_back(std::make_unique<items::ColoredFilledRectangle>(x, y, w, h, color));
     }
   }
 
-  void RenderManager::draw_colored_rectangle(int x, int y, size_t w, size_t h, size_t line_thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-    if (a == 0) return;
-    this->_rendering_queue.push_back(std::make_unique<items::ColoredRectangle>(x, y, w, h, line_thickness, r, g, b, a));
+  void RenderManager::draw_colored_rectangle(int x, int y, size_t w, size_t h, size_t line_thickness, const topi::type::color::RGBAColor &color) {
+    if (color.a == 0) return;
+    this->_rendering_queue.push_back(std::make_unique<items::ColoredRectangle>(x, y, w, h, line_thickness, color));
   }
 
-  void RenderManager::draw_text(const std::string &text, const std::string &font_path, int x, int y, size_t font_size, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-    if (a == 0) return;
+  void RenderManager::draw_text(const std::string &text, const std::string &font_path, int x, int y, size_t font_size, const topi::type::color::RGBAColor &color) {
+    if (color.a == 0) return;
 
     TTF_Font *font = this->_resource_manager.get_font(font_path, font_size);
-    SDL_Color color = {r, g, b, a};
     SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(), color);
 
     if (!surface) {
@@ -98,9 +97,9 @@ namespace topi::render {
     this->_rendering_queue.push_back(std::make_unique<items::Text>(texture, dst));
   }
 
-  void RenderManager::draw_line(int x1, int y1, int x2, int y2, size_t thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-    if (a == 0) return;
+  void RenderManager::draw_line(int x1, int y1, int x2, int y2, size_t thickness, const topi::type::color::RGBAColor &color) {
+    if (color.a == 0) return;
 
-    this->_rendering_queue.push_back(std::make_unique<items::Line>(x1, y1, x2, y2, thickness, r, g, b, a));
+    this->_rendering_queue.push_back(std::make_unique<items::Line>(x1, y1, x2, y2, thickness, color));
   }
 }

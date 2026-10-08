@@ -2,8 +2,8 @@
 #include <cmath>
 
 namespace topi::render::items {
-  Line::Line(int x1, int y1, int x2, int y2, size_t thickness, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-    this->_color = SDL_Color {r, g, b, a};
+  Line::Line(int x1, int y1, int x2, int y2, size_t thickness, const topi::type::color::RGBAColor &color) {
+    this->_color = color;
     this->_x1 = x1;
     this->_y1 = y1;
     this->_x2 = x2;

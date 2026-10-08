@@ -6,6 +6,7 @@
 #include <map>
 #include <SDL2/SDL.h>
 #include "../../../render_manager/render_manager.hpp"
+#include "../../../type/color/color.hpp"
 
 namespace topi::game_object::tilemap {
   /**
@@ -46,12 +47,9 @@ namespace topi::game_object::tilemap {
        * @brief Ajoute une nouvelle tuile au tileset interne.
        *
        * @param tile, tuile à ajouter au tileset.
-       * @param r, taux de rouge de la tuile à ajouter.
-       * @param g, taux de vert de la tuile à ajouter.
-       * @param b, taux de bleu de la tuile à ajouter.
-       * @param a, taux de transparence de la tuile à ajouter.
+       * @param color, couleur au format rgba de la tuile à ajouter au tilset.
        */
-      void new_tile(uint64_t tile, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+      void new_tile(uint64_t tile, const topi::type::color::RGBAColor &color);
    
       /**
        * @brief Mutateur de la tilemap courante.
@@ -207,7 +205,7 @@ namespace topi::game_object::tilemap {
       void debug_disp(size_t layer) const;
 
     private:
-      std::map<uint64_t, SDL_Color> _tileset;
+      std::map<uint64_t, topi::type::color::RGBAColor> _tileset;
       uint64_t *_tilemap;
       size_t _map_width;
       size_t _map_height;

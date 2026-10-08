@@ -2,7 +2,7 @@
 #define LINE_HEADER
 
 #include "../renderable_item.hpp"
-#include <cstdint>
+#include "../../../type/color/color.hpp"
 
 namespace topi::render::items {
   /**
@@ -19,10 +19,7 @@ namespace topi::render::items {
        * @param x2, position en x du second point caractérisant la ligne à afficher.
        * @param y2, position en y du second point caractérisant la ligne à afficher.
        * @param thickness, épaisseur de la ligne à afficher.
-       * @param r, taux de rouge de la ligne à afficher.
-       * @param g, taux de vert de la ligne à afficher.
-       * @param b, taux de bleu de la ligne à afficher.
-       * @param a, taux de transparence de la ligne à afficher.
+       * @param color, couleur au format rgba de la ligne à afficher.
        */
       Line(
         int x1,
@@ -30,10 +27,7 @@ namespace topi::render::items {
         int x2,
         int y2,
         size_t thickness,
-        uint8_t r,
-        uint8_t g,
-        uint8_t b,
-        uint8_t a
+        const topi::type::color::RGBAColor &color
       );
 
       /**
@@ -42,7 +36,7 @@ namespace topi::render::items {
       void display(SDL_Renderer *renderer) const override;
 
     private:
-      SDL_Color _color;
+      topi::type::color::RGBAColor _color;
       int _x1;
       int _x2;
       int _y1;
