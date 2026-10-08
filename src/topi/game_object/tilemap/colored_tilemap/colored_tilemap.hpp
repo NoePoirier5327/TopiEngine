@@ -50,6 +50,15 @@ namespace topi::game_object::tilemap {
        * @param color, couleur au format rgba de la tuile à ajouter au tilset.
        */
       void new_tile(uint64_t tile, const topi::type::color::RGBAColor &color);
+
+      /**
+       * @brief Renvoie la couleur, dans le tileset, de la tuile en paramètre.
+       *
+       * @param tile, tuile dont on souhaite connaître la couleur.
+       *
+       * @throw std::runtime_error la tuile est introuvable dans le tileset.
+       */
+      topi::type::color::RGBAColor get_tile_color(uint64_t tile) const;
    
       /**
        * @brief Mutateur de la tilemap courante.

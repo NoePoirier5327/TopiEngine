@@ -33,6 +33,14 @@ namespace topi::game_object::tilemap {
     this->_tileset[tile] = color;
   }
 
+  topi::type::color::RGBAColor ColoredTilemap::get_tile_color(uint64_t tile) const {
+    if (this->_tileset.find(tile) == this->_tileset.end()) {
+      throw std::runtime_error("Couldn't find " + std::to_string(tile) + " tile in the tileset.");
+    }
+
+    return this->_tileset.at(tile);
+  }
+
   void ColoredTilemap::set(uint64_t tile, size_t x, size_t y, size_t layer) {
     if (x >= this->_map_width || y >= this->_map_height || layer >= this->_nb_layer) {
       throw std::out_of_range("Tilemap indexes out of range.");
