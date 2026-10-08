@@ -2,7 +2,7 @@
 #include "../time.hpp"
 #include <cstdint>
 
-namespace topi::tools::time {
+namespace topi::toolkit::time {
   Chronometer::Chronometer() {
     this->_start_time = now_as_milliseconds();
   }

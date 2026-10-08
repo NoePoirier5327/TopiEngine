@@ -2,7 +2,7 @@
 #include "../time.hpp"
 #include <cstdint>
 
-namespace topi::tools::time {
+namespace topi::toolkit::time {
   Timer::Timer(uint64_t secondes_to_wait) {
     this->_beginning = now_as_milliseconds();
     this->_seconds_to_wait = secondes_to_wait;

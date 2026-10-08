@@ -1,7 +1,7 @@
 #ifndef RANDOM_HEADER
 #define RANDOM_HEADER
 
-namespace topi::tools::random {
+namespace topi::toolkit::random {
   /**
    * @brief Renvoie un entier aléatoire entre min et max.
    * Les deux bornes a et b sont incluses.

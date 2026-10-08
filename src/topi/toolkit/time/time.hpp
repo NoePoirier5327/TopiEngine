@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-namespace topi::tools::time {
+namespace topi::toolkit::time {
   /**
    * @brief Renvoie le temps courant sous forme de milisecondes.
    */

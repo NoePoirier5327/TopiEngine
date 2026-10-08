@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-namespace topi::tools::time {
+namespace topi::toolkit::time {
   /**
    * @class Chronometer
    * @brief Chronomètre comptent le temps en seconde écoulé depuis son instanciation.

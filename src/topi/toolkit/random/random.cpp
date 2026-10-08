@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include "random.hpp"
 
-namespace topi::tools::random {
+namespace topi::toolkit::random {
   int randrange(int min, int max) {
     if (min > max) {
       throw std::invalid_argument("The upper boundary should be superior or equal to the lower one.");

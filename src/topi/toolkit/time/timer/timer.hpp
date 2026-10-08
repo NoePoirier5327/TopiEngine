@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-namespace topi::tools::time {
+namespace topi::toolkit::time {
   /**
    * @class Timer
    * @brief Minuteur gérant le temps sous forme de secondes.
