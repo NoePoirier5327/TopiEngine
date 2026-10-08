@@ -5,9 +5,10 @@
 #include <cstdlib>
 #include <map>
 #include <SDL2/SDL.h>
-#include "../../../renderer/renderer.hpp"
+#include "../../../render_manager/render_manager.hpp"
+#include "../../../type/color/color.hpp"
 
-namespace topi::object::tilemap {
+namespace topi::game_object::tilemap {
   /**
    * @class ColoredTilemap
    * @brief Tilemap 3D vue du dessus fait de rectangle de couleur.
@@ -46,12 +47,18 @@ namespace topi::object::tilemap {
        * @brief Ajoute une nouvelle tuile au tileset interne.
        *
        * @param tile, tuile à ajouter au tileset.
-       * @param r, taux de rouge de la tuile à ajouter.
-       * @param g, taux de vert de la tuile à ajouter.
-       * @param b, taux de bleu de la tuile à ajouter.
-       * @param a, taux de transparence de la tuile à ajouter.
+       * @param color, couleur au format rgba de la tuile à ajouter au tilset.
        */
-      void new_tile(uint64_t tile, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+      void new_tile(uint64_t tile, const topi::type::color::RGBAColor &color);
+
+      /**
+       * @brief Renvoie la couleur, dans le tileset, de la tuile en paramètre.
+       *
+       * @param tile, tuile dont on souhaite connaître la couleur.
+       *
+       * @throw std::runtime_error la tuile est introuvable dans le tileset.
+       */
+      topi::type::color::RGBAColor get_tile_color(uint64_t tile) const;
    
       /**
        * @brief Mutateur de la tilemap courante.
@@ -181,7 +188,7 @@ namespace topi::object::tilemap {
        * @throw std::out_of_range si layer >= nb_layer.
        * @throw std::invalid_argument si zoom <= 0
        */
-      void display_layer(render::Renderer* renderer, size_t layer, double x_offset = 0.0, double y_offset = 0.0, double zoom = 1.0) const;
+      void display_layer(render::RenderManager* renderer, size_t layer, double x_offset = 0.0, double y_offset = 0.0, double zoom = 1.0) const;
 
       /**
        * @brief Affiche l'entièretée des couches de la tilemap courante.
@@ -194,7 +201,7 @@ namespace topi::object::tilemap {
        * @throw std::runtime_error si tileset vide.
        * @throw std::invalid_argument si soom <= 0;
        */
-      void display(render::Renderer *renderer, double x_offset = 0.0, double y_offset = 0.0, double zoom = 1.0) const;
+      void display(render::RenderManager *renderer, double x_offset = 0.0, double y_offset = 0.0, double zoom = 1.0) const;
 
       /**
        * @brief Affiche la couche en paramètre de la tilemap courante dans la console.
@@ -207,15 +214,15 @@ namespace topi::object::tilemap {
       void debug_disp(size_t layer) const;
 
     private:
-      std::map<uint64_t, SDL_Color> tileset;
-      uint64_t *tilemap;
-      size_t map_width;
-      size_t map_height;
-      size_t nb_layer;
-      size_t tile_width;
-      size_t tile_height;
-      bool is_x_flipped;
-      bool is_y_flipped;
+      std::map<uint64_t, topi::type::color::RGBAColor> _tileset;
+      uint64_t *_tilemap;
+      size_t _map_width;
+      size_t _map_height;
+      size_t _nb_layer;
+      size_t _tile_width;
+      size_t _tile_height;
+      bool _is_x_flipped;
+      bool _is_y_flipped;
   };
 }
 

@@ -1,7 +1,7 @@
 #ifndef VECTOR_HEADER
 #define VECTOR_HEADER
 
-namespace topi::tools::vector {
+namespace topi::toolkit::vector {
   /**
    * @class Vector2i
    * @brief Vecteur en deux dimensions composés d'entiers. 

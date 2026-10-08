@@ -2,7 +2,7 @@
 #define RECTANGLE_HEADER
 
 #include "../renderable_item.hpp"
-#include "../line/line.hpp"
+#include "../../../type/color/color.hpp"
 #include <SDL2/SDL.h>
 #include <cstdint>
 
@@ -24,20 +24,14 @@ namespace topi::render::items {
        * @param y, position en y du nouveau rectangle.
        * @param w, largeur du nouveau rectangle.
        * @param h, hauteur du nouveau rectangle.
-       * @param r, taux de rouge du nouveau rectangle.
-       * @param g, taux de vert du nouveau rectangle.
-       * @param b, taux de bleu du nouveau rectangle.
-       * @param a, taux de transparence du nouveau rectangle.
+       * @param color, couleur au format rgba du rectangle à afficher.
        */
       ColoredFilledRectangle(
         int x,
         int y,
         size_t w,
         size_t h,
-        uint8_t r,
-        uint8_t g,
-        uint8_t b,
-        uint8_t a
+        const topi::type::color::RGBAColor &color
       );
 
       /**
@@ -46,8 +40,8 @@ namespace topi::render::items {
       void display(SDL_Renderer *renderer) const override;
 
     private:
-      SDL_Color sdl_color;
-      SDL_Rect sdl_rect;
+      topi::type::color::RGBAColor _color;
+      SDL_Rect _rect;
   };
 
   /**
@@ -64,10 +58,7 @@ namespace topi::render::items {
        * @param w, largeur du nouveau rectangle.
        * @param h, hauteur du nouveau rectangle.
        * @param line_thickness, épaisseur des lignes composant le rectangle.
-       * @param r, taux de rouge du nouveau rectangle.
-       * @param g, taux de vert du nouveau rectangle.
-       * @param b, taux de bleu du nouveau rectangle.
-       * @param a, taux de transparence du nouveau rectangle.
+       * @param color, couleur au format rgba du rectangle à afficher.
        */
       ColoredRectangle(
         int x,
@@ -75,10 +66,7 @@ namespace topi::render::items {
         size_t w,
         size_t h,
         size_t line_thickness,
-        uint8_t r,
-        uint8_t g,
-        uint8_t b,
-        uint8_t a
+        const topi::type::color::RGBAColor &color
       );
 
       /**
@@ -87,9 +75,9 @@ namespace topi::render::items {
       void display(SDL_Renderer *renderer) const override;
 
     private:
-      SDL_Rect rect;
-      SDL_Color color;
-      size_t thickness;
+      SDL_Rect _rect;
+      topi::type::color::RGBAColor _color;
+      size_t _line_thickness;
   };
 }
 

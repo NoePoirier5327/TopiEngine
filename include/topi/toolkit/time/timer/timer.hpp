@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-namespace topi::tools::time {
+namespace topi::toolkit::time {
   /**
    * @class Timer
    * @brief Minuteur gérant le temps sous forme de secondes.
@@ -43,8 +43,8 @@ namespace topi::tools::time {
       void wait_to_finish() const;
 
     private:
-      uint64_t beginning;
-      uint64_t seconds_to_wait;
+      uint64_t _beginning;
+      uint64_t _seconds_to_wait;
   };
 };
 
