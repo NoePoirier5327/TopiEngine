@@ -21,6 +21,7 @@ namespace topi::type::color {
   const RGBAColor ORANGE = {251, 108, 38, 255};
   const RGBAColor YELLOW = {255, 255, 0, 255};
   const RGBAColor PINK = {232, 107, 255, 255};
+  const RGBAColor TRANSPARENT = {0, 0, 0, 0};
 }
 
 #endif // !COLOR_HEADER
