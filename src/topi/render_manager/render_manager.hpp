@@ -15,7 +15,7 @@ namespace topi::render {
    * @brief Gestionnaire de rendu pour le moteur de jeu.
    * Une seule instance peut tourner à la fois.
   */
-  class Renderer {
+  class RenderManager {
     public:
       /**
        * @brief Instancie un gestionnaire de rendu pour le moteur topi.
@@ -29,14 +29,14 @@ namespace topi::render {
        * @throw std::runtime_error si erreur lors de la création du renderer.
        * @throw std::runtime_error si une autre instance tourne.
        */
-      Renderer(SDL_Window* window, resource::ResourceManager &resource_manager);
+      RenderManager(SDL_Window* window, resource::ResourceManager &resource_manager);
 
       /**
        * @brief Désalloue l'instance courante.
        *
        * Repasse le nombre d'instance courante à 0 et désalloue le renderer SDL2 interne.
        */
-      ~Renderer();
+      ~RenderManager();
 
       /**
        * @brief Se charge de rafraichir le buffer d'affichage sdl2 interne.

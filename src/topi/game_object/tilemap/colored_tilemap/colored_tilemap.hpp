@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <map>
 #include <SDL2/SDL.h>
-#include "../../../renderer/renderer.hpp"
+#include "../../../render_manager/render_manager.hpp"
 
 namespace topi::game_object::tilemap {
   /**
@@ -181,7 +181,7 @@ namespace topi::game_object::tilemap {
        * @throw std::out_of_range si layer >= nb_layer.
        * @throw std::invalid_argument si zoom <= 0
        */
-      void display_layer(render::Renderer* renderer, size_t layer, double x_offset = 0.0, double y_offset = 0.0, double zoom = 1.0) const;
+      void display_layer(render::RenderManager* renderer, size_t layer, double x_offset = 0.0, double y_offset = 0.0, double zoom = 1.0) const;
 
       /**
        * @brief Affiche l'entièretée des couches de la tilemap courante.
@@ -194,7 +194,7 @@ namespace topi::game_object::tilemap {
        * @throw std::runtime_error si tileset vide.
        * @throw std::invalid_argument si soom <= 0;
        */
-      void display(render::Renderer *renderer, double x_offset = 0.0, double y_offset = 0.0, double zoom = 1.0) const;
+      void display(render::RenderManager *renderer, double x_offset = 0.0, double y_offset = 0.0, double zoom = 1.0) const;
 
       /**
        * @brief Affiche la couche en paramètre de la tilemap courante dans la console.

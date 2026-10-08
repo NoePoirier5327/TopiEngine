@@ -121,7 +121,7 @@ namespace topi::game_object::tilemap {
     }
   }
 
-  void ColoredTilemap::display_layer(render::Renderer *renderer, size_t layer, double x_offset, double y_offset, double zoom) const {
+  void ColoredTilemap::display_layer(render::RenderManager *renderer, size_t layer, double x_offset, double y_offset, double zoom) const {
     if (this->_tileset.empty()) {
       throw std::runtime_error("No tile to display.");
     }
@@ -166,7 +166,7 @@ namespace topi::game_object::tilemap {
     }
   }
 
-  void ColoredTilemap::display(render::Renderer *renderer, double x_offset, double y_offset, double zoom) const {
+  void ColoredTilemap::display(render::RenderManager *renderer, double x_offset, double y_offset, double zoom) const {
     for (size_t layer = 0; layer < this->_nb_layer; ++layer) {
       this->display_layer(renderer, layer, x_offset, y_offset, zoom);
     }

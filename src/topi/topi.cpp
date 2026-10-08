@@ -52,11 +52,11 @@ namespace topi {
       throw std::runtime_error(error);
     }
 
-    this->_renderer = nullptr;
+    this->_render_manager = nullptr;
 
     // On instancie le renderer du moteur.
     try {
-      this->_renderer = new render::Renderer(this->_window, this->_resource_manager);
+      this->_render_manager = new render::RenderManager(this->_window, this->_resource_manager);
     } 
     catch (std::runtime_error &e) {
       // On désalloue la fenêtre.
@@ -110,13 +110,13 @@ namespace topi {
 
       // On exécute les commandes du moteur.
       this->_update_function(dt_seconds);
-      this->_display_function(this->_renderer);
+      this->_display_function(this->_render_manager);
 
       // On met à jour les buffers d'entrées utilisateur.
       this->_input_manager.update();
 
       // On refraichi l'affichage.
-      this->_renderer->display();
+      this->_render_manager->display();
 
       // Si la frame courante s'est exécuté trop rapidement, on attend
       auto frame_duration = std::chrono::steady_clock::now() - frame_start;
@@ -128,8 +128,8 @@ namespace topi {
   }
 
   TopiEngine::~TopiEngine() {
-    if (this->_renderer != nullptr) {
-      delete this->_renderer;
+    if (this->_render_manager != nullptr) {
+      delete this->_render_manager;
     }
 
     if (this->_window != nullptr) {
@@ -151,7 +151,7 @@ namespace topi {
     this->_update_function = update_handler;
   }
 
-  void TopiEngine::display(const std::function<void (render::Renderer *)> &display_handler) {
+  void TopiEngine::display(const std::function<void (render::RenderManager *)> &display_handler) {
     this->_display_function = display_handler;
   }
 }
