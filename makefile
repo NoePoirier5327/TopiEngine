@@ -48,6 +48,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 # Compilation du binaire en tant que librairie.
 $(CXXLIB): $(OBJ_CXX_LIB)
 	@mkdir -p lib
+	@rm -rR include
 	@mkdir -p include
 	cp -rR $(SRCDIR)/topi/ include
 	find include -type f -name "*.cpp" -delete
