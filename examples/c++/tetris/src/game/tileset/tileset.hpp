@@ -10,7 +10,7 @@ const size_t MAP_HEIGHT = 20;
 /**
  * @brief Initialise et renvoie une nouvelle carte vide pour le jeu.
  */
-topi::object::tilemap::ColoredTilemap* new_map();
+topi::game_object::tilemap::ColoredTilemap* new_map();
 
 /**
  * @brief Type de données réprésentant les tuiles de la tilemap du jeu.

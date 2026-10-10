@@ -156,7 +156,7 @@ namespace topi::resource {
        */
       const Font *pick_font_by_path(const std::string &font_path) const;
 
-      std::map<Font, TTF_Font*> fonts;
+      std::map<Font, TTF_Font*> _fonts;
   };
 }
 

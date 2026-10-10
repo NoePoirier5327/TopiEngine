@@ -34,7 +34,7 @@ class Game {
     /**
      * @brief Met à jour l'affichage du jeu.
      */
-    void display(topi::render::Renderer *renderer) const;
+    void display(topi::render::RenderManager *renderer) const;
 
     /**
      * @brief Vérifie si le joueur a perdu.
@@ -104,16 +104,16 @@ class Game {
      */
     void attribute_score_and_level(uint64_t score_to_attribute);
 
-    topi::object::tilemap::ColoredTilemap *map;
-    Tetromino *tetromino;
-    topi::tools::time::Timer *falling_timer;
-    topi::tools::time::Timer *fast_fall_timer;
-    topi::tools::time::Timer *insert_timer;
-    uint64_t time_to_fall;
-    uint64_t time_before_insertion;
-    uint64_t score;
-    uint8_t level;
-    bool game_over;
+    topi::game_object::tilemap::ColoredTilemap *_map;
+    Tetromino *_tetromino;
+    topi::toolkit::time::Timer *_falling_timer;
+    topi::toolkit::time::Timer *_fast_fall_timer;
+    topi::toolkit::time::Timer *_insert_timer;
+    uint64_t _time_to_fall;
+    uint64_t _time_before_insertion;
+    uint64_t _score;
+    uint8_t _level;
+    bool _game_over;
 };
 
 #endif // !GAME_HEADER

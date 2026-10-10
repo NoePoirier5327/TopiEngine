@@ -61,10 +61,10 @@ class Tetromino {
     TileType operator()(size_t x, size_t y) const;
 
   private:
-    TileType content[16];
-    size_t size;
-    int pos_x;
-    int pos_y;
+    TileType _content[16];
+    size_t _size;
+    int _pos_x;
+    int _pos_y;
 };
 
 #endif // !TETROMINO_HEADER

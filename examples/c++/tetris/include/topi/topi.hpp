@@ -3,11 +3,11 @@
 
 #include <SDL2/SDL.h>
 #include <functional>
-#include "renderer/renderer.hpp"
+#include "render_manager/render_manager.hpp"
 #include "input_manager/input_manager.hpp"
 #include "resource_manager/resource_manager.hpp"
-#include "object/tilemap/tilemap.hpp"
-#include "tools/tools.hpp"
+#include "game_object/tilemap/tilemap.hpp"
+#include "toolkit/toolkit.hpp"
 
 
 namespace topi {
@@ -63,17 +63,17 @@ namespace topi {
       /**
        * @brief Permet d'exécuter du code à l'affichage de l'application.
        */
-      void display(const std::function<void (render::Renderer *)> &display_handler);
+      void display(const std::function<void (render::RenderManager *)> &display_handler);
 
     private:
-      SDL_Window *window;
-      render::Renderer *renderer;
-      input::InputManager input_manager;
-      resource::ResourceManager resource_manager;
+      SDL_Window *_window;
+      render::RenderManager *_render_manager;
+      input::InputManager _input_manager;
+      resource::ResourceManager _resource_manager;
 
-      std::function<void ()> setup_function;
-      std::function<void (double)> update_function;
-      std::function<void (render::Renderer *)> display_function;
+      std::function<void ()> _setup_function;
+      std::function<void (double)> _update_function;
+      std::function<void (render::RenderManager *)> _display_function;
   };
 }
 

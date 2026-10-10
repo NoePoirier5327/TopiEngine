@@ -117,8 +117,8 @@ namespace topi::input {
       bool is_key_pressed(keycode::TopiKey key_code) const;
 
     private:
-      const uint8_t *keyboard_state;
-      uint8_t prev_keyboard_states[SDL_NUM_SCANCODES];
+      const uint8_t *_keyboard_state;
+      uint8_t _prev_keyboard_states[SDL_NUM_SCANCODES];
   };
 }
 

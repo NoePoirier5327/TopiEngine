@@ -42,8 +42,8 @@ const size_t TETROMINOS_SIZE[7] = {4, 2, 3, 3, 3, 3, 3};
 
 
 Tetromino::Tetromino() {
-  uint64_t tetro_type = static_cast<uint64_t>(topi::tools::random::randrange(0, 6));
-  this->size = TETROMINOS_SIZE[tetro_type];
+  uint64_t tetro_type = static_cast<uint64_t>(topi::toolkit::random::randrange(0, 6));
+  this->_size = TETROMINOS_SIZE[tetro_type];
 
   // On calcul la position du tetromino à récupérer dans la matrice les décrivants.
   size_t offset = 0;
@@ -51,61 +51,61 @@ Tetromino::Tetromino() {
     offset += TETROMINOS_SIZE[i] * TETROMINOS_SIZE[i];
 
   // On récupère la forme du tetromino
-  for (size_t x = 0; x < this->size; ++x) {
-    for (size_t y = 0; y < this->size; ++y) {
-      this->content[y * this->size + x] = TETROMINOS[y * this->size + x + offset];
+  for (size_t x = 0; x < this->_size; ++x) {
+    for (size_t y = 0; y < this->_size; ++y) {
+      this->_content[y * this->_size + x] = TETROMINOS[y * this->_size + x + offset];
     }
   }
 
   // On détermine la position du tetromino courant sur la grille de jeu.
-  this->pos_x= (this->size % 2 == 0 ? static_cast<int>(static_cast<float>(MAP_WIDTH - this->size) / 2) : MAP_WIDTH / 2 - 1);
-  this->pos_y = MAP_HEIGHT - 1;
+  this->_pos_x = (this->_size % 2 == 0 ? static_cast<int>(static_cast<float>(MAP_WIDTH - this->_size) / 2) : MAP_WIDTH / 2 - 1);
+  this->_pos_y = MAP_HEIGHT - 1;
 }
 
 void Tetromino::fall() {
-  this->pos_y -= 1;
+  this->_pos_y -= 1;
 }
 
 void Tetromino::rotate() {
   TileType temp[16];
 
-  for (size_t x = 0; x < this->size; ++x) {
-    for (size_t y = 0; y < this->size; ++y) {
-      temp[x + this->size * y] = this->content[y + this->size * (this->size - x - 1)];
+  for (size_t x = 0; x < this->_size; ++x) {
+    for (size_t y = 0; y < this->_size; ++y) {
+      temp[x + this->_size * y] = this->_content[y + this->_size * (this->_size - x - 1)];
     }
   }
 
-  for (size_t x = 0; x < this->size; ++x) {
-    for (size_t y = 0; y < this->size; ++y) {
-      this->content[x + this->size * y] = temp[x + this->size * y];
+  for (size_t x = 0; x < this->_size; ++x) {
+    for (size_t y = 0; y < this->_size; ++y) {
+      this->_content[x + this->_size * y] = temp[x + this->_size * y];
     }
   }
 }
 
 void Tetromino::move_right() {
-  this->pos_x --;
+  this->_pos_x --;
 }
 
 void Tetromino::move_left() {
-  this->pos_x ++;
+  this->_pos_x ++;
 }
 
 int Tetromino::get_pos_x() const {
-  return this->pos_x;
+  return this->_pos_x;
 }
 
 int Tetromino::get_pos_y() const {
-  return this->pos_y;
+  return this->_pos_y;
 }
 
 size_t Tetromino::get_size() const {
-  return this->size;
+  return this->_size;
 }
 
 TileType Tetromino::operator()(size_t x, size_t y) const {
-  if (x >= this->size || y >= this->size) {
+  if (x >= this->_size || y >= this->_size) {
     throw std::out_of_range("Tetromino content index out of range.");
   }
 
-  return this->content[x + this->size * y];
+  return this->_content[x + this->_size * y];
 }

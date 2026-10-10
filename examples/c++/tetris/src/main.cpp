@@ -14,7 +14,7 @@ int main() {
     }
   });
 
-  app.display([&game](topi::render::Renderer *renderer) {
+  app.display([&game](topi::render::RenderManager *renderer) {
     game.display(renderer);
   });
 

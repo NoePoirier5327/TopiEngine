@@ -7,28 +7,28 @@ const uint64_t SCORE_FOR_3_LINES_DESTROYED = 50;
 const uint64_t SCORE_FOR_4_LINES_DESTROYED = 100;
 
 Game::Game() {
-  this->map = new_map();
-  this->tetromino = new Tetromino();
-  this->time_to_fall = 600;
-  this->falling_timer = new topi::tools::time::Timer(this->time_to_fall);
-  this->fast_fall_timer = new topi::tools::time::Timer(100);
-  this->insert_timer = nullptr;
-  this->time_before_insertion = 450;
-  this->score = 0;
-  this->level = 0;
+  this->_map = new_map();
+  this->_tetromino = new Tetromino();
+  this->_time_to_fall = 600;
+  this->_falling_timer = new topi::toolkit::time::Timer(this->_time_to_fall);
+  this->_fast_fall_timer = new topi::toolkit::time::Timer(100);
+  this->_insert_timer = nullptr;
+  this->_time_before_insertion = 450;
+  this->_score = 0;
+  this->_level = 0;
 }
 
 Game::~Game() {
-  if (this->map != nullptr) delete this->map;
-  if (this->tetromino != nullptr) delete this->tetromino;
-  if (this->falling_timer != nullptr) delete this->falling_timer;
-  if (this->fast_fall_timer != nullptr) delete this->fast_fall_timer;
-  if (this->insert_timer != nullptr) delete this->insert_timer;
+  if (this->_map != nullptr) delete this->_map;
+  if (this->_tetromino != nullptr) delete this->_tetromino;
+  if (this->_falling_timer != nullptr) delete this->_falling_timer;
+  if (this->_fast_fall_timer != nullptr) delete this->_fast_fall_timer;
+  if (this->_insert_timer != nullptr) delete this->_insert_timer;
 }
 
 void Game::handle_inputs() {
   if (topi::input::is_key_pressed(topi::input::keycode::KEY_UP)) {
-    if (this->tetromino_can_rotate()) this->tetromino->rotate();
+    if (this->tetromino_can_rotate()) this->_tetromino->rotate();
   }
 
   if (topi::input::is_key_held(topi::input::keycode::KEY_DOWN)) {
@@ -40,11 +40,11 @@ void Game::handle_inputs() {
   }
 
   if (topi::input::is_key_pressed(topi::input::keycode::KEY_RIGHT)) {
-    if (this->tetromino_can_move_right()) this->tetromino->move_right();
+    if (this->tetromino_can_move_right()) this->_tetromino->move_right();
   }
 
   if (topi::input::is_key_pressed(topi::input::keycode::KEY_LEFT)) {
-    if (this->tetromino_can_move_left()) this->tetromino->move_left();
+    if (this->tetromino_can_move_left()) this->_tetromino->move_left();
   }
 }
 
@@ -53,23 +53,23 @@ void Game::update() {
 
   if (!this->tetromino_can_fall()) {
     // On lance le minuteur avant de poser définitivement le tetromino dans la carte.
-    if (this->insert_timer == nullptr) {
-      this->insert_timer = new topi::tools::time::Timer(this->time_before_insertion);
+    if (this->_insert_timer == nullptr) {
+      this->_insert_timer = new topi::toolkit::time::Timer(this->_time_before_insertion);
     }
 
     // S'il a fini, on pose tetromino, on en créer un nouveau
     // et on vérifie qu'on est pas en game over.
-    if (this->insert_timer->finished_to_wait()) {
+    if (this->_insert_timer->finished_to_wait()) {
       this->tetromino_insert_in_final_map_layer();
 
-      delete tetromino;
-      this->tetromino = new Tetromino();
+      delete _tetromino;
+      this->_tetromino = new Tetromino();
 
-      delete this->insert_timer;
-      this->insert_timer = nullptr;
-      this->time_before_insertion = 450;
+      delete this->_insert_timer;
+      this->_insert_timer = nullptr;
+      this->_time_before_insertion = 450;
       
-      this->game_over = !this->tetromino_can_fall();
+      this->_game_over = !this->tetromino_can_fall();
 
       // On affiche le nouveau tetromino pour montrer qu'on est dans une situation de game over.
       this->tetromino_insert_in_current_map_layer();
@@ -78,9 +78,9 @@ void Game::update() {
     }
   } 
   else {
-    if (this->falling_timer->finished_to_wait()) {
-      this->tetromino->fall();
-      this->falling_timer->restart();
+    if (this->_falling_timer->finished_to_wait()) {
+      this->_tetromino->fall();
+      this->_falling_timer->restart();
     }
   }
 
@@ -113,15 +113,15 @@ void Game::update() {
   }
 }
 
-void Game::display(topi::render::Renderer *renderer) const {
-  renderer->draw_colored_filled_rectangle(0, 0, 320, 640, 27, 36, 71, 255);
-  this->map->display(renderer);
-  renderer->draw_text("Score = " + std::to_string(this->score), "./res/JetBrainsMonoNerdFont-Bold.ttf", 340, 16, 32, 255, 255, 255, 255);
-  renderer->draw_text("Level = " + std::to_string(this->level), "./res/JetBrainsMonoNerdFont-Bold.ttf", 340, 56, 32, 255, 255, 255, 255);
+void Game::display(topi::render::RenderManager *renderer) const {
+  renderer->draw_colored_filled_rectangle(0, 0, 320, 640, {27, 36, 71, 255});
+  this->_map->display(renderer);
+  renderer->draw_text("Score = " + std::to_string(this->_score), "./res/JetBrainsMonoNerdFont-Bold.ttf", 340, 16, 32, {255, 255, 255, 255});
+  renderer->draw_text("Level = " + std::to_string(this->_level), "./res/JetBrainsMonoNerdFont-Bold.ttf", 340, 56, 32, {255, 255, 255, 255});
 }
 
 bool Game::game_is_over() const {
-  return this->game_over;
+  return this->_game_over;
 }
 
 int Game::get_full_line_index() const {
@@ -133,7 +133,7 @@ int Game::get_full_line_index() const {
     size_t column = 0;
 
     while (column < MAP_WIDTH && line_is_full) {
-      line_is_full = line_is_full & ((*this->map)(column, line, 0) != transparent_tile);
+      line_is_full = line_is_full & ((*this->_map)(column, line, 0) != transparent_tile);
       ++column;
     }
 
@@ -149,11 +149,11 @@ int Game::get_full_line_index() const {
 
 void Game::destroy_line(size_t line_index) {
   for (size_t column = 0; column < MAP_WIDTH; ++column) {
-    (*this->map)(column, line_index, 0) = transparent_tile;
+    (*this->_map)(column, line_index, 0) = transparent_tile;
   }
 
   for (size_t line = line_index + 1; line < MAP_HEIGHT; ++line) {
-    this->map->exchange_lines(line_index, line, 0);
+    this->_map->exchange_lines(line_index, line, 0);
     line_index ++;
   }
 }
@@ -162,14 +162,14 @@ bool Game::tetromino_can_fall() const {
   bool can_fall = true;
 
   size_t x = 0;
-  while (x < this->tetromino->get_size() && can_fall) {
+  while (x < this->_tetromino->get_size() && can_fall) {
     size_t y = 0;
-    while (y < this->tetromino->get_size() && can_fall) {
-      if ((*this->tetromino)(x, y) != transparent_tile) {
-        can_fall = can_fall & (static_cast<int>(this->tetromino->get_pos_y()) - static_cast<int>(y) > 0);
+    while (y < this->_tetromino->get_size() && can_fall) {
+      if ((*this->_tetromino)(x, y) != transparent_tile) {
+        can_fall = can_fall & (static_cast<int>(this->_tetromino->get_pos_y()) - static_cast<int>(y) > 0);
 
         if (can_fall) {
-          can_fall = can_fall & ((*this->map)(static_cast<size_t>(this->tetromino->get_pos_x()) + x, static_cast<size_t>(this->tetromino->get_pos_y()) - y - 1, 0) == transparent_tile);
+          can_fall = can_fall & ((*this->_map)(static_cast<size_t>(this->_tetromino->get_pos_x()) + x, static_cast<size_t>(this->_tetromino->get_pos_y()) - y - 1, 0) == transparent_tile);
         }
       }
       y++;
@@ -181,18 +181,18 @@ bool Game::tetromino_can_fall() const {
 }
 
 void Game::tetromino_hard_drop() {
-  this->time_before_insertion = 0;
+  this->_time_before_insertion = 0;
   while (this->tetromino_can_fall()) {
-    this->tetromino->fall();
+    this->_tetromino->fall();
   }
 }
 
 void Game::tetromino_fast_fall() const {
   if (!this->tetromino_can_fall()) return;
 
-  if (this->fast_fall_timer->finished_to_wait()) {
-    this->tetromino->fall();
-    this->fast_fall_timer->restart();
+  if (this->_fast_fall_timer->finished_to_wait()) {
+    this->_tetromino->fall();
+    this->_fast_fall_timer->restart();
   }
 }
 
@@ -200,14 +200,14 @@ bool Game::tetromino_can_move_right() const {
   bool can_move = true;
 
   size_t x = 0;
-  while (x < this->tetromino->get_size() && can_move) {
+  while (x < this->_tetromino->get_size() && can_move) {
     size_t y = 0;
-    while (y < this->tetromino->get_size() && can_move) {
-      if ((*tetromino)(x, y) != transparent_tile) {
-        can_move = can_move & (this->tetromino->get_pos_x() + static_cast<int>(x) > 0);
+    while (y < this->_tetromino->get_size() && can_move) {
+      if ((*this->_tetromino)(x, y) != transparent_tile) {
+        can_move = can_move & (this->_tetromino->get_pos_x() + static_cast<int>(x) > 0);
 
         if (can_move) {
-          can_move = can_move & ((*this->map)(static_cast<size_t>(this->tetromino->get_pos_x()) + x - 1, static_cast<size_t>(this->tetromino->get_pos_y()) - y, 0) == transparent_tile);
+          can_move = can_move & ((*this->_map)(static_cast<size_t>(this->_tetromino->get_pos_x()) + x - 1, static_cast<size_t>(this->_tetromino->get_pos_y()) - y, 0) == transparent_tile);
         }
       }
       y++;
@@ -222,14 +222,14 @@ bool Game::tetromino_can_move_left() const {
   bool can_move = true;
 
   size_t x = 0;
-  while (x < this->tetromino->get_size() && can_move) {
+  while (x < this->_tetromino->get_size() && can_move) {
     size_t y = 0;
-    while (y < this->tetromino->get_size() && can_move) {
-      if ((*this->tetromino)(x, y) != transparent_tile) {
-        can_move = can_move & (static_cast<size_t>(this->tetromino->get_pos_x()) + x < MAP_WIDTH - 1);
+    while (y < this->_tetromino->get_size() && can_move) {
+      if ((*this->_tetromino)(x, y) != transparent_tile) {
+        can_move = can_move & (static_cast<size_t>(this->_tetromino->get_pos_x()) + x < MAP_WIDTH - 1);
 
         if (can_move) {
-          can_move = can_move & ((*this->map)(static_cast<size_t>(this->tetromino->get_pos_x()) + x + 1, static_cast<size_t>(this->tetromino->get_pos_y()) - y, 0) == transparent_tile);
+          can_move = can_move & ((*this->_map)(static_cast<size_t>(this->_tetromino->get_pos_x()) + x + 1, static_cast<size_t>(this->_tetromino->get_pos_y()) - y, 0) == transparent_tile);
         }
       }
       y++;
@@ -244,15 +244,15 @@ bool Game::tetromino_can_rotate() const {
   bool can_rotate = true;
 
   size_t x = 0;
-  while (x < this->tetromino->get_size() && can_rotate) {
+  while (x < this->_tetromino->get_size() && can_rotate) {
     size_t y = 0;
-    while (y < this->tetromino->get_size() && can_rotate) {
-      size_t px = this->tetromino->get_size() - x - 1;
+    while (y < this->_tetromino->get_size() && can_rotate) {
+      size_t px = this->_tetromino->get_size() - x - 1;
       size_t py = y;
-      if ((*tetromino)(py, px) != transparent_tile) {
+      if ((*this->_tetromino)(py, px) != transparent_tile) {
         // Collision avec les bords de la carte
-        int final_pos_x = this->tetromino->get_pos_x() + static_cast<int>(px);
-        int final_pos_y = this->tetromino->get_pos_y() - static_cast<int>(y);
+        int final_pos_x = this->_tetromino->get_pos_x() + static_cast<int>(px);
+        int final_pos_y = this->_tetromino->get_pos_y() - static_cast<int>(y);
 
         can_rotate = can_rotate & (final_pos_x >= 0); // bord droit
         can_rotate = can_rotate & (final_pos_x <= static_cast<int>(MAP_WIDTH) - 1); // bord gauche
@@ -260,7 +260,7 @@ bool Game::tetromino_can_rotate() const {
 
         // Collision de rotation entre tetromino qui tombe et tetromino dans la grille.
         if (can_rotate) {
-          can_rotate = can_rotate & ((*this->map)(static_cast<size_t>(final_pos_x), static_cast<size_t>(final_pos_y), 0) == transparent_tile);
+          can_rotate = can_rotate & ((*this->_map)(static_cast<size_t>(final_pos_x), static_cast<size_t>(final_pos_y), 0) == transparent_tile);
         }
       }
       ++y;
@@ -272,10 +272,10 @@ bool Game::tetromino_can_rotate() const {
 }
 
 void Game::tetromino_insert_in_final_map_layer() const {
-  for (size_t x = 0; x < this->tetromino->get_size(); ++x) {
-    for (size_t y = 0; y < this->tetromino->get_size(); ++y) {
-      if ((*this->tetromino)(x, y) != transparent_tile) {
-        (*this->map)(static_cast<size_t>(this->tetromino->get_pos_x()) + x, static_cast<size_t>(this->tetromino->get_pos_y()) - y, 0) = (*this->tetromino)(x, y);
+  for (size_t x = 0; x < this->_tetromino->get_size(); ++x) {
+    for (size_t y = 0; y < this->_tetromino->get_size(); ++y) {
+      if ((*this->_tetromino)(x, y) != transparent_tile) {
+        (*this->_map)(static_cast<size_t>(this->_tetromino->get_pos_x()) + x, static_cast<size_t>(this->_tetromino->get_pos_y()) - y, 0) = (*this->_tetromino)(x, y);
       }
     }
   }
@@ -284,28 +284,28 @@ void Game::tetromino_insert_in_final_map_layer() const {
 void Game::tetromino_insert_in_current_map_layer() const {
   for (size_t x = 0; x < MAP_WIDTH; ++x) {
     for (size_t y = 0; y < MAP_HEIGHT; ++y) {
-      (*this->map)(x, y, 1) = transparent_tile;
+      (*this->_map)(x, y, 1) = transparent_tile;
     }
   }
 
-  for (size_t x = 0; x < this->tetromino->get_size(); ++x) {
-    for (size_t y = 0; y < this->tetromino->get_size(); ++y) {
-      if ((*this->tetromino)(x, y) != transparent_tile) {
-        (*this->map)(static_cast<size_t>(this->tetromino->get_pos_x()) + x, static_cast<size_t>(this->tetromino->get_pos_y()) - y, 1) = (*this->tetromino)(x, y);
+  for (size_t x = 0; x < this->_tetromino->get_size(); ++x) {
+    for (size_t y = 0; y < this->_tetromino->get_size(); ++y) {
+      if ((*this->_tetromino)(x, y) != transparent_tile) {
+        (*this->_map)(static_cast<size_t>(this->_tetromino->get_pos_x()) + x, static_cast<size_t>(this->_tetromino->get_pos_y()) - y, 1) = (*this->_tetromino)(x, y);
       }
     }
   }
 }
 
 void Game::attribute_score_and_level(uint64_t score_to_attribute) {
-  this->score += score_to_attribute;
+  this->_score += score_to_attribute;
 
-  if (this->score % 200 == 0) {
-    this->level ++;
+  if (this->_score % 200 == 0) {
+    this->_level ++;
 
-    if (static_cast<int>(this->time_to_fall) - 50 >= 0) {
-      this->time_to_fall -= 50;
-      this->falling_timer->set_seconds_to_wait(this->time_to_fall);
+    if (static_cast<int>(this->_time_to_fall) - 50 >= 0) {
+      this->_time_to_fall -= 50;
+      this->_falling_timer->set_seconds_to_wait(this->_time_to_fall);
     }
   }
 }
