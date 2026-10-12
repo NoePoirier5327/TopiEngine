@@ -121,20 +121,37 @@ void Game::display(topi::render::RenderManager *renderer) const {
   this->_map->display(renderer);
 
   // On affiche le score.
-  renderer->draw_text("Score = " + std::to_string(this->_score), "./res/JetBrainsMonoNerdFont-Bold.ttf", 340, 16, 32, {255, 255, 255, 255});
-  renderer->draw_text("Level = " + std::to_string(this->_level), "./res/JetBrainsMonoNerdFont-Bold.ttf", 340, 56, 32, {255, 255, 255, 255});
+  renderer->draw_text("Score = " + std::to_string(this->_score), "./res/JetBrainsMonoNerdFont-Bold.ttf", 350, 300, 32, {255, 255, 255, 255});
+  renderer->draw_text("Level = " + std::to_string(this->_level), "./res/JetBrainsMonoNerdFont-Bold.ttf", 350, 332, 32, {255, 255, 255, 255});
 
   // On affiche la prévisualisation du prochain tetromino.
+  renderer->draw_colored_rectangle(416, 96, 128, 128, 2, {255, 255, 255, 255});
+
   size_t tile_size = this->_map->get_tile_width();
   size_t tetro_size = this->_next_tetromino->get_size();
-  topi::type::color::RGBAColor tetro_color = this->_map->get_tile_color(this->_next_tetromino->get_type());
+  eTetroType tetro_type = this->_next_tetromino->get_type();
+  topi::type::color::RGBAColor tetro_color = this->_map->get_tile_color(tetro_type);
+
+  // On centre l'affichage de la prévisualisation.
+  int x_offset = 414;
+  int y_offset = 96;
+
+  if (tetro_size == 3) {
+    x_offset += 16;
+    y_offset += 16;
+  }
+
+  if (tetro_size == 2) {
+    x_offset += 32;
+    y_offset += 32;
+  }
 
   for (size_t x = 0; x < tetro_size; ++x) {
     for (size_t y = 0; y < tetro_size; ++y) {
       if ((*this->_next_tetromino)(x, y) != transparent_tile) {
         renderer->draw_colored_filled_rectangle(
-          static_cast<int>(x * tile_size + 340),
-          static_cast<int>(y * tile_size),
+          static_cast<int>(x * tile_size) + x_offset,
+          static_cast<int>(y * tile_size) + y_offset,
           tile_size,
           tile_size,
           tetro_color
