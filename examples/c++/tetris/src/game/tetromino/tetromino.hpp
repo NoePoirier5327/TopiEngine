@@ -1,8 +1,22 @@
 #ifndef TETROMINO_HEADER
 #define TETROMINO_HEADER
 
+#include <cstddef>
 #include <topi/topi.hpp>
 #include "../tileset/tileset.hpp"
+
+/**
+ * @brief Représente le type d'un tetromino.
+ */
+enum eTetroType : size_t {
+  tetro_I,
+  tetro_O,
+  tetro_T,
+  tetro_J,
+  tetro_L,
+  tetro_S,
+  tetro_Z
+};
 
 /**
  * @class Tetromino
@@ -14,7 +28,7 @@ class Tetromino {
      * @brief Détermine aléatoirement le tetromino courant.
      * @param tetro_type, type du tetromino à créer.
      */
-    Tetromino(uint64_t tetro_type);
+    Tetromino(eTetroType tetro_type);
 
     /**
      * @brief Fait descendre le tetromino courant vers le bas.
@@ -64,14 +78,14 @@ class Tetromino {
     /**
      * @brief Renvoie le type du tetromino courant.
      */
-    uint64_t get_type() const;
+    eTetroType get_type() const;
 
   private:
     TileType _content[16];
     size_t _size;
     int _pos_x;
     int _pos_y;
-    uint64_t _tetro_type;
+    eTetroType _tetro_type;
 };
 
 #endif // !TETROMINO_HEADER

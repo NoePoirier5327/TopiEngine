@@ -1,6 +1,6 @@
 #include "game.hpp"
+#include "tetromino/tetromino.hpp"
 #include "tileset/tileset.hpp"
-#include "topi/toolkit/random/random.hpp"
 
 const uint64_t SCORE_FOR_A_TETRO_INSERTED = 10;
 const uint64_t SCORE_FOR_1_AND_2_LINES_DESTROYED = 20;
@@ -9,8 +9,8 @@ const uint64_t SCORE_FOR_4_LINES_DESTROYED = 100;
 
 Game::Game() {
   this->_map = new_map();
-  this->_tetromino = new Tetromino(static_cast<uint64_t>(topi::toolkit::random::randrange(0, 6)));
-  this->_next_tetromino = new Tetromino(static_cast<uint64_t>(topi::toolkit::random::randrange(0, 6)));
+  this->_tetromino = new Tetromino(static_cast<eTetroType>(topi::toolkit::random::randrange(0, 6)));
+  this->_next_tetromino = new Tetromino(static_cast<eTetroType>(topi::toolkit::random::randrange(0, 6)));
   this->_time_to_fall = 600;
   this->_falling_timer = new topi::toolkit::time::Timer(this->_time_to_fall);
   this->_fast_fall_timer = new topi::toolkit::time::Timer(100);
@@ -337,5 +337,5 @@ void Game::attribute_score_and_level(uint64_t score_to_attribute) {
 void Game::pick_next_tetromino() {
   if (this->_tetromino != nullptr) delete this->_tetromino;
   this->_tetromino = this->_next_tetromino;
-  this->_next_tetromino = new Tetromino(static_cast<uint64_t>(topi::toolkit::random::randrange(0, 6)));
+  this->_next_tetromino = new Tetromino(static_cast<eTetroType>(topi::toolkit::random::randrange(0, 6)));
 }

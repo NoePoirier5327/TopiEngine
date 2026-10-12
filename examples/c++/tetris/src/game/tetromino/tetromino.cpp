@@ -41,7 +41,7 @@ const TileType TETROMINOS[65] = {
 const size_t TETROMINOS_SIZE[7] = {4, 2, 3, 3, 3, 3, 3};
 
 
-Tetromino::Tetromino(uint64_t tetro_type) {
+Tetromino::Tetromino(eTetroType tetro_type) {
   //uint64_t tetro_type = static_cast<uint64_t>(topi::toolkit::random::randrange(0, 6));
   this->_tetro_type = tetro_type;
   this->_size = TETROMINOS_SIZE[tetro_type];
@@ -111,6 +111,6 @@ TileType Tetromino::operator()(size_t x, size_t y) const {
   return this->_content[x + this->_size * y];
 }
 
-uint64_t Tetromino::get_type() const {
+eTetroType Tetromino::get_type() const {
   return this->_tetro_type;
 }
