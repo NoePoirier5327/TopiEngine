@@ -1,5 +1,6 @@
 #include "game.hpp"
 #include "tileset/tileset.hpp"
+#include "topi/toolkit/random/random.hpp"
 
 const uint64_t SCORE_FOR_A_TETRO_INSERTED = 10;
 const uint64_t SCORE_FOR_1_AND_2_LINES_DESTROYED = 20;
@@ -8,7 +9,8 @@ const uint64_t SCORE_FOR_4_LINES_DESTROYED = 100;
 
 Game::Game() {
   this->_map = new_map();
-  this->_tetromino = new Tetromino();
+  this->_tetromino = new Tetromino(static_cast<uint64_t>(topi::toolkit::random::randrange(0, 6)));
+  this->_next_tetromino = new Tetromino(static_cast<uint64_t>(topi::toolkit::random::randrange(0, 6)));
   this->_time_to_fall = 600;
   this->_falling_timer = new topi::toolkit::time::Timer(this->_time_to_fall);
   this->_fast_fall_timer = new topi::toolkit::time::Timer(100);
@@ -24,6 +26,7 @@ Game::~Game() {
   if (this->_falling_timer != nullptr) delete this->_falling_timer;
   if (this->_fast_fall_timer != nullptr) delete this->_fast_fall_timer;
   if (this->_insert_timer != nullptr) delete this->_insert_timer;
+  if (this->_next_tetromino != nullptr) delete this->_next_tetromino;
 }
 
 void Game::handle_inputs() {
@@ -62,8 +65,7 @@ void Game::update() {
     if (this->_insert_timer->finished_to_wait()) {
       this->tetromino_insert_in_final_map_layer();
 
-      delete _tetromino;
-      this->_tetromino = new Tetromino();
+      this->pick_next_tetromino();
 
       delete this->_insert_timer;
       this->_insert_timer = nullptr;
@@ -114,10 +116,32 @@ void Game::update() {
 }
 
 void Game::display(topi::render::RenderManager *renderer) const {
+  // On affiche le terrain de jeu.
   renderer->draw_colored_filled_rectangle(0, 0, 320, 640, {27, 36, 71, 255});
   this->_map->display(renderer);
+
+  // On affiche le score.
   renderer->draw_text("Score = " + std::to_string(this->_score), "./res/JetBrainsMonoNerdFont-Bold.ttf", 340, 16, 32, {255, 255, 255, 255});
   renderer->draw_text("Level = " + std::to_string(this->_level), "./res/JetBrainsMonoNerdFont-Bold.ttf", 340, 56, 32, {255, 255, 255, 255});
+
+  // On affiche la prévisualisation du prochain tetromino.
+  size_t tile_size = this->_map->get_tile_width();
+  size_t tetro_size = this->_next_tetromino->get_size();
+  topi::type::color::RGBAColor tetro_color = this->_map->get_tile_color(this->_next_tetromino->get_type());
+
+  for (size_t x = 0; x < tetro_size; ++x) {
+    for (size_t y = 0; y < tetro_size; ++y) {
+      if ((*this->_next_tetromino)(x, y) != transparent_tile) {
+        renderer->draw_colored_filled_rectangle(
+          static_cast<int>(x * tile_size + 340),
+          static_cast<int>(y * tile_size),
+          tile_size,
+          tile_size,
+          tetro_color
+        );
+      }
+    }
+  }
 }
 
 bool Game::game_is_over() const {
@@ -308,4 +332,10 @@ void Game::attribute_score_and_level(uint64_t score_to_attribute) {
       this->_falling_timer->set_seconds_to_wait(this->_time_to_fall);
     }
   }
+}
+
+void Game::pick_next_tetromino() {
+  if (this->_tetromino != nullptr) delete this->_tetromino;
+  this->_tetromino = this->_next_tetromino;
+  this->_next_tetromino = new Tetromino(static_cast<uint64_t>(topi::toolkit::random::randrange(0, 6)));
 }

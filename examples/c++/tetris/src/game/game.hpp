@@ -104,8 +104,17 @@ class Game {
      */
     void attribute_score_and_level(uint64_t score_to_attribute);
 
+    /**
+     * @brief Détermine le prochain tetromino.
+     *
+     * Désalloue le tetromino courant, transfère la propriétée
+     * du prochain au courant et en réalloue un nouveau en tant que prochain.
+     */
+    void pick_next_tetromino();
+
     topi::game_object::tilemap::ColoredTilemap *_map;
     Tetromino *_tetromino;
+    Tetromino *_next_tetromino;
     topi::toolkit::time::Timer *_falling_timer;
     topi::toolkit::time::Timer *_fast_fall_timer;
     topi::toolkit::time::Timer *_insert_timer;

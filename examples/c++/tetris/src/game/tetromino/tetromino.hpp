@@ -12,8 +12,9 @@ class Tetromino {
   public:
     /**
      * @brief Détermine aléatoirement le tetromino courant.
+     * @param tetro_type, type du tetromino à créer.
      */
-    Tetromino();
+    Tetromino(uint64_t tetro_type);
 
     /**
      * @brief Fait descendre le tetromino courant vers le bas.
@@ -60,11 +61,17 @@ class Tetromino {
      */
     TileType operator()(size_t x, size_t y) const;
 
+    /**
+     * @brief Renvoie le type du tetromino courant.
+     */
+    uint64_t get_type() const;
+
   private:
     TileType _content[16];
     size_t _size;
     int _pos_x;
     int _pos_y;
+    uint64_t _tetro_type;
 };
 
 #endif // !TETROMINO_HEADER
