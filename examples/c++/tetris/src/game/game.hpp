@@ -41,6 +41,11 @@ class Game {
      */
     bool game_is_over() const;
 
+    /**
+     * @brief Renvoie le score courant du joueur.
+     */
+    uint64_t get_score() const;
+
   private:
     /**
      * @brief Renvoie l'index de la première ligne pleine dans la carte du jeu.

@@ -165,6 +165,10 @@ bool Game::game_is_over() const {
   return this->_game_over;
 }
 
+uint64_t Game::get_score() const {
+  return this->_score;
+}
+
 int Game::get_full_line_index() const {
   int index = -1;
 
