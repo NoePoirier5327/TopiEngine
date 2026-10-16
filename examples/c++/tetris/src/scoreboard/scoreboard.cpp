@@ -1,7 +1,7 @@
 #include "scoreboard.hpp"
-#include <iostream>
+#include <string>
 
-const size_t PLAYER_NAME_MAX_SIZE = 15;
+const size_t PLAYER_NAME_MAX_SIZE = 12;
 
 Scoreboard::Scoreboard(const std::string &path) {
   this->_is_read_only = true;
@@ -41,18 +41,54 @@ void Scoreboard::update() {
 }
 
 void Scoreboard::display(topi::render::RenderManager *renderer) const {
+  // On prépare l'interface qu'on va afficher sous
+  // forme de tui.
+  std::string to_disp[20];
+
+  std::string temp = "";
+  for (size_t i = 0; i < 34; ++i) temp += ' ';
+  to_disp[0] = temp;
+
+  temp = "";
+  for (size_t i = 0; i < 12; ++i) temp += ' ';
+  temp += "SCOREBOARD";
+  for (size_t i = 0; i < 12; ++i) temp += ' ';
+  to_disp[1] = temp;
+
+  temp = "";
+  for (size_t i = 0; i < 34; ++i) temp += ' ';
+  to_disp[2] = temp;
+
+  temp = "    +";
+  for (size_t i = 0; i < 24; ++i) temp += '-';
+  temp += "+    ";
+  to_disp[3] = temp;
+
   // Si on est en mode édition, on affiche la saisie courante.
   if (!this->_is_read_only) {
     // On complète la saisie avec des _ pour indiquer
     // qu'il y a encore de la place pour écrire.
-    std::string to_disp = this->_player_name;
+    temp = "    | > " + this->_player_name;
     for (size_t i = 0; i < PLAYER_NAME_MAX_SIZE - this->_player_name.size(); ++i)
-      to_disp += '_';
+      temp += '_';
 
-    // Puis, on l'affiche sur le milieu haut de l'écran.
-    renderer->draw_text("Scoreboard", "./res/JetBrainsMonoNerdFont-Bold.ttf", 230, 30, 32, {255, 255, 255, 255});
-    renderer->draw_text(to_disp, "./res/JetBrainsMonoNerdFont-Bold.ttf", 180, 90, 32, {255, 255, 255, 255});
+    int spaces_to_add = 29 - static_cast<int>(std::to_string(this->_score_to_add).size());
+    if (spaces_to_add > 0)
+      for (;temp.size() != static_cast<size_t>(spaces_to_add);)
+        temp += ' ';
+
+    temp += std::to_string(this->_score_to_add);
+    temp += "|    ";
+    to_disp[4] = temp;
+
+    temp = "    +";
+    for (size_t i = 0; i < 24; ++i) temp += '-';
+    temp += "+    ";
+    to_disp[5] = temp;
   }
+
+  for (size_t i = 0; i < 6; ++i)
+    renderer->draw_text(to_disp[i], "./res/JetBrainsMonoNerdFont-Bold.ttf", 0, static_cast<int>(i * 32), 32, {255, 255, 255, 255});
 }
 
 void Scoreboard::set_read_only_mode() {
