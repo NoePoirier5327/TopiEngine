@@ -113,6 +113,14 @@ namespace topi::input {
   bool is_key_pressed(keycode::TopiKey keycode);
 
   /**
+   * @brief Renvoie la dernière entrée clavier en tant que caractère.
+   * @return '\0' si aucune touche n'est récuperée autre chose sinon.
+   *
+   * @throw std::runtime_error si l'application n'est pas instanciée.
+   */
+  char last_input_as_char();
+
+  /**
    * @class InputManager
    * @brief Gestionnaire des entrées du moteur.
    * Il ne peut y avoir qu'une seule instance de et classe en vie.
@@ -136,8 +144,10 @@ namespace topi::input {
 
       /**
        * @brief Met à jour les buffers de scan des entrées utilisateur vers le programme.
+       *
+       * @param last_input_as_char, conversion de la dernière entrée utilisateur sous forme de caractère imprimable.
        */
-      void update();
+      void update(char last_input_char);
 
       /**
        * @brief Vérifie que la touche en paramètre est pressé par l'utilisateur.
@@ -157,9 +167,16 @@ namespace topi::input {
        */
       bool is_key_pressed(keycode::TopiKey key_code) const;
 
+      /**
+       * @brief Renvoie la dernière entrée utilisateur en tant que caractère imprimable.
+       * @return dernière entrée utilisateur sous forme de caractère imprimable, \0 si aucune touche pressée.
+       */
+      char last_input_as_char() const;
+
     private:
       const uint8_t *_keyboard_state;
       uint8_t _prev_keyboard_states[SDL_NUM_SCANCODES];
+      char _last_input_char;
   };
 }
 

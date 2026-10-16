@@ -30,6 +30,11 @@ namespace topi::input {
     return instance->is_key_pressed(keycode);
   }
 
+  char last_input_as_char() {
+    InputManager *instance = access_instance();
+    return instance->last_input_as_char();
+  }
+
   /////////////////////////
   /// InputManager code ///
   /////////////////////////
@@ -44,6 +49,7 @@ namespace topi::input {
     // On copie l'état clavier dans son buffer d'entrées précédentes.
     for (int i = 0; i < SDL_NUM_SCANCODES; ++i)
       this->_prev_keyboard_states[i] = this->_keyboard_state[i];
+    this->_last_input_char = '\0';
 
     INSTANCE = this;
   }
@@ -52,10 +58,11 @@ namespace topi::input {
     INSTANCE = nullptr;
   }
 
-  void InputManager::update() {
+  void InputManager::update(char last_input_char) {
     for (int i = 0; i < SDL_NUM_SCANCODES; ++i)
       this->_prev_keyboard_states[i] = this->_keyboard_state[i];
 
+    this->_last_input_char = last_input_char;
     SDL_PumpEvents();
   }
 
@@ -67,5 +74,9 @@ namespace topi::input {
   bool InputManager::is_key_pressed(keycode::TopiKey key_code) const {
     SDL_Scancode scancode = SDL_GetScancodeFromKey(key_code);
     return this->_keyboard_state[scancode] && !this->_prev_keyboard_states[scancode];
+  }
+
+  char InputManager::last_input_as_char() const {
+    return this->_last_input_char;
   }
 }

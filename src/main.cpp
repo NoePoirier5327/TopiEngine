@@ -1,12 +1,14 @@
 #include "topi/topi.hpp"
+#include <iostream>
 
 int main() {
-  topi::TopiEngine app = topi::TopiEngine("Test", 400, 400);
+  topi::TopiEngine app = topi::TopiEngine("Test", 400, 500);
 
   topi::game_object::tilemap::ColoredTilemap tilemap = topi::game_object::tilemap::ColoredTilemap(10, 5, 3);
 
   int x = 0;
   bool is_rectangle_invisible = false;
+  std::string to_disp = "";
 
   app.setup([&tilemap]() {
     tilemap.new_tile(0, {255, 100, 100, 255});
@@ -24,10 +26,15 @@ int main() {
     tilemap.exchange_layers(0, 1);
   });
 
-  app.update([&x, &is_rectangle_invisible](double dt) {
+  app.update([&x, &is_rectangle_invisible, &to_disp](double dt) {
     if (topi::input::is_key_held(topi::input::keycode::KEY_RIGHT)) x -= 200 * dt;
     if (topi::input::is_key_held(topi::input::keycode::KEY_LEFT)) x += 200 * dt;
     if (topi::input::is_key_pressed(topi::input::keycode::KEY_A)) is_rectangle_invisible = !is_rectangle_invisible;
+
+    char to_add = topi::input::last_input_as_char();
+    if (to_add != '\0') to_disp += to_add;
+
+    std::cout << to_disp << std::endl;
   });
 
   app.display([&tilemap, &x, &is_rectangle_invisible](topi::render::RenderManager *renderer) {

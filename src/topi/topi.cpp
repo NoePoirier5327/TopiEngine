@@ -91,7 +91,20 @@ namespace topi {
       auto frame_start = std::chrono::steady_clock::now();
 
       // Gestion des évenements liés à la SDL.
+      char last_text_input = '\0';
       while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+          case SDL_QUIT:
+            run = false;
+            break;
+
+          case SDL_TEXTINPUT:
+            last_text_input = event.text.text[0];
+            break;
+
+          default:
+            break;
+        }
         if (event.type == SDL_QUIT) {
           run = false;
         }
@@ -113,7 +126,7 @@ namespace topi {
       this->_display_function(this->_render_manager);
 
       // On met à jour les buffers d'entrées utilisateur.
-      this->_input_manager.update();
+      this->_input_manager.update(last_text_input);
 
       // On refraichi l'affichage.
       this->_render_manager->display();
