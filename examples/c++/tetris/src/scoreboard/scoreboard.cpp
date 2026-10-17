@@ -102,11 +102,27 @@ void Scoreboard::display(topi::render::RenderManager *renderer) const {
     temp += "+    ";
     to_disp[7] = temp;
 
-    // On complète l'affichage avec du vide.
+    // On récupère les scores avec les noms.
+    size_t n = (this->_player_board.size() > 8 ? 8 : this->_player_board.size());
     for (size_t i = 0; i < 8; ++i) {
       temp = "    |";
-      for (size_t j = 0; j < 24; ++j)
-        temp += ' ';
+      if (i < n) {
+        // On affiche le nom
+        temp += ' ' + this->_player_board[i];
+
+        // On complète l'affichage avec des espaces entre le nom et son score.
+        int k = 28 - static_cast<int>(std::to_string(this->_score_board[i]).size());
+        if (k > 0)
+          for (;temp.size() != static_cast<size_t>(k);)
+            temp += ' ';
+
+        // On affiche le score associé au nom.
+        temp += std::to_string(this->_score_board[i]) + ' ';
+      }
+      else {
+        for (size_t j = 0; j < 24; ++j)
+          temp += ' ';
+      }
       temp += "|    ";
       to_disp[i+8] = temp;
     }
