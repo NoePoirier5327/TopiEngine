@@ -16,6 +16,7 @@ Game::Game() {
   this->_fast_fall_timer = new topi::toolkit::time::Timer(100);
   this->_insert_timer = nullptr;
   this->_time_before_insertion = 450;
+  this->_game_over = false;
   this->_score = 0;
   this->_level = 0;
 }
