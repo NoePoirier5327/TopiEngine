@@ -1,17 +1,21 @@
 #include "scoreboard.hpp"
+#include <stdexcept>
 #include <string>
 
 const size_t PLAYER_NAME_MAX_SIZE = 12;
 
 Scoreboard::Scoreboard(const std::string &path) {
+  this->_file_path = path;
   this->_is_read_only = true;
   this->_score_to_add = 0;
   this->_player_name = "";
+
+  if (this->_player_board.size() != this->_score_board.size())
+    throw std::runtime_error("Incoherent scoreboard data format detected.");
 }
 
 Scoreboard::~Scoreboard() {
-  if (this->_file.is_open())
-    this->_file.close();
+
 }
 
 void Scoreboard::update() {
@@ -43,7 +47,7 @@ void Scoreboard::update() {
 void Scoreboard::display(topi::render::RenderManager *renderer) const {
   // On prépare l'interface qu'on va afficher sous
   // forme de tui.
-  std::string to_disp[20];
+  std::string to_disp[17];
 
   std::string temp = "";
   for (size_t i = 0; i < 34; ++i) temp += ' ';
@@ -64,7 +68,8 @@ void Scoreboard::display(topi::render::RenderManager *renderer) const {
   temp += "+    ";
   to_disp[3] = temp;
 
-  // Si on est en mode édition, on affiche la saisie courante.
+  // Si on est en mode édition, on affiche la saisie courante
+  // et les meilleurs scores réalisés.
   if (!this->_is_read_only) {
     // On complète la saisie avec des _ pour indiquer
     // qu'il y a encore de la place pour écrire.
@@ -72,22 +77,48 @@ void Scoreboard::display(topi::render::RenderManager *renderer) const {
     for (size_t i = 0; i < PLAYER_NAME_MAX_SIZE - this->_player_name.size(); ++i)
       temp += '_';
 
-    int spaces_to_add = 29 - static_cast<int>(std::to_string(this->_score_to_add).size());
+    int spaces_to_add = 28 - static_cast<int>(std::to_string(this->_score_to_add).size());
     if (spaces_to_add > 0)
       for (;temp.size() != static_cast<size_t>(spaces_to_add);)
         temp += ' ';
 
     temp += std::to_string(this->_score_to_add);
-    temp += "|    ";
+    temp += " |    ";
     to_disp[4] = temp;
 
     temp = "    +";
     for (size_t i = 0; i < 24; ++i) temp += '-';
     temp += "+    ";
     to_disp[5] = temp;
+
+    // On affiche sur une fenêtre, en bas de celle de saisie
+    // les meilleurs scores des joueurs avec leurs noms.
+    temp = "";
+    for (size_t i = 0; i < 34; ++i) temp += ' ';
+    to_disp[6] = temp;
+
+    temp = "    +";
+    for (size_t i = 0; i < 24; ++i) temp += '-';
+    temp += "+    ";
+    to_disp[7] = temp;
+
+    // On complète l'affichage avec du vide.
+    for (size_t i = 0; i < 8; ++i) {
+      temp = "    |";
+      for (size_t j = 0; j < 24; ++j)
+        temp += ' ';
+      temp += "|    ";
+      to_disp[i+8] = temp;
+    }
+
+    // On met la ligne de fin de l'affichage.
+    temp = "    +";
+    for (size_t i = 0; i < 24; ++i) temp += '-';
+    temp += "+    ";
+    to_disp[16] = temp;
   }
 
-  for (size_t i = 0; i < 6; ++i)
+  for (size_t i = 0; i < 17; ++i)
     renderer->draw_text(to_disp[i], "./res/JetBrainsMonoNerdFont-Bold.ttf", 0, static_cast<int>(i * 32), 32, {255, 255, 255, 255});
 }
 

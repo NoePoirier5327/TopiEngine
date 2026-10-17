@@ -1,7 +1,7 @@
 #ifndef SCOREBOARD_HEADER
 #define SCOREBOARD_HEADER
 
-#include <fstream>
+#include <vector>
 #include <string>
 #include <cstdint>
 #include <topi/topi.hpp>
@@ -19,6 +19,8 @@ class Scoreboard {
      * existe, sinon, le créer puis l'ouvre quand même.
      *
      * @param path, chemin vers le fichier contenant le tableau des scores.
+     *
+     * @throw std::runtime_error si _player_board.size() != _score_board.size()
      */
     Scoreboard(const std::string &path);
 
@@ -81,9 +83,14 @@ class Scoreboard {
      */
     void add_entry();
 
-    std::ifstream _file;
+    std::string _file_path;
+
     std::string _player_name;
     uint64_t _score_to_add;
+
+    std::vector<std::string> _player_board;
+    std::vector<uint64_t> _score_board;
+
     size_t _top_index;
     size_t _nb_score_to_show;
     bool _is_read_only;
