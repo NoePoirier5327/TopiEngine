@@ -1,4 +1,5 @@
 #include "scoreboard.hpp"
+#include <cstdint>
 #include <stdexcept>
 #include <string>
 
@@ -10,8 +11,28 @@ Scoreboard::Scoreboard(const std::string &path) {
   this->_score_to_add = 0;
   this->_player_name = "";
 
+  for (size_t i = 0; i < 10; ++i) {
+    this->_player_board.push_back(std::to_string(i));
+    this->_score_board.push_back(i);
+  }
+
   if (this->_player_board.size() != this->_score_board.size())
     throw std::runtime_error("Incoherent scoreboard data format detected.");
+
+  // On trie par ordre décroissant le tableau des scores.
+  for (size_t i = 0; i < this->_player_board.size() - 1; ++i) {
+    for (size_t j = i + 1; j < this->_player_board.size(); ++j) {
+      if (this->_score_board[i] < this->_score_board[j]) {
+        uint64_t score_temp = this->_score_board[i];
+        this->_score_board[i] = this->_score_board[j];
+        this->_score_board[j] = score_temp;
+
+        std::string player_temp = this->_player_board[i];
+        this->_player_board[i] = this->_player_board[j];
+        this->_player_board[j] = player_temp;
+      }
+    }
+  }
 }
 
 Scoreboard::~Scoreboard() {
@@ -24,7 +45,7 @@ void Scoreboard::update() {
   }
   else {
     // Si on appui sur entrée, on termine la saisie du nom.
-    if (topi::input::is_key_pressed(topi::input::keycode::KEY_RETURN)) {
+    if (topi::input::is_key_pressed(topi::input::keycode::KEY_RETURN) && !this->_player_name.empty()) {
       this->add_entry();
     }
 
@@ -63,14 +84,14 @@ void Scoreboard::display(topi::render::RenderManager *renderer) const {
   for (size_t i = 0; i < 34; ++i) temp += ' ';
   to_disp[2] = temp;
 
-  temp = "    +";
-  for (size_t i = 0; i < 24; ++i) temp += '-';
-  temp += "+    ";
-  to_disp[3] = temp;
-
   // Si on est en mode édition, on affiche la saisie courante
   // et les meilleurs scores réalisés.
   if (!this->_is_read_only) {
+    temp = "    +";
+    for (size_t i = 0; i < 24; ++i) temp += '-';
+    temp += "+    ";
+    to_disp[3] = temp;
+
     // On complète la saisie avec des _ pour indiquer
     // qu'il y a encore de la place pour écrire.
     temp = "    | > " + this->_player_name;
@@ -102,9 +123,14 @@ void Scoreboard::display(topi::render::RenderManager *renderer) const {
     temp += "+    ";
     to_disp[7] = temp;
 
+    temp = "    |";
+    for (size_t i = 0; i < 24; ++i) temp += ' ';
+    temp += "|    ";
+    to_disp[8] = temp;
+
     // On récupère les scores avec les noms.
-    size_t n = (this->_player_board.size() > 8 ? 8 : this->_player_board.size());
-    for (size_t i = 0; i < 8; ++i) {
+    size_t n = (this->_player_board.size() > 6 ? 6 : this->_player_board.size());
+    for (size_t i = 0; i < 6; ++i) {
       temp = "    |";
       if (i < n) {
         // On affiche le nom
@@ -124,10 +150,39 @@ void Scoreboard::display(topi::render::RenderManager *renderer) const {
           temp += ' ';
       }
       temp += "|    ";
-      to_disp[i+8] = temp;
+      to_disp[i+9] = temp;
     }
 
     // On met la ligne de fin de l'affichage.
+    temp = "    |";
+    for (size_t i = 0; i < 24; ++i) temp += ' ';
+    temp += "|    ";
+    to_disp[15] = temp;
+
+    temp = "    +";
+    for (size_t i = 0; i < 24; ++i) temp += '-';
+    temp += "+    ";
+    to_disp[16] = temp;
+  }
+
+  // On affiche l'écran de lecture seule. 
+  else {
+    temp = "";
+    for (size_t i = 0; i < 24; ++i) temp += ' ';
+    to_disp[3] = temp;
+
+    temp = "    +";
+    for (size_t i = 0; i < 24; ++i) temp += '-';
+    temp += "+    ";
+    to_disp[4] = temp;
+
+    for (size_t i = 0; i < 11; ++i) {
+      temp = "    |";
+      for (size_t j = 0; j < 24; ++j) temp += ' ';
+      temp += "|    ";
+      to_disp[i+5] = temp;
+    }
+    
     temp = "    +";
     for (size_t i = 0; i < 24; ++i) temp += '-';
     temp += "+    ";
@@ -153,7 +208,23 @@ void Scoreboard::set_score_to_add(size_t score) {
 void Scoreboard::add_entry() {
   if (this->_is_read_only) return;
 
+  // On insert dans l'ordre décroissant
+  // le nom du joueur et son score.
+  size_t i = 0;
+  while (i < this->_score_board.size() && this->_score_board[i] >= this->_score_to_add) ++i;
+
+  this->_score_board.push_back(0);
+  this->_player_board.push_back("");
+
+  for (size_t j = this->_score_board.size() - 2; j > i; --j) {
+    this->_score_board[j + 1] = this->_score_board[j];
+    this->_player_board[j + 1] = this->_player_board[j];
+  }
+
+  this->_player_board[i] = this->_player_name;
+  this->_score_board[i] = this->_score_to_add;
+
   this->_player_name = "";
   this->_score_to_add = 0;
-  this->set_read_only_mode();
+  //this->set_read_only_mode();
 }
