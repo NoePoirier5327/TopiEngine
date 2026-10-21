@@ -5,6 +5,9 @@
 
 namespace topi::game_object::tilemap {
   ColoredTilemap::ColoredTilemap(size_t map_width, size_t map_height, size_t nb_layer, size_t tile_width, size_t tile_height, bool is_x_flipped, bool is_y_flipped) {
+    if (nb_layer < 1)
+      throw std::runtime_error("There can't be less than one layer in a tilemap.");
+
     this->_map_width = map_width;
     this->_map_height = map_height;
     this->_nb_layer = nb_layer;
@@ -13,10 +16,58 @@ namespace topi::game_object::tilemap {
     this->_is_x_flipped = is_x_flipped;
     this->_is_y_flipped = is_y_flipped;
 
-    this->_tilemap = new uint64_t [this->_map_width * this->_map_height * this->_nb_layer];
-    for (size_t i = 0; i < this->_map_width * this->_map_height * this->_nb_layer; ++i) {
+    size_t n = this->_map_width * this->_map_height * this->_nb_layer;
+    this->_tilemap = new uint64_t [n];
+    for (size_t i = 0; i < n; ++i)
       this->_tilemap[i] = 0;
-    }
+  }
+
+  ColoredTilemap::ColoredTilemap(size_t map_width, size_t map_height, size_t nb_layer, size_t tile_width, size_t tile_height) {
+    if (nb_layer < 1)
+      throw std::runtime_error("There can't be less than one layer in a tilemap.");
+
+    this->_map_width = map_width;
+    this->_map_height = map_height;
+    this->_nb_layer = nb_layer;
+    this->_tile_width = tile_width;
+    this->_tile_height = tile_height;
+    this->_is_x_flipped = false;
+    this->_is_y_flipped = false;
+
+    size_t n = this->_map_width * this->_map_height * this->_nb_layer;
+    this->_tilemap = new uint64_t [n];
+    for (size_t i = 0; i < n; ++i)
+      this->_tilemap[i] = 0;
+  }
+
+  ColoredTilemap::ColoredTilemap(size_t map_width, size_t map_height, size_t tile_width, size_t tile_height) {
+    this->_map_width = map_width;
+    this->_map_height = map_height;
+    this->_nb_layer = 1;
+    this->_tile_width = tile_width;
+    this->_tile_height = tile_height;
+    this->_is_x_flipped = false;
+    this->_is_y_flipped = false;
+
+    size_t n = this->_map_width * this->_map_height;
+    this->_tilemap = new uint64_t [n];
+    for (size_t i = 0; i < n; ++i)
+      this->_tilemap[i] = 0;
+  }
+
+  ColoredTilemap::ColoredTilemap(size_t map_width, size_t map_height, size_t tile_width, size_t tile_height, bool is_x_flipped, bool is_y_flipped) {
+    this->_map_width = map_width;
+    this->_map_height = map_height;
+    this->_nb_layer = 1;
+    this->_tile_width = tile_width;
+    this->_tile_height = tile_height;
+    this->_is_x_flipped = is_x_flipped;
+    this->_is_y_flipped = is_y_flipped;
+
+    size_t n = this->_map_width * this->_map_height;
+    this->_tilemap = new uint64_t [n];
+    for (size_t i = 0; i < n; ++i)
+      this->_tilemap[i] = 0;
   }
 
   ColoredTilemap::~ColoredTilemap() {
