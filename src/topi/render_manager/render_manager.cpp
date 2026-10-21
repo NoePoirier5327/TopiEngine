@@ -31,6 +31,9 @@ namespace topi::render {
       throw std::runtime_error(error);
     }
 
+    this->_line_thickness = 1;
+    this->_color = topi::type::color::BLACK;
+
     AN_INSTANCE_IS_ALREADY_RUNNING = true;
   }
 
@@ -58,23 +61,31 @@ namespace topi::render {
     SDL_RenderPresent(this->_renderer);
   }
 
-  void RenderManager::draw_colored_filled_rectangle(int x, int y, size_t w, size_t h, const topi::type::color::RGBAColor &color) {
+  void RenderManager::set_draw_color(const topi::type::color::RGBAColor &color) {
+    this->_color = color;
+  }
+
+  void RenderManager::set_line_thickness(size_t line_thickness) {
+    this->_line_thickness = line_thickness;
+  }
+
+  void RenderManager::draw_colored_filled_rectangle(int x, int y, size_t w, size_t h) {
     // On s'épargne de l'allocation si un objet est inaffichable car complétement transparent.
-    if (color.a != 0) {
-      this->_rendering_queue.push_back(std::make_unique<items::ColoredFilledRectangle>(x, y, w, h, color));
+    if (this->_color.a != 0) {
+      this->_rendering_queue.push_back(std::make_unique<items::ColoredFilledRectangle>(x, y, w, h, this->_color));
     }
   }
 
-  void RenderManager::draw_colored_rectangle(int x, int y, size_t w, size_t h, size_t line_thickness, const topi::type::color::RGBAColor &color) {
-    if (color.a == 0) return;
-    this->_rendering_queue.push_back(std::make_unique<items::ColoredRectangle>(x, y, w, h, line_thickness, color));
+  void RenderManager::draw_colored_rectangle(int x, int y, size_t w, size_t h) {
+    if (this->_color.a == 0) return;
+    this->_rendering_queue.push_back(std::make_unique<items::ColoredRectangle>(x, y, w, h, this->_line_thickness, this->_color));
   }
 
-  void RenderManager::draw_text(const std::string &text, const std::string &font_path, int x, int y, size_t font_size, const topi::type::color::RGBAColor &color) {
-    if (color.a == 0) return;
+  void RenderManager::draw_text(const std::string &text, const std::string &font_path, int x, int y, size_t font_size) {
+    if (this->_color.a == 0) return;
 
     TTF_Font *font = this->_resource_manager.get_font(font_path, font_size);
-    SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(), color);
+    SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(), this->_color);
 
     if (!surface) {
       std::string error = "Failed to create the text surface.\n";
@@ -97,9 +108,8 @@ namespace topi::render {
     this->_rendering_queue.push_back(std::make_unique<items::Text>(texture, dst));
   }
 
-  void RenderManager::draw_line(int x1, int y1, int x2, int y2, size_t thickness, const topi::type::color::RGBAColor &color) {
-    if (color.a == 0) return;
-
-    this->_rendering_queue.push_back(std::make_unique<items::Line>(x1, y1, x2, y2, thickness, color));
+  void RenderManager::draw_line(int x1, int y1, int x2, int y2) {
+    if (this->_color.a == 0) return;
+    this->_rendering_queue.push_back(std::make_unique<items::Line>(x1, y1, x2, y2, this->_line_thickness, this->_color));
   }
 }

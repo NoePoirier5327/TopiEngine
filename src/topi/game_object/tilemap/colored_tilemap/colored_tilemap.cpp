@@ -159,12 +159,13 @@ namespace topi::game_object::tilemap {
         size_t dx = (this->_is_x_flipped ? this->_map_width - x - 1 : x);
         size_t dy = (this->_is_y_flipped ? this->_map_height - y - 1 : y);
 
+        renderer->set_draw_color(this->_tileset.at(current_tile));
+
         renderer->draw_colored_filled_rectangle(
           static_cast<int>(static_cast<double>(dx) * static_cast<double>(this->_tile_width) * zoom + x_offset),
           static_cast<int>(static_cast<double>(dy) * static_cast<double>(this->_tile_height) * zoom + y_offset),
           static_cast<size_t>(static_cast<double>(this->_tile_width) * zoom),
-          static_cast<size_t>(static_cast<double>(this->_tile_height) * zoom),
-          this->_tileset.at(current_tile)
+          static_cast<size_t>(static_cast<double>(this->_tile_height) * zoom)
         );
       }
     }

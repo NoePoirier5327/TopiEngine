@@ -39,8 +39,16 @@ int main() {
 
   app.display([&tilemap, &x, &is_rectangle_invisible](topi::render::RenderManager *renderer) {
     tilemap.display_layer(renderer, 1);
-    renderer->draw_line(0, 0, 400, 400, 20, topi::type::color::GREEN);
-    if (!is_rectangle_invisible) renderer->draw_colored_rectangle(x, 200, 400, 100, 10, topi::type::color::YELLOW);
+
+    renderer->set_line_thickness(20);
+    renderer->set_draw_color(topi::type::color::GREEN);
+    renderer->draw_line(0, 0, 400, 400);
+
+    if (!is_rectangle_invisible) {
+      renderer->set_line_thickness(10);
+      renderer->set_draw_color(topi::type::color::YELLOW);
+      renderer->draw_colored_rectangle(x, 200, 400, 100);
+    }
   });
 
   app.run();
