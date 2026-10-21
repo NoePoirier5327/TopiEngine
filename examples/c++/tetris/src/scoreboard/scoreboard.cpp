@@ -189,8 +189,11 @@ void Scoreboard::display(topi::render::RenderManager *renderer) const {
     to_disp[16] = temp;
   }
 
+  renderer->set_font("./res/JetBrainsMonoNerdFont-Bold.ttf", 32);
+  renderer->set_draw_color(topi::type::color::WHITE);
+
   for (size_t i = 0; i < 17; ++i)
-    renderer->draw_text(to_disp[i], "./res/JetBrainsMonoNerdFont-Bold.ttf", 0, static_cast<int>(i * 32), 32, {255, 255, 255, 255});
+    renderer->draw_text(to_disp[i], 0, static_cast<int>(i * 32));
 }
 
 void Scoreboard::set_read_only_mode() {

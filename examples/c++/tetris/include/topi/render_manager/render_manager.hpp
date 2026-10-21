@@ -2,7 +2,6 @@
 #define RENDERER_HEADER
 
 #include <SDL2/SDL.h>
-#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
@@ -48,6 +47,40 @@ namespace topi::render {
       void display();
 
       /**
+       * @brief Change la couleur courante du moteur de rendu.
+       *
+       * @param color, couleur d'affichage du moteur.
+       */
+      void set_draw_color(
+        const topi::type::color::RGBAColor &color
+      );
+
+      /**
+       * @brief Change l'épaisseur des lignes affichable par le moteur.
+       *
+       * @param line_thickness, nouvelle épaisseur des lignes affichable par le moteur.
+       */
+      void set_line_thickness(
+        size_t line_thickness
+      );
+
+      /**
+       * @brief Charge la police d'écriture dans le moteur de rendu.
+       *
+       * Met la police d'écriture en paramètre comme courante
+       * dans le moteur de rendue.
+       *
+       * @param font_path, chemin vers la police à charger.
+       * @param font_size, taille de la police à charger.
+       *
+       * @throw std::runtime_error si impossible de charger la police en paramètre.
+       */
+      void set_font(
+        const std::string &font_path,
+        size_t font_size
+      );
+
+      /**
        * @brief Affiche un nouveau rectangle plein coloré.
        *
        * Créer une nouvelle instance de ColoredFilledRectangle et l'ajoute à la file
@@ -56,14 +89,13 @@ namespace topi::render {
        * @param x, coordonnée en abcisse du haut gauche du rectangle à afficher.
        * @param y, coordonnée en ordonnée du haut gauche du rectangle à afficher.
        * @param w, largeur du rectangle à afficher.
-       * @param color, couleur au format rgba du rectangle à afficher.
+       * @param h, hauteur du rectangle à afficher.
        */
       void draw_colored_filled_rectangle(
         int x,
         int y,
         size_t w,
-        size_t h,
-        const type::color::RGBAColor &color
+        size_t h
       );
 
       /**
@@ -73,38 +105,28 @@ namespace topi::render {
        * @param y, coordonnée en y du haut gauche du rectangle à afficher.
        * @param w, largeur du rectangle à afficher.
        * @param h, hauteur du rectangle à afficher.
-       * @param line_thickness, épaisseur des lignes du rectangle à afficher.
-       * @param color, couleur au format gba du rectangle à afficher.
        */
       void draw_colored_rectangle(
         int x,
         int y,
         size_t w,
-        size_t h,
-        size_t line_thickness,
-        const type::color::RGBAColor &color
+        size_t h
       );
 
       /**
        * @brief Affiche le texte en paramètre sur l'écran courant.
        *
        * @param text, texte à afficher sur la fenêtre de rendu.
-       * @param font_path, chemin vers la police du texte à afficher.
        * @param x, position en x du texte à afficher.
        * @param y, position en y du texte à afficher.
-       * @param font_size, taille de la police du texte à afficher.
-       * @param color, couleur du texte à afficher
        *
-       * @throw std::runtime_error si font_id ne renvoie pas à une police chargée.
+       * @throw std::runtime_error si aucune police n'est chargée.
        * @throw std::runtime_error si impossible de charger la texture de rendu du texte.
        */
       void draw_text(
         const std::string &text,
-        const std::string &font_path,
         int x,
-        int y,
-        size_t text_size,
-        const topi::type::color::RGBAColor &color
+        int y
       );
 
       /**
@@ -114,16 +136,12 @@ namespace topi::render {
        * @param y1, position en y du premier point de la ligne.
        * @param x2, position en x du second point de la ligne.
        * @param y2, position en y du second point de la ligne.
-       * @param thickness, épaisseur de la ligne à afficher.
-       * @param couleur de la ligne à afficher.
        */
       void draw_line(
         int x1,
         int y1,
         int x2,
-        int y2,
-        size_t thickness,
-        const topi::type::color::RGBAColor &color
+        int y2
       );
 
     private:
@@ -133,6 +151,12 @@ namespace topi::render {
       // On utilise unique_ptr pour des raisons de sécurité mémoire car désalloué automatiquement.
       // Et copie le caractère enfant des RenderableItems dans la file.
       std::vector<std::unique_ptr<items::RenderableItem>> _rendering_queue;
+
+      // Paramètres d'affichage.
+      size_t _line_thickness;
+      topi::type::color::RGBAColor _color;
+      std::string _font_path;
+      size_t _font_size;
   };
 }
 

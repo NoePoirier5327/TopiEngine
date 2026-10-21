@@ -118,15 +118,19 @@ void Game::update() {
 
 void Game::display(topi::render::RenderManager *renderer) const {
   // On affiche le terrain de jeu.
-  renderer->draw_colored_filled_rectangle(0, 0, 320, 640, {27, 36, 71, 255});
+  renderer->set_draw_color({27, 36, 71, 255});
+  renderer->draw_colored_filled_rectangle(0, 0, 320, 640);
   this->_map->display(renderer);
 
   // On affiche le score.
-  renderer->draw_text("Score = " + std::to_string(this->_score), "./res/JetBrainsMonoNerdFont-Bold.ttf", 350, 300, 32, {255, 255, 255, 255});
-  renderer->draw_text("Level = " + std::to_string(this->_level), "./res/JetBrainsMonoNerdFont-Bold.ttf", 350, 332, 32, {255, 255, 255, 255});
+  renderer->set_font("./res/JetBrainsMonoNerdFont-Bold.ttf", 32);
+  renderer->set_draw_color(topi::type::color::WHITE);
+  renderer->draw_text("Score = " + std::to_string(this->_score), 350, 300);
+  renderer->draw_text("Level = " + std::to_string(this->_level), 350, 332);
 
   // On affiche la prévisualisation du prochain tetromino.
-  renderer->draw_colored_rectangle(416, 96, 128, 128, 2, {255, 255, 255, 255});
+  renderer->set_line_thickness(2);
+  renderer->draw_colored_rectangle(416, 96, 128, 128);
 
   size_t tile_size = this->_map->get_tile_width();
   size_t tetro_size = this->_next_tetromino->get_size();
@@ -150,12 +154,12 @@ void Game::display(topi::render::RenderManager *renderer) const {
   for (size_t x = 0; x < tetro_size; ++x) {
     for (size_t y = 0; y < tetro_size; ++y) {
       if ((*this->_next_tetromino)(x, y) != transparent_tile) {
+        renderer->set_draw_color(tetro_color);
         renderer->draw_colored_filled_rectangle(
           static_cast<int>(x * tile_size) + x_offset,
           static_cast<int>(y * tile_size) + y_offset,
           tile_size,
-          tile_size,
-          tetro_color
+          tile_size
         );
       }
     }
