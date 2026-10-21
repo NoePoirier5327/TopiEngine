@@ -73,6 +73,8 @@ namespace topi::render {
 
   void RenderManager::set_font(const std::string &font_path, size_t font_size) {
     this->_resource_manager.load_font(font_path, font_size);
+    this->_font_path = font_path;
+    this->_font_size = font_size;
   }
 
   void RenderManager::draw_colored_filled_rectangle(int x, int y, size_t w, size_t h) {
