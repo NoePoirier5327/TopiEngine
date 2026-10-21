@@ -65,7 +65,10 @@ namespace topi::render {
       );
 
       /**
-       * @brief Charge la police d'écriture en paramètre.
+       * @brief Charge la police d'écriture dans le moteur de rendu.
+       *
+       * Met la police d'écriture en paramètre comme courante
+       * dans le moteur de rendue.
        *
        * @param font_path, chemin vers la police à charger.
        * @param font_size, taille de la police à charger.
