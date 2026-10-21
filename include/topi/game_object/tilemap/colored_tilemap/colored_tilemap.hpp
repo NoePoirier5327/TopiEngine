@@ -16,15 +16,17 @@ namespace topi::game_object::tilemap {
   class ColoredTilemap {
     public:
       /**
-       * @brief Instancie une tilemap de la taille en paramètre avec au moins une couche.
+       * @brief Instancie une tilemap colorée.
+       *
+       * Construit la tilemap grâce à tous les paramètres disponibles.
        *
        * @param map_width, largeur de la tilemap à instancier.
        * @param map_height, hauteur de la tilemap à instancier.
        * @param nb_layer, nombre de couche du tilemap, au minimum 1.
-       * @param tile_width, largeur des tuiles de la tilemap à instancier, par défaut à 32.
-       * @param tile_height, hauteur des tuiles de la tilemap à instancier, par défaut à 32.
-       * @param is_x_flipped, détermine si on affiche la dernière tuile en x de la tilemap à gauche ou non, par défaut false donc non.
-       * @param is_y_flipped, détermine si on affiche la dernière tuile en y de la tilemap en haut ou non, par défaut false donc non.
+       * @param tile_width, largeur des tuiles de la tilemap à instancier.
+       * @param tile_height, hauteur des tuiles de la tilemap à instancier.
+       * @param is_x_flipped, détermine si on affiche la dernière tuile en x de la tilemap à gauche ou non.
+       * @param is_y_flipped, détermine si on affiche la dernière tuile en y de la tilemap en haut ou non.
        *
        * @throw std::invalid_argument si nb_layer < 1
        */
@@ -32,10 +34,73 @@ namespace topi::game_object::tilemap {
         size_t map_width,
         size_t map_height,
         size_t nb_layer,
-        size_t tile_width = 32,
-        size_t tile_height = 32,
-        bool is_x_flipped = false,
-        bool is_y_fliiped = false
+        size_t tile_width,
+        size_t tile_height,
+        bool is_x_flipped,
+        bool is_y_fliiped
+      );
+
+      /**
+       * @brief Instancie une tilemap colorée.
+       *
+       * La tilemap instanciée sera affiché à l'endroit sans modification
+       * préalable.
+       *
+       * @param map_width, largeur de la tilemap à instancier.
+       * @param map_height, hauteur de la tilemap à instancier.
+       * @param nb_layer, nombre de couche du tilemap, au minimum 1.
+       * @param tile_width, largeur des tuiles de la tilemap.
+       * @param tile_height, hauteur des tuiles de la tilemap.
+       *
+       * @throw std::runtime_error nb_layer < 1
+       */
+      ColoredTilemap(
+        size_t map_width,
+        size_t map_height,
+        size_t nb_layer,
+        size_t tile_width,
+        size_t tile_height
+      );
+
+      /**
+       * @brief Instancie une tilemap colorée.
+       *
+       * La tilemap instanciée n'aura qu'une seule couche à son instanciation.
+       * La tilemap instanciée sera affiché à l'endroit sans modification
+       * préalable.
+       *
+       * @param map_width, largeur de la tilemap à instancier.
+       * @param map_height, hauteur de la tilemap à instancier.
+       * @param tile_width, largeur des tuiles de la tilemap à l'affichage.
+       * @param tile_height, hauteur des tuiles de la tilemap à l'affichage.
+       */
+      ColoredTilemap(
+        size_t map_width,
+        size_t map_height,
+        size_t tile_width,
+        size_t tile_height
+      );
+
+      /**
+       * @brief Instancie une tilemap colorée.
+       *
+       * La tilemap instanciée n'aura qu'une seule couche à son instanciation.
+       * Ce constructeur gère le renversement de l'affichage de la tilemap.
+       *
+       * @param map_width, largeur de la tilemap à instancier.
+       * @param map_height, hauteur de la tilemap à instancier.
+       * @param tile_width, largeur des tuiles de la tilemap à l'affichage.
+       * @param tile_height, hauteur des tuiles de la tilemap à l'affichage.
+       * @param is_x_flipped, gère le renversement vertical de la tilemap.
+       * @param is_y_flipped, gère le renversement horizontal de la tilemap.
+       */
+      ColoredTilemap(
+        size_t map_width,
+        size_t map_height,
+        size_t tile_width,
+        size_t tile_height,
+        bool is_x_flipped,
+        bool is_y_flipped
       );
 
       /**
