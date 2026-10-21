@@ -33,6 +33,8 @@ namespace topi::render {
 
     this->_line_thickness = 1;
     this->_color = topi::type::color::BLACK;
+    this->_font_path = "";
+    this->_font_size = 1;
 
     AN_INSTANCE_IS_ALREADY_RUNNING = true;
   }
@@ -69,6 +71,10 @@ namespace topi::render {
     this->_line_thickness = line_thickness;
   }
 
+  void RenderManager::set_font(const std::string &font_path, size_t font_size) {
+    this->_resource_manager.load_font(font_path, font_size);
+  }
+
   void RenderManager::draw_colored_filled_rectangle(int x, int y, size_t w, size_t h) {
     // On s'épargne de l'allocation si un objet est inaffichable car complétement transparent.
     if (this->_color.a != 0) {
@@ -81,10 +87,13 @@ namespace topi::render {
     this->_rendering_queue.push_back(std::make_unique<items::ColoredRectangle>(x, y, w, h, this->_line_thickness, this->_color));
   }
 
-  void RenderManager::draw_text(const std::string &text, const std::string &font_path, int x, int y, size_t font_size) {
+  void RenderManager::draw_text(const std::string &text, int x, int y) {
+    if (this->_font_path.empty())
+      throw std::runtime_error("No font loaded to display the text.");
+
     if (this->_color.a == 0) return;
 
-    TTF_Font *font = this->_resource_manager.get_font(font_path, font_size);
+    TTF_Font *font = this->_resource_manager.get_font(this->_font_path, this->_font_size);
     SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(), this->_color);
 
     if (!surface) {

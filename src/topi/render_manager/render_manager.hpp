@@ -65,6 +65,19 @@ namespace topi::render {
       );
 
       /**
+       * @brief Charge la police d'écriture en paramètre.
+       *
+       * @param font_path, chemin vers la police à charger.
+       * @param font_size, taille de la police à charger.
+       *
+       * @throw std::runtime_error si impossible de charger la police en paramètre.
+       */
+      void set_font(
+        const std::string &font_path,
+        size_t font_size
+      );
+
+      /**
        * @brief Affiche un nouveau rectangle plein coloré.
        *
        * Créer une nouvelle instance de ColoredFilledRectangle et l'ajoute à la file
@@ -101,20 +114,16 @@ namespace topi::render {
        * @brief Affiche le texte en paramètre sur l'écran courant.
        *
        * @param text, texte à afficher sur la fenêtre de rendu.
-       * @param font_path, chemin vers la police du texte à afficher.
        * @param x, position en x du texte à afficher.
        * @param y, position en y du texte à afficher.
-       * @param font_size, taille de la police du texte à afficher.
        *
-       * @throw std::runtime_error si font_id ne renvoie pas à une police chargée.
+       * @throw std::runtime_error si aucune police n'est chargée.
        * @throw std::runtime_error si impossible de charger la texture de rendu du texte.
        */
       void draw_text(
         const std::string &text,
-        const std::string &font_path,
         int x,
-        int y,
-        size_t text_size
+        int y
       );
 
       /**
@@ -143,6 +152,8 @@ namespace topi::render {
       // Paramètres d'affichage.
       size_t _line_thickness;
       topi::type::color::RGBAColor _color;
+      std::string _font_path;
+      size_t _font_size;
   };
 }
 
