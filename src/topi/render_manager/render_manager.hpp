@@ -144,6 +144,28 @@ namespace topi::render {
         int y2
       );
 
+      /**
+       * @brief Affiche un triangle coloré plein.
+       *
+       * La couleur de rendu du triangle est celle chargé au moment de l'appel
+       * dans le moteur de rendu.
+       *
+       * @param x1, coordonnée en x du premier point du triangle.
+       * @param y1, coordonnée en y du premier point du triangle.
+       * @param x2, coordonnée en x du second point du triangle.
+       * @param y2, coordonnée en y du second point du triangle.
+       * @param x3, coordonnée en x du troisième point du triangle.
+       * @param y3, coordonnée en y du troisième point du triangle.
+       */
+      void draw_colored_filled_triangle(
+        int x1,
+        int y1,
+        int x2,
+        int y2,
+        int x3,
+        int y3
+      );
+
     private:
       SDL_Renderer *_renderer;
       resource::ResourceManager &_resource_manager;

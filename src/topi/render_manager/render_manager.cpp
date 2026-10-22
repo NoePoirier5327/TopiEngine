@@ -7,6 +7,7 @@
 #include "renderable_items/rectangle/rectangle.hpp"
 #include "renderable_items/text/text.hpp"
 #include "renderable_items/line/line.hpp"
+#include "renderable_items/triangle/triangle.hpp"
 
 namespace topi::render {
   // Nombre d'instance du moteur de rendu tournant en mémoire.
@@ -122,5 +123,10 @@ namespace topi::render {
   void RenderManager::draw_line(int x1, int y1, int x2, int y2) {
     if (this->_color.a == 0) return;
     this->_rendering_queue.push_back(std::make_unique<items::Line>(x1, y1, x2, y2, this->_line_thickness, this->_color));
+  }
+
+  void RenderManager::draw_colored_filled_triangle(int x1, int y1, int x2, int y2, int x3, int y3) {
+    if (this->_color.a == 0) return;
+    this->_rendering_queue.push_back(std::make_unique<items::ColoredFilledTriangle>(x1, y1, x2, y2, x3, y3, this->_color));
   }
 }
