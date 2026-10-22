@@ -166,6 +166,24 @@ namespace topi::render {
         int y3
       );
 
+      /**
+       * @brief Affiche un cercle coloré plein.
+       *
+       * La couleur de rendu du cercle est celle chargé au moment de l'appel
+       * dans le moteur de rendu.
+       *
+       * @param x, coordonnée en x du centre du cercle.
+       * @param y, coordonnée en y du centre du cercle.
+       * @param radius, rayon du nouveau cercle à afficher.
+       *
+       * @throw std::runtime_error si radius < 0
+       */
+      void draw_colored_filled_circle(
+        int x,
+        int y,
+        double radius
+      );
+
     private:
       SDL_Renderer *_renderer;
       resource::ResourceManager &_resource_manager;
