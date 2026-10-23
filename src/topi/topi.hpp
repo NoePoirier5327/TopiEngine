@@ -8,6 +8,7 @@
 #include "resource_manager/resource_manager.hpp"
 #include "game_object/tilemap/tilemap.hpp"
 #include "toolkit/toolkit.hpp"
+#include "type/type.hpp"
 
 
 namespace topi {

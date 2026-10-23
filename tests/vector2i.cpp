@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "../src/topi/topi.hpp"
 
-using namespace topi::toolkit::vector;
+using namespace topi::type::vector;
 
 TEST(Vector2i, isEqual) {
   Vector2i v = Vector2i(9, -1);

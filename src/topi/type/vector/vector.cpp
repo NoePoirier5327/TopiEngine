@@ -1,7 +1,7 @@
 #include "vector.hpp"
 #include <iostream>
 
-namespace topi::toolkit::vector {
+namespace topi::type::vector {
   Vector2i::Vector2i(int x, int y) {
     this->x = x;
     this->y = y;
