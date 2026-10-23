@@ -10,7 +10,7 @@ namespace topi {
   // Vérifie si une instance existe déjà en mémoire.
   static bool AN_INSTANCE_IS_ALREADY_RUNNING = false;
 
-  TopiEngine::TopiEngine(const char *name, int width, int height) {
+  TopiEngine::TopiEngine(const char *name, size_t width, size_t height) {
     // Démarrage de l'aléatoire sur le système.
     srand(static_cast<unsigned int>(time(nullptr)));
 
@@ -37,8 +37,8 @@ namespace topi {
       name,
       SDL_WINDOWPOS_UNDEFINED,
       SDL_WINDOWPOS_UNDEFINED,
-      width,
-      height,
+      static_cast<int>(width),
+      static_cast<int>(height),
       SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI
     );
 
