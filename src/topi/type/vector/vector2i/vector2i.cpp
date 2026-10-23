@@ -1,4 +1,4 @@
-#include "vector.hpp"
+#include "vector2i.hpp"
 #include <iostream>
 
 namespace topi::type::vector {
@@ -26,6 +26,14 @@ namespace topi::type::vector {
 
   Vector2i Vector2i::operator*(int a) const {
     return Vector2i(this->x * a, this->y * a);
+  }
+
+  Vector2i Vector2i::operator*(float a) const {
+    return Vector2i(static_cast<int>(static_cast<float>(this->x) * a), static_cast<int>(static_cast<float>(this->y) * a));
+  }
+
+  Vector2i Vector2i::operator*(double a) const {
+    return Vector2i(static_cast<int>(static_cast<double>(this->x) * a), static_cast<int>(static_cast<float>(this->y) * a));
   }
 
   Vector2i Vector2i::operator+(const Vector2i &v) const {

@@ -55,10 +55,31 @@ namespace topi::type::vector {
        * paramètre et renvoie le résultat sous forme d'une nouvelle instance.
        *
        * @param a, entier à multiplier avec le vecteur courant.
-       *
        * @return résultat de la multiplication.
        */
       Vector2i operator*(int a) const;
+
+      /**
+       * @brief Surcharge de l'opérateur de multiplication.
+       *
+       * Multiplie le vecteur courant par le flottant simple précision en
+       * paramètre et renvoie le résultat transtypé vers les entiers.
+       *
+       * @param a, flottant simple précision à multiplier.
+       * @return vecteur résultant de la multiplication.
+       */
+      Vector2i operator*(float a) const;
+
+      /**
+       * @brief Surcharge de l'opérateur de multiplication.
+       *
+       * Multiplie le vecteur courant par le flottant double précision en
+       * paramètre et renvoie le résultat transtypé vers les entiers.
+       *
+       * @param a, flottant double précision à multiplier.
+       * @return vecteur résultant de la multiplication.
+       */
+      Vector2i operator*(double a) const;
 
       /**
        * @brief Surcharge de l'opérateur d'addition.
