@@ -8,6 +8,7 @@
 #include "resource_manager/resource_manager.hpp"
 #include "game_object/tilemap/tilemap.hpp"
 #include "toolkit/toolkit.hpp"
+#include "type/type.hpp"
 
 
 namespace topi {
@@ -34,7 +35,7 @@ namespace topi {
        * @throw std::runtime_error si erreur dans la création de l'instance du renderer.
        * @throw std::invalid_argument si erreur dans la création de l'instance du renderer.
       */
-      TopiEngine(const char* name, int width, int height);
+      TopiEngine(const char* name, size_t width, size_t height);
 
       /**
        * @brief Désalloue, si besoin, l'instance interne de TopiEngine ainsi que la sdl2.
