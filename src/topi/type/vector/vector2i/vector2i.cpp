@@ -24,18 +24,6 @@ namespace topi::type::vector {
     return this->x == v.x && this->y == v.y;
   }
 
-  Vector2i Vector2i::operator*(int a) const {
-    return Vector2i(this->x * a, this->y * a);
-  }
-
-  Vector2i Vector2i::operator*(float a) const {
-    return Vector2i(static_cast<int>(static_cast<float>(this->x) * a), static_cast<int>(static_cast<float>(this->y) * a));
-  }
-
-  Vector2i Vector2i::operator*(double a) const {
-    return Vector2i(static_cast<int>(static_cast<double>(this->x) * a), static_cast<int>(static_cast<float>(this->y) * a));
-  }
-
   Vector2i Vector2i::operator+(const Vector2i &v) const {
     return Vector2i(this->x + v.x, this->y + v.y);
   }
@@ -67,5 +55,29 @@ namespace topi::type::vector {
 
   void Vector2i::debug_disp() const {
     std::cout << "( x: " << this->x << ", y: " << this->y << " )" << std::endl;
+  }
+
+  Vector2i operator*(Vector2i v, int a) {
+    return Vector2i(v.x * a, v.y * a);
+  }
+
+  Vector2i operator*(int a, Vector2i v) {
+    return v * a;
+  }
+
+  Vector2i operator*(Vector2i v, float a) {
+    return Vector2i(static_cast<int>(static_cast<float>(v.x) * a), static_cast<int>(static_cast<float>(v.y) * a));
+  }
+
+  Vector2i operator*(float a, Vector2i v) {
+    return v * a;
+  }
+
+  Vector2i operator*(Vector2i v, double a) {
+    return Vector2i(static_cast<int>(static_cast<double>(v.x) * a), static_cast<int>(static_cast<float>(v.y) * a));
+  }
+
+  Vector2i operator*(double a, Vector2i v) {
+    return v * a;
   }
 }
