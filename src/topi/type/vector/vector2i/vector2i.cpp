@@ -36,6 +36,16 @@ namespace topi::type::vector {
     return *this + (-1 * v);
   }
 
+  void Vector2i::operator+=(const Vector2i &v) {
+    this->x += v.x;
+    this->y += v.y;
+  }
+
+  void Vector2i::operator-=(const Vector2i &v) {
+    this->x -= v.x;
+    this->y -= v.y;
+  }
+
   Vector2i& Vector2i::operator=(const Vector2i &v) {
     if (this == &v) {
       return *this;

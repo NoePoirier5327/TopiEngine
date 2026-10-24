@@ -81,6 +81,24 @@ namespace topi::type::vector {
       Vector2i operator-(const Vector2i &v) const;
 
       /**
+       * @brief Surcharge de l'opérateur d'addition puis assignation.
+       *
+       * Additionne le vecteur courant avec celui en paramètre.
+       *
+       * @param v, vecteur à additionner avec celui en paramètre.
+       */
+      void operator+=(const Vector2i &v);
+
+      /**
+       * @brief Surchage de l'opérateur de soustraction puis assignation.
+       *
+       * Soustrait le vecteur en paramètre au vecteur courant.
+       *
+       * @param v, vecteur à soustraire au vecteur courant.
+       */
+      void operator-=(const Vector2i &v);
+
+      /**
        * @brief Surchargeur de l'opérateur d'assignation.
        *
        * Copie le vecteur en paramètre dans celui courant.

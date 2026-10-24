@@ -33,6 +33,21 @@ TEST(Vector2i, sub) {
   EXPECT_TRUE(w == Vector2i(89, 7));
 }
 
+TEST(Vector2i, sumThenAssign) {
+  Vector2i v = Vector2i(90, 8);
+  v += Vector2i(0, -1);
+
+  EXPECT_TRUE(v == Vector2i(90, 7));
+}
+
+TEST(Vector2i, subThenAssign) {
+  Vector2i v = Vector2i(90, 8);
+  v -= Vector2i(1, 1);
+
+  EXPECT_TRUE(v == Vector2i(89, 7));
+}
+
+
 TEST(Vector2i, rightIntProduct) {
   Vector2i v = Vector2i(-2, -6);
   Vector2i u = v * -2;
