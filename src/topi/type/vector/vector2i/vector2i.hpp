@@ -164,8 +164,8 @@ namespace topi::type::vector {
    * Multiplie le vecteur en paramètre par le flottant double précision en
    * paramètre et renvoie le résultat transtypé vers les entiers.
    *
-   * @param v, vecteur entier à multiplier.
    * @param a, flottant double précision à multiplier.
+   * @param v, vecteur entier à multiplier.
    *
    * @return vecteur résultant de la multiplication.
    */
