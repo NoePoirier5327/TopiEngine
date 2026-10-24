@@ -62,7 +62,7 @@ TEST(Vector2i, rightDoubleProduct) {
 
 TEST(Vector2i, leftDoubleProduct) {
   Vector2i v = Vector2i(3, -9);
-  Vector2i u = 1.5f * v;
+  Vector2i u = 1.5 * v;
 
   EXPECT_TRUE(u == Vector2i(4, -13));
 }

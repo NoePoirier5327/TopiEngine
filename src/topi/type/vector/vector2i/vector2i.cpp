@@ -74,7 +74,7 @@ namespace topi::type::vector {
   }
 
   Vector2i operator*(Vector2i v, double a) {
-    return Vector2i(static_cast<int>(static_cast<double>(v.x) * a), static_cast<int>(static_cast<float>(v.y) * a));
+    return Vector2i(static_cast<int>(static_cast<double>(v.x) * a), static_cast<int>(static_cast<double>(v.y) * a));
   }
 
   Vector2i operator*(double a, Vector2i v) {
