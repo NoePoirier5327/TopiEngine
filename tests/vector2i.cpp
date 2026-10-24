@@ -47,7 +47,6 @@ TEST(Vector2i, subThenAssign) {
   EXPECT_TRUE(v == Vector2i(89, 7));
 }
 
-
 TEST(Vector2i, rightIntProduct) {
   Vector2i v = Vector2i(-2, -6);
   Vector2i u = v * -2;
@@ -88,4 +87,22 @@ TEST(Vector2i, leftDoubleProduct) {
   Vector2i u = 1.5 * v;
 
   EXPECT_TRUE(u == Vector2i(4, -13));
+}
+
+TEST(Vector2i, intProductThenAssign) {
+  Vector2i v = Vector2i(-2, 6);
+  v *= -2;
+  EXPECT_TRUE(v == Vector2i(4, -12));
+}
+
+TEST(Vector2i, floatProductThenAssign) {
+  Vector2i v = Vector2i(3, 9);
+  v *= -0.5f;
+  EXPECT_TRUE(v == Vector2i(-1, -4));
+}
+
+TEST(Vector2i, doubleProductThenAssign) {
+  Vector2i v = Vector2i(3, -9);
+  v *= 1.5;
+  EXPECT_TRUE(v == Vector2i(4, -13));
 }

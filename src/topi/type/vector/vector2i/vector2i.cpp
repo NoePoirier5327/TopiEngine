@@ -46,6 +46,21 @@ namespace topi::type::vector {
     this->y -= v.y;
   }
 
+  void Vector2i::operator*=(int a) {
+    this->x *= a;
+    this->y *= a;
+  }
+
+  void Vector2i::operator*=(float a) {
+    this->x = static_cast<int>(static_cast<float>(this->x) * a);
+    this->y = static_cast<int>(static_cast<float>(this->y) * a);
+  }
+
+  void Vector2i::operator*=(double a) {
+    this->x = static_cast<int>(static_cast<double>(this->x) * a);
+    this->y = static_cast<int>(static_cast<double>(this->y) * a);
+  }
+
   Vector2i& Vector2i::operator=(const Vector2i &v) {
     if (this == &v) {
       return *this;
