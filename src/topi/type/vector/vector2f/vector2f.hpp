@@ -20,7 +20,7 @@ namespace topi::type::vector {
        * @brief Constructeur en copie.
        *
        * Copie le contenu du vecteur en paramètre dans le but
-       * dans instancier un nouveau.
+       * d'en instancier un nouveau.
        *
        * @param v, vecteur à copier pour la création.
        */
