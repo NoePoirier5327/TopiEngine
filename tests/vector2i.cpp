@@ -25,6 +25,14 @@ TEST(Vector2i, sum) {
   EXPECT_TRUE(w == Vector2i(90, 7));
 }
 
+TEST(Vector2i, sub) {
+  Vector2i v = Vector2i(90, 8);
+  Vector2i u = Vector2i(1, 1);
+  Vector2i w = v - u;
+
+  EXPECT_TRUE(w == Vector2i(89, 7));
+}
+
 TEST(Vector2i, rightIntProduct) {
   Vector2i v = Vector2i(-2, -6);
   Vector2i u = v * -2;
