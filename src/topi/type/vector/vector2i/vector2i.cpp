@@ -24,6 +24,10 @@ namespace topi::type::vector {
     return this->x == v.x && this->y == v.y;
   }
 
+  bool Vector2i::operator!=(const Vector2i &v) const {
+    return !(*this == v);
+  }
+
   Vector2i Vector2i::operator+(const Vector2i &v) const {
     return Vector2i(this->x + v.x, this->y + v.y);
   }

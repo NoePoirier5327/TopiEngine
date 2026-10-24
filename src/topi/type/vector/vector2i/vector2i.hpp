@@ -43,10 +43,20 @@ namespace topi::type::vector {
        * le même que celui courant.
        *
        * @param v, vecteur à comparer avec l'instance courante.
-       *
        * @return true s'ils sont égaux, false sinon.
        */
       bool operator==(const Vector2i &v) const;
+
+      /**
+       * @brief Surcharge de l'opérateur d'inégalité.
+       *
+       * Vérifie si le contenu du vecteur en paramètre est
+       * le même que ceui courant.
+       *
+       * @param v, vecteur à comparer avec l'instance courante.
+       * @return true s'ils ne sont pas égaux, false sinon.
+       */
+      bool operator!=(const Vector2i &v) const;
 
       /**
        * @brief Surcharge de l'opérateur d'addition.

@@ -14,7 +14,7 @@ TEST(Vector2i, isNotEqual) {
   Vector2i v = Vector2i(6, -1);
   Vector2i u = Vector2i(-89, 106);
 
-  EXPECT_FALSE(v == u);
+  EXPECT_TRUE(v != u);
 }
 
 TEST(Vector2i, sum) {
