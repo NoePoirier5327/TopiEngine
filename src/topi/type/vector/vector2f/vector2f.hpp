@@ -65,10 +65,20 @@ namespace topi::type::vector {
        * et renvoie le résultat sous forme d'une nouvelle instance.
        *
        * @param v, vecteur à ajouter avec le vecteur courant.
-       *
        * @return résultat de l'addition.
        */
       Vector2f operator+(const Vector2f &v) const;
+
+      /**
+       * @brief Surcharge de l'opérateur de soustraction.
+       *
+       * Soustrait le vecteur en paramètre au vecteur courant
+       * et renvoie le résultat sous forme d'une nouvelle instance.
+       *
+       * @param v, vecteur à soustraire au vecteur courant.
+       * @return résultat de la soustraction.
+       */
+      Vector2f operator-(const Vector2f &v) const;
 
       /**
        * @brief Surchargeur de l'opérateur d'assignation.

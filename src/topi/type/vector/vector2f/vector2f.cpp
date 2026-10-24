@@ -32,6 +32,10 @@ namespace topi::type::vector {
     return Vector2f(this->x + v.x, this->y + v.y);
   }
 
+  Vector2f Vector2f::operator-(const Vector2f &v) const {
+    return *this + (-1.0f * v);
+  }
+
   Vector2f& Vector2f::operator=(const Vector2f &v) {
     if (this == &v) {
       return *this;
