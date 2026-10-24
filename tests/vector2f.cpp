@@ -33,6 +33,18 @@ TEST(Vector2f, sub) {
   EXPECT_TRUE(w == Vector2f(82.96f, 9.8f));
 }
 
+TEST(Vector2f, sumThenAssign) {
+  Vector2f v = Vector2f(90.06f, 8.8f);
+  v += Vector2f(0.0f, -1.0f); 
+  EXPECT_TRUE(v == Vector2f(90.06f, 7.8f));
+}
+
+TEST(Vector2f, subThenAssign) {
+  Vector2f v = Vector2f(90.06f, 8.8f);
+  v -= Vector2f(1.2f, -1.2f);
+  EXPECT_TRUE(v == Vector2f(88.86f, 10.0f));
+}
+
 TEST(Vector2f, rightIntProduct) {
   Vector2f v = Vector2f(-2.0f, -6.0f);
   Vector2f u = v * -2;
@@ -75,3 +87,20 @@ TEST(Vector2f, leftDoubleProduct) {
   EXPECT_TRUE(u == Vector2f(4.5f, -13.5f));
 }
 
+TEST(Vector2f, intProductThenAssign) {
+  Vector2f v = Vector2f(3.0f, -1.0f);
+  v *= 7;
+  EXPECT_TRUE(v == Vector2f(21.0f, -7.0f));
+}
+
+TEST(Vector2f, floatProductThenAssign) {
+  Vector2f v = Vector2f(5.0f, -7.0f);
+  v *= -0.5f;
+  EXPECT_TRUE(v == Vector2f(-2.5f, 3.5f));
+}
+
+TEST(Vector2f, doubleProductThenAssign) {
+  Vector2f v = Vector2f(-5.0f, -7.0f);
+  v *= 1.5;
+  EXPECT_TRUE(v == Vector2f(-7.5f, -10.5f));
+}

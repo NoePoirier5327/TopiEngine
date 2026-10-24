@@ -81,6 +81,54 @@ namespace topi::type::vector {
       Vector2f operator-(const Vector2f &v) const;
 
       /**
+       * @brief Surcharge de l'opérateur d'addition puis assignation.
+       *
+       * Additionne le vecteur courant avec celui en paramètre.
+       *
+       * @param v, vecteur à additionner avec celui en paramètre.
+       */
+      void operator+=(const Vector2f &v);
+
+      /**
+       * @brief Surcharge de l'opérateur de soustraction puis assignation.
+       *
+       * Soustrait le vecteur en paramètre au vecteur courant.
+       *
+       * @param v, vecteur à soustraire au vecteur courant.
+       */
+      void operator-=(const Vector2f &v);
+
+      /**
+       * @brief Surcharge de l'opérateur de multiplication puis assignation.
+       *
+       * Multiplie le vecteur courant par un entier et stocke le résultat
+       * dans l'instance courante.
+       *
+       * @param a, entier à multiplier au vecteur courant.
+       */
+      void operator*=(int a);
+
+      /**
+       * @brief Surcharge de l'opérateur de multiplication puis assignation.
+       *
+       * Multiplie le vecteur courant par un flottant simple précision et
+       * stocke le résultat dans l'instance courante.
+       *
+       * @param a, flottant simple précision à multiplier au vecteur courant.
+       */
+      void operator*=(float a);
+
+      /**
+       * @brief Surchage de l'opérateur de multiplication puis assignation.
+       *
+       * Multplie le vecteur courant par un vecteur double précision et
+       * stocke le résultat dans l'instance courante.
+       *
+       * @param a, flottant double précision à multiplier au vecteur courant.
+       */
+      void operator*=(double a);
+
+      /**
        * @brief Surchargeur de l'opérateur d'assignation.
        *
        * Copie le vecteur en paramètre dans celui courant.
