@@ -16,8 +16,8 @@ namespace topi::type::vector {
     this->x = v.x;
     this->y = v.y;
 
-    v.x = 0;
-    v.y = 0;
+    v.x = 0.0f;
+    v.y = 0.0f;
   }
 
   bool Vector2f::operator==(const Vector2f &v) const {
