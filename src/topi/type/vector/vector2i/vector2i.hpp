@@ -153,6 +153,7 @@ namespace topi::type::vector {
    *
    * @param v, vecteur entier à multiplier.
    * @param a, flottant double précision à multiplier.
+   *
    * @return vecteur résultant de la multiplication.
    */
   Vector2i operator*(Vector2i v, double a);
@@ -165,10 +166,10 @@ namespace topi::type::vector {
    *
    * @param v, vecteur entier à multiplier.
    * @param a, flottant double précision à multiplier.
+   *
    * @return vecteur résultant de la multiplication.
    */
   Vector2i operator*(double a, Vector2i v);
-
 };
 
 #endif // !VECTOR2I_HEADER
