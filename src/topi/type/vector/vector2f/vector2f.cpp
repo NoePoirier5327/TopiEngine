@@ -58,7 +58,7 @@ namespace topi::type::vector {
   }
 
   Vector2f operator*(Vector2f v, int a) {
-    return Vector2f(v.x * static_cast<float>(a), v.y * static_cast<int>(a));
+    return Vector2f(v.x * static_cast<float>(a), v.y * static_cast<float>(a));
   }
 
   Vector2f operator*(int a, Vector2f v) {
