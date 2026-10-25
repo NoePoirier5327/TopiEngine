@@ -17,6 +17,15 @@ int main() {
 
   app.display([&game](topi::render::RenderManager *renderer) {
     game.display(renderer);
+
+    if (game.game_is_over()) {
+      renderer->set_draw_color(topi::type::color::BLACK);
+      renderer->draw_colored_filled_rectangle(0, 256, 320, 128);
+
+      renderer->set_draw_color(topi::type::color::WHITE);
+      renderer->set_font("./res/JetBrainsMonoNerdFont-Bold.ttf", 32);
+      renderer->draw_text("GAME OVER", 80, 292);
+    }
   });
 
   app.run();
