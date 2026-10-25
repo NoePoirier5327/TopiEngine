@@ -9,6 +9,12 @@ namespace topi::type::vector {
   class Vector2d {
     public:
       /**
+       * @brief Constructeur par défaut du vecteur flottant double précision.
+       * L'initialise à la position (0,0).
+       */
+      Vector2d();
+
+      /**
        * @brief Constructeur simple du vecteur flottant en deux dimensions.
        *
        * @param x, premier élément du 2uplet du vecteur courant.

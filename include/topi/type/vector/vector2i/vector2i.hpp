@@ -9,6 +9,12 @@ namespace topi::type::vector {
   class Vector2i {
     public:
       /**
+       * @brief Constructeur par défaut du vecteur entier.
+       * L'initialise à la position (0,0).
+       */
+      Vector2i();
+
+      /**
        * @brief Constructeur simple du vecteur entiers en deux dimensions.
        *
        * @param x, premier élément du 2uplet du vecteur courant.
