@@ -3,6 +3,11 @@
 #include <cmath>
 
 namespace topi::type::vector {
+  Vector2d::Vector2d() {
+    this->x = 0.0;
+    this->y = 0.0;
+  }
+
   Vector2d::Vector2d(double x, double y) {
     this->x = x;
     this->y = y;

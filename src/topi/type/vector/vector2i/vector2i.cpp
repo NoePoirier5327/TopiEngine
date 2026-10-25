@@ -3,6 +3,11 @@
 #include <cmath>
 
 namespace topi::type::vector {
+  Vector2i::Vector2i() {
+    this->x = 0;
+    this->y = 0;
+  }
+
   Vector2i::Vector2i(int x, int y) {
     this->x = x;
     this->y = y;
