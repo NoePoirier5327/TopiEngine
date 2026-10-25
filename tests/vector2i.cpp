@@ -106,3 +106,7 @@ TEST(Vector2i, doubleProductThenAssign) {
   v *= 1.5;
   EXPECT_TRUE(v == Vector2i(4, -13));
 }
+
+TEST(Vector2i, magnitude) {
+  EXPECT_EQ(Vector2i(0, -2).magnitude(), 2.0);
+}

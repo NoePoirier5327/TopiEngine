@@ -105,3 +105,6 @@ TEST(Vector2d, doubleProductThenAssign) {
   EXPECT_TRUE(v == Vector2d(-7.5, -10.5));
 }
 
+TEST(Vector2d, magnitude) {
+  EXPECT_EQ(Vector2d(-4.0, 0.0).magnitude(), 4.0);
+}

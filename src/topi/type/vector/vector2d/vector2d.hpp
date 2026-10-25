@@ -152,6 +152,11 @@ namespace topi::type::vector {
       Vector2d& operator=(Vector2d &&v) noexcept;
 
       /**
+       * @brief Renvoie la norme du vecteur courant.
+       */
+      double magnitude();
+
+      /**
        * @brief Affiche le contenu du vecteur courant sur la console.
        */
       void debug_disp() const;

@@ -1,5 +1,6 @@
 #include "vector2d.hpp"
 #include <iostream>
+#include <cmath>
 
 namespace topi::type::vector {
   Vector2d::Vector2d(double x, double y) {
@@ -84,6 +85,10 @@ namespace topi::type::vector {
     v.y = 0.0;
 
     return *this;
+  }
+
+  double Vector2d::magnitude() {
+    return sqrt(this->x * this->x + this->y * this->y);
   }
 
   void Vector2d::debug_disp() const {
