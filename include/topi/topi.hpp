@@ -64,7 +64,7 @@ namespace topi {
       /**
        * @brief Permet d'exécuter du code à l'affichage de l'application.
        */
-      void display(const std::function<void (render::RenderManager *)> &display_handler);
+      void display(const std::function<void ()> &display_handler);
 
     private:
       SDL_Window *_window;
@@ -74,7 +74,7 @@ namespace topi {
 
       std::function<void ()> _setup_function;
       std::function<void (double)> _update_function;
-      std::function<void (render::RenderManager *)> _display_function;
+      std::function<void ()> _display_function;
   };
 }
 
