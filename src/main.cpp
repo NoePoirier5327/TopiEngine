@@ -37,17 +37,17 @@ int main() {
     std::cout << to_disp << std::endl;
   });
 
-  app.display([&tilemap, &x, &is_rectangle_invisible](topi::render::RenderManager *renderer) {
-    tilemap.display_layer(renderer, 1);
+  app.display([&tilemap, &x, &is_rectangle_invisible]() {
+    tilemap.display_layer(1);
 
-    renderer->set_line_thickness(20);
-    renderer->set_draw_color(topi::type::color::GREEN);
-    renderer->draw_line(0, 0, 400, 400);
+    topi::render::set_line_thickness(20);
+    topi::render::set_draw_color(topi::type::color::GREEN);
+    topi::render::draw_line(0, 0, 400, 400);
 
     if (!is_rectangle_invisible) {
-      renderer->set_line_thickness(10);
-      renderer->set_draw_color(topi::type::color::YELLOW);
-      renderer->draw_colored_rectangle(x, 200, 400, 100);
+      topi::render::set_line_thickness(10);
+      topi::render::set_draw_color(topi::type::color::YELLOW);
+      topi::render::draw_colored_rectangle(x, 200, 400, 100);
     }
   });
 

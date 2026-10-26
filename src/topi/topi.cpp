@@ -123,7 +123,7 @@ namespace topi {
 
       // On exécute les commandes du moteur.
       this->_update_function(dt_seconds);
-      this->_display_function(this->_render_manager);
+      this->_display_function();
 
       // On met à jour les buffers d'entrées utilisateur.
       this->_input_manager.update(last_text_input);
@@ -164,7 +164,7 @@ namespace topi {
     this->_update_function = update_handler;
   }
 
-  void TopiEngine::display(const std::function<void (render::RenderManager *)> &display_handler) {
+  void TopiEngine::display(const std::function<void ()> &display_handler) {
     this->_display_function = display_handler;
   }
 }

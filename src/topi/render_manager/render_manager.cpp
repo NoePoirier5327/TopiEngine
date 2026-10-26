@@ -11,16 +11,61 @@
 #include "renderable_items/circle/circle.hpp"
 
 namespace topi::render {
-  // Nombre d'instance du moteur de rendu tournant en mémoire.
-  static bool AN_INSTANCE_IS_ALREADY_RUNNING = false;
+  // Instance global du moteur de rendu tournant en mémoire.
+  static RenderManager *INSTANCE = nullptr;
+
+  /**
+   * @brief Vérifie la validitée de l'instance interne etla renvoie si disponible.
+   */
+  RenderManager *access_instance() {
+    if (INSTANCE == nullptr)
+      throw std::runtime_error("The render manager isn't initialized, you can't perform this operation.");
+    return INSTANCE;
+  }
+
+  void set_draw_color(const topi::type::color::RGBAColor &color) {
+    access_instance()->set_draw_color(color);
+  }
+
+  void set_line_thickness(size_t line_thickness) {
+    access_instance()->set_line_thickness(line_thickness);
+  }
+
+  void set_font(const std::string &font_path, size_t font_size) {
+    access_instance()->set_font(font_path, font_size);
+  }
+
+  void draw_colored_filled_rectangle(int x, int y, size_t w, size_t h) {
+    access_instance()->draw_colored_filled_rectangle(x, y, w, h);
+  }
+
+  void draw_colored_rectangle(int x, int y, size_t w, size_t h) {
+    access_instance()->draw_colored_rectangle(x, y, w, h);
+  }
+
+  void draw_text(const std::string &text, int x, int y) {
+    access_instance()->draw_text(text, x, y);
+  }
+
+  void draw_line(int x1, int y1, int x2, int y2) {
+    access_instance()->draw_line(x1, y1, x2, y2);
+  }
+
+  void draw_colored_filled_triangle(int x1, int y1, int x2, int y2, int x3, int y3) {
+    access_instance()->draw_colored_filled_triangle(x1, y1, x2, y2, x3, y3);
+  }
+
+  void draw_colored_filled_circle(int x, int y, double radius) {
+    access_instance()->draw_colored_filled_circle(x, y, radius);
+  }
 
   RenderManager::RenderManager(SDL_Window *window, resource::ResourceManager &resource_manager) : _resource_manager(resource_manager) {
     if (window == nullptr) {
       throw std::invalid_argument("The given window should be instanciated to create renderer.");
     }
 
-    if (AN_INSTANCE_IS_ALREADY_RUNNING) {
-      throw std::runtime_error("There sould be only one instance of the renderer running.");
+    if (INSTANCE != nullptr) {
+      throw std::runtime_error("There should be only one instance of the renderer running.");
     }
 
     this->_renderer = nullptr;
@@ -38,7 +83,7 @@ namespace topi::render {
     this->_font_path = "";
     this->_font_size = 1;
 
-    AN_INSTANCE_IS_ALREADY_RUNNING = true;
+    INSTANCE = this;
   }
 
   RenderManager::~RenderManager() {
@@ -46,7 +91,7 @@ namespace topi::render {
       SDL_DestroyRenderer(this->_renderer);
     }
 
-    AN_INSTANCE_IS_ALREADY_RUNNING = false;
+    INSTANCE = nullptr;
   }
 
   void RenderManager::display() {
