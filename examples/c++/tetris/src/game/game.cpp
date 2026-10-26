@@ -116,21 +116,21 @@ void Game::update() {
   }
 }
 
-void Game::display(topi::render::RenderManager *renderer) const {
+void Game::display() const {
   // On affiche le terrain de jeu.
-  renderer->set_draw_color({27, 36, 71, 255});
-  renderer->draw_colored_filled_rectangle(0, 0, 320, 640);
-  this->_map->display(renderer);
+  topi::render::set_draw_color({27, 36, 71, 255});
+  topi::render::draw_colored_filled_rectangle(0, 0, 320, 640);
+  this->_map->display();
 
   // On affiche le score.
-  renderer->set_font("./res/JetBrainsMonoNerdFont-Bold.ttf", 32);
-  renderer->set_draw_color(topi::type::color::WHITE);
-  renderer->draw_text("Score = " + std::to_string(this->_score), 350, 300);
-  renderer->draw_text("Level = " + std::to_string(this->_level), 350, 332);
+  topi::render::set_font("./res/JetBrainsMonoNerdFont-Bold.ttf", 32);
+  topi::render::set_draw_color(topi::type::color::WHITE);
+  topi::render::draw_text("Score = " + std::to_string(this->_score), 350, 300);
+  topi::render::draw_text("Level = " + std::to_string(this->_level), 350, 332);
 
   // On affiche la prévisualisation du prochain tetromino.
-  renderer->set_line_thickness(2);
-  renderer->draw_colored_rectangle(416, 96, 128, 128);
+  topi::render::set_line_thickness(2);
+  topi::render::draw_colored_rectangle(416, 96, 128, 128);
 
   size_t tile_size = this->_map->get_tile_width();
   size_t tetro_size = this->_next_tetromino->get_size();
@@ -154,8 +154,8 @@ void Game::display(topi::render::RenderManager *renderer) const {
   for (size_t x = 0; x < tetro_size; ++x) {
     for (size_t y = 0; y < tetro_size; ++y) {
       if ((*this->_next_tetromino)(x, y) != transparent_tile) {
-        renderer->set_draw_color(tetro_color);
-        renderer->draw_colored_filled_rectangle(
+        topi::render::set_draw_color(tetro_color);
+        topi::render::draw_colored_filled_rectangle(
           static_cast<int>(x * tile_size) + x_offset,
           static_cast<int>(y * tile_size) + y_offset,
           tile_size,

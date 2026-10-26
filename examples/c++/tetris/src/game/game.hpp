@@ -34,7 +34,7 @@ class Game {
     /**
      * @brief Met à jour l'affichage du jeu.
      */
-    void display(topi::render::RenderManager *renderer) const;
+    void display() const;
 
     /**
      * @brief Vérifie si le joueur a perdu.

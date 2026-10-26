@@ -15,16 +15,16 @@ int main() {
     }
   });
 
-  app.display([&game](topi::render::RenderManager *renderer) {
-    game.display(renderer);
+  app.display([&game]() {
+    game.display();
 
     if (game.game_is_over()) {
-      renderer->set_draw_color(topi::type::color::BLACK);
-      renderer->draw_colored_filled_rectangle(0, 256, 320, 128);
+      topi::render::set_draw_color(topi::type::color::BLACK);
+      topi::render::draw_colored_filled_rectangle(0, 256, 320, 128);
 
-      renderer->set_draw_color(topi::type::color::WHITE);
-      renderer->set_font("./res/JetBrainsMonoNerdFont-Bold.ttf", 32);
-      renderer->draw_text("GAME OVER", 80, 292);
+      topi::render::set_draw_color(topi::type::color::WHITE);
+      topi::render::set_font("./res/JetBrainsMonoNerdFont-Bold.ttf", 32);
+      topi::render::draw_text("GAME OVER", 80, 292);
     }
   });
 
