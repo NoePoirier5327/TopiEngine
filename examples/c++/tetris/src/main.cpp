@@ -2,7 +2,7 @@
 #include "game/game.hpp"
 
 int main() {
-  topi::TopiEngine app = topi::TopiEngine("Tetris", 640, 640);
+  topi::TopiEngine app = topi::TopiEngine("Example - Tetris", 640, 640);
   Game game;
 
   app.setup([]() {});
