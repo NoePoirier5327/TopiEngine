@@ -5,7 +5,7 @@
 namespace topi::render::items {
   ColoredFilledCircle::ColoredFilledCircle(int x, int y, double radius, const topi::type::color::RGBAColor &color) {
     if (radius < 0)
-      throw std::runtime_error("A circle radius can't be negative.");
+      throw std::invalid_argument("A circle radius can't be negative.");
 
     this->_x = x;
     this->_y = y;
