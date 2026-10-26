@@ -8,7 +8,7 @@ using namespace topi::toolkit;
 const size_t WINDOW_WIDTH = 1000;
 const size_t WINDOW_HEIGHT = 1000;
 
-const size_t NB_BALL = 20;
+const size_t NB_BALL = 50;
 const int MAX_SPEED = 500;
 const int MIN_SPEED = -500;
 
@@ -56,9 +56,15 @@ int main() {
   });
 
   app.display([&balls_pos, &balls_color]() {
+    render::set_line_thickness(8);
+
     for (size_t i = 0; i < NB_BALL; ++i) {
       render::set_draw_color(balls_color[i]);
-      render::draw_colored_filled_circle(static_cast<int>(balls_pos[i].x), static_cast<int>(balls_pos[i].y), BALL_RADIUS);
+
+      if (i % 2 == 0)
+        render::draw_colored_filled_circle(static_cast<int>(balls_pos[i].x), static_cast<int>(balls_pos[i].y), BALL_RADIUS);
+      else
+        render::draw_colored_circle(static_cast<int>(balls_pos[i].x), static_cast<int>(balls_pos[i].y), BALL_RADIUS);
     }
   });
 
