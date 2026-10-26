@@ -11,6 +11,159 @@
 
 namespace topi::render {
   /**
+   * @brief Change la couleur d'affichage du moteur de rendu.
+   *
+   * @param color, nouvelle couleur d'affichage du moteur.
+   *
+   * @throw std::runtime_error si l'instance du moteur de rendu est inaccessible.
+   */
+  void set_draw_color(
+    const topi::type::color::RGBAColor &color
+  );
+
+  /**
+   * @brief Change l'épaisseur des lignes affichées par le moteur de rendu.
+   *
+   * @param line_thickness, nouvelle épaisseur de ligne.
+   *
+   * @throw std::runtime_error si l'instance du moteur de rendu est inaccessible.
+   */
+  void set_line_thickness(
+    size_t line_thickness
+  );
+
+  /**
+   * @brief Charge une police d'écriture dans le moteur de rendu.
+   *
+   * Met la police d'écriture en paramètre comme courante
+   * dans le moteur de rendue.
+   *
+   * @param font_path, chemin vers la police à charger.
+   * @param font_size, taille de la police à charger.
+   *
+   * @throw std::runtime_error si impossible de charger la police en paramètre.
+   * @throw std::runtime_error si l'instance du moteur de rendu est inaccessible.
+   */
+  void set_font(
+    const std::string &font_path,
+    size_t font_size
+  );
+
+  /**
+   * @brief Affiche un nouveau rectangle plein coloré.
+   *
+   * Créer une nouvelle instance de ColoredFilledRectangle et l'ajoute à la file
+   * d'objets à afficher.
+   *
+   * @param x, coordonnée en abcisse du haut gauche du rectangle à afficher.
+   * @param y, coordonnée en ordonnée du haut gauche du rectangle à afficher.
+   * @param w, largeur du rectangle à afficher.
+   * @param h, hauteur du rectangle à afficher.
+   *
+   * @throw std::runtime_error si l'instance du moteur de rendu est inaccessible.
+   */
+  void draw_colored_filled_rectangle(
+    int x,
+    int y,
+    size_t w,
+    size_t h
+  );
+
+  /**
+   * @brief Affiche un rectangle coloré pas plein.
+   *
+   * @param x, coordonnée en x du haut gauche du rectangle à afficher.
+   * @param y, coordonnée en y du haut gauche du rectangle à afficher.
+   * @param w, largeur du rectangle à afficher.
+   * @param h, hauteur du rectangle à afficher.
+   *
+   * @throw std::runtime_error si l'instance du moteur de rendu est inaccessible.
+   */
+  void draw_colored_rectangle(
+    int x,
+    int y,
+    size_t w,
+    size_t h
+  );
+
+  /**
+   * @brief Affiche le texte en paramètre sur l'écran courant.
+   *
+   * @param text, texte à afficher sur la fenêtre de rendu.
+   * @param x, position en x du texte à afficher.
+   * @param y, position en y du texte à afficher.
+   *
+   * @throw std::runtime_error si aucune police n'est chargée.
+   * @throw std::runtime_error si impossible de charger la texture de rendu du texte.
+   * @throw std::runtime_error si l'instance du moteur de rendu est inaccessible.
+   */
+  void draw_text(
+    const std::string &text,
+    int x,
+    int y
+  );
+
+  /**
+   * @brief Affiche une ligne coloré d'une certaine épaisseur.
+   *
+   * @param x1, position en x du premier point de la ligne.
+   * @param y1, position en y du premier point de la ligne.
+   * @param x2, position en x du second point de la ligne.
+   * @param y2, position en y du second point de la ligne.
+   *
+   * @throw std::runtime_error si l'instance du moteur de rendu est inaccessible.
+   */
+  void draw_line(
+    int x1,
+    int y1,
+    int x2,
+    int y2
+  );
+
+  /**
+   * @brief Affiche un triangle coloré plein.
+   *
+   * La couleur de rendu du triangle est celle chargé au moment de l'appel
+   * dans le moteur de rendu.
+   *
+   * @param x1, coordonnée en x du premier point du triangle.
+   * @param y1, coordonnée en y du premier point du triangle.
+   * @param x2, coordonnée en x du second point du triangle.
+   * @param y2, coordonnée en y du second point du triangle.
+   * @param x3, coordonnée en x du troisième point du triangle.
+   * @param y3, coordonnée en y du troisième point du triangle.
+   *
+   * @throw std::runtime_error si l'instance du moteur de rendu est inaccessible.
+   */
+  void draw_colored_filled_triangle(
+    int x1,
+    int y1,
+    int x2,
+    int y2,
+    int x3,
+    int y3
+  );
+
+  /**
+   * @brief Affiche un cercle coloré plein.
+   *
+   * La couleur de rendu du cercle est celle chargé au moment de l'appel
+   * dans le moteur de rendu.
+   *
+   * @param x, coordonnée en x du centre du cercle.
+   * @param y, coordonnée en y du centre du cercle.
+   * @param radius, rayon du nouveau cercle à afficher.
+   *
+   * @throw std::runtime_error si radius < 0
+   * @throw std::runtime_error si l'instance du moteur de rendu est inaccessible.
+   */
+  void draw_colored_filled_circle(
+    int x,
+    int y,
+    double radius
+  );
+
+  /**
    * @class Renderer
    * @brief Gestionnaire de rendu pour le moteur de jeu.
    * Une seule instance peut tourner à la fois.
@@ -47,9 +200,9 @@ namespace topi::render {
       void display();
 
       /**
-       * @brief Change la couleur courante du moteur de rendu.
+       * @brief Mutateur de la couleur du moteur de rendu.
        *
-       * @param color, couleur d'affichage du moteur.
+       * @param color, nouvelle couleur du moteur de rendu.
        */
       void set_draw_color(
         const topi::type::color::RGBAColor &color

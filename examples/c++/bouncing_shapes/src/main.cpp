@@ -55,10 +55,10 @@ int main() {
     }
   });
 
-  app.display([&balls_pos, &balls_color](render::RenderManager *renderer) {
+  app.display([&balls_pos, &balls_color]() {
     for (size_t i = 0; i < NB_BALL; ++i) {
-      renderer->set_draw_color(balls_color[i]);
-      renderer->draw_colored_filled_circle(static_cast<int>(balls_pos[i].x), static_cast<int>(balls_pos[i].y), BALL_RADIUS);
+      render::set_draw_color(balls_color[i]);
+      render::draw_colored_filled_circle(static_cast<int>(balls_pos[i].x), static_cast<int>(balls_pos[i].y), BALL_RADIUS);
     }
   });
 

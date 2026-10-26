@@ -20,7 +20,7 @@ namespace topi::render::items {
        * @param radius, rayon du cercle à créer.
        * @param color, couleur du cercle à créer.
        *
-       * @throw std::runtime_error si radius < 0
+       * @throw std::invalid_argument si radius < 0
        */
       ColoredFilledCircle(
         int x,
@@ -40,7 +40,7 @@ namespace topi::render::items {
     private:
       int _x, _y;
       double _radius;
-      topi::type::color::RGBAColor _color;
+      type::color::RGBAColor _color;
   };
 }
 

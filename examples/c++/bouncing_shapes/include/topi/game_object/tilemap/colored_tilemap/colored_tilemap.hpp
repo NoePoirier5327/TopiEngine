@@ -243,7 +243,6 @@ namespace topi::game_object::tilemap {
       /**
        * @brief Affiche une couche de la tilemap interne via le moteur de rendue du moteur.
        *
-       * @param renderer, instance du moteur de rendue.
        * @param layer, couche à afficher
        * @param x_offset, offset d'affichage en x de la tilemap courante, par défaut à 0.0.
        * @param y_offset, offset d'affichage en y de la tilemap courante, par défaut à 0.0.
@@ -253,12 +252,11 @@ namespace topi::game_object::tilemap {
        * @throw std::out_of_range si layer >= nb_layer.
        * @throw std::invalid_argument si zoom <= 0
        */
-      void display_layer(render::RenderManager* renderer, size_t layer, double x_offset = 0.0, double y_offset = 0.0, double zoom = 1.0) const;
+      void display_layer(size_t layer, double x_offset = 0.0, double y_offset = 0.0, double zoom = 1.0) const;
 
       /**
        * @brief Affiche l'entièretée des couches de la tilemap courante.
        *
-       * @param renderer, instance du moteur de rendue.
        * @param x_offset, offset d'affichage en x, par défaut à 0.0.
        * @param y_offset, offset d'affichage en y, par défaut à 0.0.
        * @param zoom, taux d'agrandissement de l'affichage de la tilemap courante, par défaut à 1.0.
@@ -266,7 +264,7 @@ namespace topi::game_object::tilemap {
        * @throw std::runtime_error si tileset vide.
        * @throw std::invalid_argument si soom <= 0;
        */
-      void display(render::RenderManager *renderer, double x_offset = 0.0, double y_offset = 0.0, double zoom = 1.0) const;
+      void display(double x_offset = 0.0, double y_offset = 0.0, double zoom = 1.0) const;
 
       /**
        * @brief Affiche la couche en paramètre de la tilemap courante dans la console.
