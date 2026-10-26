@@ -59,6 +59,10 @@ namespace topi::render {
     access_instance()->draw_colored_filled_circle(x, y, radius);
   }
 
+  void draw_colored_circle(int x, int y, double radius) {
+    access_instance()->draw_colored_circle(x, y, radius);
+  }
+
   RenderManager::RenderManager(SDL_Window *window, resource::ResourceManager &resource_manager) : _resource_manager(resource_manager) {
     if (window == nullptr) {
       throw std::invalid_argument("The given window should be instanciated to create renderer.");
@@ -179,5 +183,10 @@ namespace topi::render {
   void RenderManager::draw_colored_filled_circle(int x, int y, double radius) {
     if (this->_color.a == 0) return;
     this->_rendering_queue.push_back(std::make_unique<items::ColoredFilledCircle>(x, y, radius, this->_color));
+  }
+
+  void RenderManager::draw_colored_circle(int x, int y, double radius) {
+    if (this->_color.a == 0) return;
+    this->_rendering_queue.push_back(std::make_unique<items::ColoredCircle>(x, y, radius, this->_line_thickness, this->_color));
   }
 }

@@ -154,10 +154,29 @@ namespace topi::render {
    * @param y, coordonnée en y du centre du cercle.
    * @param radius, rayon du nouveau cercle à afficher.
    *
-   * @throw std::runtime_error si radius < 0
+   * @throw std::invalid_argument si radius < 0
    * @throw std::runtime_error si l'instance du moteur de rendu est inaccessible.
    */
   void draw_colored_filled_circle(
+    int x,
+    int y,
+    double radius
+  );
+
+  /**
+   * @brief Affiche un cercle coloré.
+   *
+   * Le cercle affiché est vide au centre et a une bordure d'épaisseur
+   * line_thickness.
+   *
+   * @param x, coordonnée en x du centre du cercle.
+   * @param y, coordonnée en y du centre du cercle.
+   * @param radius, rayon du nouveau cercle à afficher.
+   *
+   * @throw std::invalid_argument si radius < 0
+   * @throw std::runtime_error si l'instance du moteur de rendu est inaccessible.
+   */
+  void draw_colored_circle(
     int x,
     int y,
     double radius
@@ -329,9 +348,27 @@ namespace topi::render {
        * @param y, coordonnée en y du centre du cercle.
        * @param radius, rayon du nouveau cercle à afficher.
        *
-       * @throw std::runtime_error si radius < 0
+       * @throw std::invalid_argument si radius < 0
        */
       void draw_colored_filled_circle(
+        int x,
+        int y,
+        double radius
+      );
+
+      /**
+       * @brief Affiche un cercle coloré.
+       *
+       * Le cercle affiché est vide au centre et a une bordure d'épaisseur
+       * line_thickness.
+       *
+       * @param x, coordonnée en x du centre du cercle.
+       * @param y, coordonnée en y du centre du cercle.
+       * @param radius, rayon du nouveau cercle à afficher.
+       *
+       * @throw std::invalid_argument si radius < 0
+       */
+      void draw_colored_circle(
         int x,
         int y,
         double radius
